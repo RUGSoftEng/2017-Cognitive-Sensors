@@ -46,18 +46,21 @@
                 android:layout_height="30dp" />
 
             <ImageView
+                android:onClick="onClickStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/start"
                 android:id="@+id/Start" />
 
             <ImageView
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/options"
                 android:id="@+id/Options" />
 
             <ImageView
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/info"
