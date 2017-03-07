@@ -27,7 +27,7 @@ public class MyNewIntentService extends IntentService {
         builder.setContentTitle("Remember:");//title
         builder.setContentText("Its time to Wander!");//text
         builder.setSmallIcon(R.drawable.ic_launcher);//icon
-        builder.setPriority(Notification.PRIORITY_HIGH);
+        builder.setPriority(Notification.PRIORITY_HIGH);//TODO:: make this not notify each time I start the app.
         Intent notifyIntent = new Intent(this, MainMenu.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         //to be able to launch your activity from the notification
