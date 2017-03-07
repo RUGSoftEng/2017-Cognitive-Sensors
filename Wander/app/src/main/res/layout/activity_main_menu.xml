@@ -53,14 +53,14 @@
                 android:id="@+id/Start" />
 
             <ImageView
-                android:clickable="true"
+                android:onClick="onClickOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/options"
                 android:id="@+id/Options" />
 
             <ImageView
-                android:clickable="true"
+                android:onClick="onClickInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/info"
@@ -71,6 +71,7 @@
                 android:layout_height="15dp" />
 
             <ImageView
+                android:onClick="onClickDebug"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/credit"
