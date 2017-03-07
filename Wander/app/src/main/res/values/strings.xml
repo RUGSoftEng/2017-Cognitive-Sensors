@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Wander</string>
-    <string name="game_description">Game Description</string>
+    <string name="gameDescription1">In this game, a stream of different digits appear on screen. Tap
+        each number as you see it, excluding the number 3. Throughout the test, questions will also
+        appear infrequently, answer these truthfully.</string>
+    <string name="gameTitle1">Digits</string>
 
 </resources>

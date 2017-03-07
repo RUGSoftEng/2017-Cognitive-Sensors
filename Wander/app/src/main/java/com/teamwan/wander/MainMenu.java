@@ -4,12 +4,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.content.Intent;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -50,8 +52,14 @@ public class MainMenu extends AppCompatActivity {
 
         //if this is the first time the app has started setup the notifications, else don't do anything
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false))
+        if (!prefs.getBoolean("firstTime", false)) {
             setUpNotifications();
+        }
+
+        TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
+        Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        descriptionBox1.setTypeface(tf);
+
     }
 
     //Start a new activity on click of the Start Button

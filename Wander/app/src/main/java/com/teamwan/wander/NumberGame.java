@@ -10,6 +10,7 @@ after gameLength seconds.
 package com.teamwan.wander;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class NumberGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_number_game);
 
+        //This uses a custom typeface for the number displayed
+        TextView numberDisplay=(TextView)findViewById(R.id.numberDisplay);
+        Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        numberDisplay.setTypeface(tf);
+
         runGame();//setup the game values
 
         final Handler handle = new Handler();
@@ -55,6 +61,8 @@ public class NumberGame extends AppCompatActivity {
                 handle.postDelayed(this, delay);
             }
         }, delay);
+
+
     }
     //This function initializes the objects needed to run the game
     protected void runGame(){
@@ -115,5 +123,10 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setText(Integer.toString(currentNum));//set text in textView as the generated integer
         numberDisplay.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
         successValue = 0;
+    }
+
+    //sends user back to main menu when quit button is clicked
+    public void onClickQuit(View v){
+        finish();
     }
 }

@@ -43,6 +43,14 @@
                 android:textSize="256sp"
                 android:layout_weight="0.24" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/quit"
+                android:id="@+id/quit"
+                android:clickable="false"
+                android:onClick="onClickQuit" />
+
         </LinearLayout>
 
     </RelativeLayout>
