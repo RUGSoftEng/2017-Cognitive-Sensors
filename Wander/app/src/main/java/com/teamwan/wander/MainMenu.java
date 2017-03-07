@@ -45,6 +45,7 @@ public class MainMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.animator.fade_in, 0);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_menu);
@@ -66,6 +67,7 @@ public class MainMenu extends AppCompatActivity {
     public void onClickStart(View v) {
         Intent intent = new Intent(MainMenu.this, NumberGame.class);
         MainMenu.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
     //click the copyright image 3 times to start the debug menu
     public void onClickDebug(View v){

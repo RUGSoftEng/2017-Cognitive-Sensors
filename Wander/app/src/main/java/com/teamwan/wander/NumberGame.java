@@ -98,8 +98,10 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setTextColor(getResources().getColor(R.color.positiveResult));
         successValue = 1;
         //finish activity after gameLength seconds and return to mainMenu which is on top of the activity stack
-        if(System.currentTimeMillis() - startTime > gameLength)
+        if(System.currentTimeMillis() - startTime > gameLength) {
             finish();
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        }
     }
 
     private void checkSuccess(){
@@ -128,5 +130,6 @@ public class NumberGame extends AppCompatActivity {
     //sends user back to main menu when quit button is clicked
     public void onClickQuit(View v){
         finish();
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 }
