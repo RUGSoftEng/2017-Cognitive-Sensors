@@ -53,14 +53,12 @@ public class MainMenu extends AppCompatActivity {
 
         //if this is the first time the app has started setup the notifications, else don't do anything
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false)) {
+        if (!prefs.getBoolean("firstTime", false))
             setUpNotifications();
-        }
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         descriptionBox1.setTypeface(tf);
-
     }
 
     //Start a new activity on click of the Start Button
@@ -68,6 +66,7 @@ public class MainMenu extends AppCompatActivity {
         Intent intent = new Intent(MainMenu.this, NumberGame.class);
         MainMenu.this.startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        countClicks = 0;
     }
     //click the copyright image 3 times to start the debug menu
     public void onClickDebug(View v){
@@ -79,6 +78,14 @@ public class MainMenu extends AppCompatActivity {
             countClicks = 0;
         }
     }
+    public void onClickOptions(View v){
+        //TODO:: switch out info fragment for options fragment
+    }
+
+    public void onClickInfo(View v){
+        //TODO:: switch out options fragment for info fragment
+    }
+
     //this sets up the notification to fire at the time set in the calendar
     //TODO:: test that this actually works
     public void setUpNotifications(){

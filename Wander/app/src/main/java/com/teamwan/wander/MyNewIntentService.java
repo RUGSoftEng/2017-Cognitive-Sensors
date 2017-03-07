@@ -26,7 +26,7 @@ public class MyNewIntentService extends IntentService {
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle("Remember:");//title
         builder.setContentText("Its time to Wander!");//text
-        builder.setSmallIcon(R.drawable.start);//icon
+        builder.setSmallIcon(R.drawable.ic_launcher);//icon
         builder.setPriority(Notification.PRIORITY_HIGH);
         Intent notifyIntent = new Intent(this, MainMenu.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
