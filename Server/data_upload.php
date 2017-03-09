@@ -27,8 +27,7 @@ if ($conn->connect_error) {
     die("Connection failed: ". $conn->connect_error);
 } 
 
-if($tablename == 'GameSession')
-{
+if($tablename === 'GameSession') {
 	$sql = "INSERT INTO ".$tablename."(ID,PlayerID,GameType,Time)
 	VALUES ('',".$playerID.",".$gameType.",".$time.")";
 	if ($conn->query($sql) === TRUE) {
@@ -36,8 +35,7 @@ if($tablename == 'GameSession')
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
-}else if($tablename=='NumberGuess')
-{
+} else if($tablename ==='NumberGuess') {
 	// numberGuess
 	$responsetime = $_GET["ResponseTime"];
 	$correct = $_GET["Correct"];
@@ -47,9 +45,7 @@ if($tablename == 'GameSession')
 	$$num_gamesession; = $result;
 	$sql = "INSERT INTO ".$tablename."(ID,ResponseTime,Correct,NumberGameSessions)
 	VALUES ('',".$responsetime.",".$correct.",".$num_gamesession.")";
-}
-else if(tablename == QuestionAnswer)
-{
+} else if($tablename === "QuestionAnswer") {
 	$gameSessionID;
 	$questionID;
 	$answer $_GET['Answer'];
