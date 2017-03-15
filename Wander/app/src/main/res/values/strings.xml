@@ -4,5 +4,9 @@
         each number as you see it, excluding the number 3. Throughout the test, questions will also
         appear infrequently, answer these truthfully.</string>
     <string name="gameTitle1">Digits</string>
+    <string name="ICATitle">Informed Consent Agreement</string>
+    <string name="ICABody">Informed Consent Agreement to go here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent felis est, pretium et mattis eget, pulvinar laoreet neque. Aliquam tempus sem sodales, porta eros sit amet, pretium justo. Curabitur in molestie augue. Duis non erat justo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean malesuada purus quis convallis cursus. Aenean a sapien magna. Duis gravida nisi nec diam lacinia, eget ornare mauris hendrerit. Duis a blandit massa.</string>
+    <string name="ICAAccept">Accept</string>
+    <string name="ICAQuit">Quit</string>
 
 </resources>

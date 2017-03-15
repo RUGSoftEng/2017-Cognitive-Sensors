@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.content.Intent;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -54,7 +57,9 @@ public class MainMenu extends AppCompatActivity {
         //if this is the first time the app has started setup the notifications, else don't do anything
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTime", false))
+            initialiseICA();
             setUpNotifications();
+
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
@@ -102,5 +107,53 @@ public class MainMenu extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    public void initialiseICA() {
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+
+        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView accept = (TextView)findViewById(R.id.ICAAccept);
+        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+
+        overlay.setVisibility(View.VISIBLE);
+        contentBox.setVisibility(View.VISIBLE);
+        title.setVisibility(View.VISIBLE);
+        body.setVisibility(View.VISIBLE);
+        accept.setVisibility(View.VISIBLE);
+        quit.setVisibility(View.VISIBLE);
+
+
+
+        Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        title.setTypeface(tf);
+        body.setTypeface(tf);
+        accept.setTypeface(tf);
+        quit.setTypeface(tf);
+
+    }
+
+    public void onClickICAAccept(View v) {
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+
+        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView accept = (TextView)findViewById(R.id.ICAAccept);
+        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+
+        overlay.setVisibility(View.INVISIBLE);
+        contentBox.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
+        body.setVisibility(View.INVISIBLE);
+        accept.setVisibility(View.INVISIBLE);
+        quit.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void onClickICAQuit(View v) {
+        finish();
     }
 }

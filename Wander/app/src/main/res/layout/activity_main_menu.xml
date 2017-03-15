@@ -13,6 +13,84 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="1dp"
+        android:visibility="invisible"
+        android:weightSum="1"
+        android:background="@color/black_overlay"
+        android:gravity="center_vertical"
+        android:id="@+id/ICAOverlay">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:layout_margin="20dp"
+            android:id="@+id/ICAContentBox"
+            android:visibility="invisible"
+            android:clickable="true">
+
+            <TextView
+                android:text="@string/ICATitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ICATitle"
+                android:translationZ="3dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:textSize="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:text="@string/ICABody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ICABody"
+                android:layout_marginTop="40dp"
+                android:layout_margin="30dp"
+                android:translationZ="3dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:visibility="invisible" />
+
+            <TextView
+                android:text="@string/ICAAccept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ICAAccept"
+                android:layout_gravity="bottom"
+                android:translationZ="3dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:visibility="invisible"
+                android:onClick="onClickICAAccept" />
+
+            <TextView
+                android:text="@string/ICAQuit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ICAQuit"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:textSize="@dimen/ICAARSize"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:visibility="invisible"
+                android:onClick="onClickICAQuit" />
+        </LinearLayout>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -37,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/gametitle1"
-                android:id="@+id/imageView" />
+                android:id="@+id/GameTitle1" />
 
             <TextView
                 android:text="@string/gameDescription1"
