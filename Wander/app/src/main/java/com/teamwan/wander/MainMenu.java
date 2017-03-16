@@ -66,7 +66,9 @@ public class MainMenu extends AppCompatActivity {
         descriptionBox1.setTypeface(tf);
     }
 
-    //Start a new activity on click of the Start Button
+    /**
+     * Start a new activity on click of the Start Button
+     */
     public void onClickStart(View v) {
         Intent intent = new Intent(MainMenu.this, NumberGame.class);
         MainMenu.this.startActivity(intent);
@@ -109,6 +111,9 @@ public class MainMenu extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
+    /**
+     * Method for displaying ICA overlay and content.
+     */
     public void initialiseICA() {
         LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
         LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
@@ -135,6 +140,9 @@ public class MainMenu extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for accepting ICA and closing overlay.
+     */
     public void onClickICAAccept(View v) {
         LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
         LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
@@ -153,6 +161,10 @@ public class MainMenu extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for closing app when quit selected at ICA overlay.
+     * @param v
+     */
     public void onClickICAQuit(View v) {
         finish();
     }
