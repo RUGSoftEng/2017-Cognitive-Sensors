@@ -1,3 +1,13 @@
+/**
+ *  This class is the main activity for the application.
+ *  It handles the main menu and starts other activities
+ *  to actually play the game.
+ *
+ * @author  Ashton Spina
+ * @version 1.1
+ * @since   2017-03-20
+ */
+
 package com.teamwan.wander;
 
 import android.app.AlarmManager;
@@ -17,7 +27,6 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.Calendar;
-
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -46,6 +55,13 @@ public class MainMenu extends AppCompatActivity {
     private int countClicks;
     private PendingIntent pendingIntent;
 
+    /**
+     * This method is the constructor for the game.
+     * It checks that a consent agreement has been agree to
+     * and that the alarm has been created to send notifications.
+     * It also has a countClicks variable to enable deBug.  Appearances
+     * are set here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.animator.fade_in, 0);
@@ -54,12 +70,18 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        //if this is the first time the app has started setup the notifications, else don't do anything
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false))
-            initialiseICA();
-            setUpNotifications();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
+        if(!sharedPref.getBoolean("Consent?", false)){
+            initialiseICA();
+            editor.putBoolean("Consent?", true);
+        }
+        if(!sharedPref.getBoolean("Setup?", false)){
+            setUpNotifications();
+            editor.putBoolean("Setup?", true);
+        }
+        editor.commit();
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
@@ -75,7 +97,11 @@ public class MainMenu extends AppCompatActivity {
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         countClicks = 0;
     }
-    //click the copyright image 3 times to start the debug menu
+    /**
+     * This is activated when the copyright imageview is clicked.
+     * After three clicks the debug menu is opened for debugging
+     * the application.
+     */
     public void onClickDebug(View v){
         ++countClicks;
         if(countClicks >= 3)
@@ -85,18 +111,27 @@ public class MainMenu extends AppCompatActivity {
             countClicks = 0;
         }
     }
+    /**
+     * This method opens an options menu for tweaking settings in the application.
+     */
     public void onClickOptions(View v){
         Intent intent = new Intent(MainMenu.this, OptionsActivity.class);
         MainMenu.this.startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 
+    /**
+     *
+     */
     public void onClickInfo(View v){
-        //TODO:: switch out options fragment for info fragment
+        //TODO:: switch out info text for info text for the current game that has been selected to play
     }
 
-    //this sets up the notification to fire at the time set in the calendar
-    //TODO:: test that this actually works
+
+    //TODO:: test that this actually works and de-hardcode it to work with the Options.
+    /**
+     * This method sets a daily alarm for a certain time
+     */
     public void setUpNotifications(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -105,11 +140,8 @@ public class MainMenu extends AppCompatActivity {
         calendar.set(Calendar.SECOND, 1);
 
         Intent alarmIntent = new Intent(this, MyReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
@@ -137,7 +169,6 @@ public class MainMenu extends AppCompatActivity {
         body.setTypeface(tf);
         accept.setTypeface(tf);
         quit.setTypeface(tf);
-
     }
 
     /**
@@ -158,7 +189,7 @@ public class MainMenu extends AppCompatActivity {
         body.setVisibility(View.INVISIBLE);
         accept.setVisibility(View.INVISIBLE);
         quit.setVisibility(View.INVISIBLE);
-
+        //TODO:: move the closing of the ICA to another function and set acceptance of ICA Based on button clicked.
     }
 
     /**

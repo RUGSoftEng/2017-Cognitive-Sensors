@@ -1,9 +1,10 @@
-/*
-Ashton Spina
-07/03/2017
-
-Tap the mainmenu copyright image 3 time to access this debug menu
-for testing and demoing features
+/**
+ *  Tapping the copyright button in the main menu
+ *  3 times opens this menu to handle debugging.
+ *
+ * @author  Ashton Spina
+ * @version 1.0
+ * @since   2017-03-07
  */
 
 package com.teamwan.wander;
@@ -23,22 +24,29 @@ public class DebugActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
     }
-
+    /**
+     *  This method sends a notification to test notification function.
+     */
     public void onClickNotify(View v){
         sendNotification();
     }
-
+  
+  
     public void onClickMultiChoice(View v) {
         Intent intent = new Intent(DebugActivity.this, InGameMultiQuestion.class);
         DebugActivity.this.startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 
+    /**
+     * This method returns the activity to the main menu activity
+     * on click of the back button.
+     */
     public void onClickDebugBack(View v){
         finish();
     }
-    //TODO:: create tests for the other buttons
 
+    //TODO:: create tests for the other buttons
     public void sendNotification(){
         Intent alarmIntent = new Intent(this, MyReceiver.class);
 
