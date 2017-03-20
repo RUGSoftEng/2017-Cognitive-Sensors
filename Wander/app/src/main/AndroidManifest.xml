@@ -20,7 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".NumberGame" />
-        <activity android:name=".DebugActivity" />
+        <activity android:name=".InGameMultiQuestion"/>
+        <activity android:name=".InGameSliderQuestion"/>
+        <activity android:name=".DebugActivity"/>
 
         <receiver
             android:name=".MyReceiver"

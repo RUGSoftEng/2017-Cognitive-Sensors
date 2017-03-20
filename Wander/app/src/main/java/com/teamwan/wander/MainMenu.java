@@ -132,8 +132,6 @@ public class MainMenu extends AppCompatActivity {
         accept.setVisibility(View.VISIBLE);
         quit.setVisibility(View.VISIBLE);
 
-
-
         Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
         body.setTypeface(tf);
