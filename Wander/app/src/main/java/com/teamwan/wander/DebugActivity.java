@@ -28,6 +28,11 @@ public class DebugActivity extends AppCompatActivity {
         sendNotification();
     }
 
+    public void onClickMultiChoice(View v) {
+        Intent intent = new Intent(DebugActivity.this, InGameMultiQuestion.class);
+        DebugActivity.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     public void onClickDebugBack(View v){
         finish();

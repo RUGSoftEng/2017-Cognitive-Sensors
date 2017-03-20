@@ -13,54 +13,121 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/multiChoice">
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/quit"
+        android:id="@+id/quitFromMultiChoice"
+        android:clickable="false"
+        android:onClick="onClickQuit"
+        android:layout_alignParentStart="false"
+        android:layout_weight="1"
+        android:layout_gravity="bottom" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center"
+        android:weightSum="1"
+        android:layout_below="@+id/TitleMultiChoice"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="true"
+        android:baselineAligned="true">
+
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/wandertitle"
-            android:id="@+id/TitleMultiChoice" />
+            android:id="@+id/TitleMultiChoice"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:baselineAlignBottom="true" />
 
-
-        <ImageView
+        <TextView
+            android:text="TextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/quit"
-            android:id="@+id/quitFromMultiChoice"
-            android:clickable="false"
-            android:onClick="onClickQuit"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
+            android:id="@+id/textViewForQuestion"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_margin="20dp"
+            android:freezesText="false"
+            android:duplicateParentState="false"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:layout_height="130dp" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom|center"
-            android:weightSum="1"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/quitFromMultiChoice"
-            android:layout_below="@+id/TitleMultiChoice">
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp">
 
-
-            <TextView
-                android:text="TextView"
+            <CheckBox
+                android:text="CheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewForQuestion"
-                android:layout_weight="0.46" />
+                android:id="@+id/checkBox1"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp"
+                android:layout_gravity="top" />
 
             <CheckBox
                 android:text="CheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkBox2"
-                android:layout_weight="0.55" />
+                android:layout_weight="0"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp" />
+
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox3"
+                android:layout_weight="0"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp" />
+
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox4"
+                android:layout_weight="0"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp" />
+
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox5"
+                android:layout_weight="0"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp" />
+
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox6"
+                android:layout_weight="0"
+                android:textColor="@color/colorPrimaryDark"
+                android:theme="@style/WanderCheckBox"
+                android:paddingLeft="25dp" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
