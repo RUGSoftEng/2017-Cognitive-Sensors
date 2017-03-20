@@ -5,8 +5,47 @@
         appear infrequently, answer these truthfully.</string>
     <string name="gameTitle1">Digits</string>
     <string name="ICATitle">Informed Consent Agreement</string>
-    <string name="ICABody">Informed Consent Agreement to go here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent felis est, pretium et mattis eget, pulvinar laoreet neque. Aliquam tempus sem sodales, porta eros sit amet, pretium justo. Curabitur in molestie augue. Duis non erat justo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean malesuada purus quis convallis cursus. Aenean a sapien magna. Duis gravida nisi nec diam lacinia, eget ornare mauris hendrerit. Duis a blandit massa.</string>
+    <string name="ICABody">I hereby consent to be a participant in the research performed by Dr. Marieke van Vugt. I have agreed to take part in the study entitled "thoughts in daily life" and I understand that my participation is entirely voluntary. I understand that my responses will be kept strictly confidential and anonymous. I have the option to withdraw from this study at any time, without penalty, and I also have the right to request that my responses not be used. The goal of this study is to better understand how cognitive function changes in the course of daily life.
+
+Participation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
+
+My responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
     <string name="ICAAccept">Accept</string>
     <string name="ICAQuit">Quit</string>
+
+    <string name="title_activity_options">OptionsActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="OptionsTitle">OPTIONS</string>
+    <string name="OptionNotification" >Notification Frequency</string>
+    <string name="OptionsNever">Never</string>
+    <string name="OptionsDaily">Daily</string>
+    <string name="OptionsWeekly">Weekly</string>
+
+    <!--
+    Q1) What were you just thinking about?
+    1) I was completely focused on the task.
+    2) I was evaluating aspects of the task.
+    (For example my performance or how long it is taking)
+    3) I was thinking about personal matters.
+    4) I was distracted by my environment.
+    (For example sound, temperature, my physical state)
+    5) I was daydreaming / I was thinking of task-unrelated
+    matters.
+    6) I was not paying attention, but neither was I thinking
+    about anything specifically.
+    Press the number that matches your answer to continue
+
+    Q2) How difficult was it to disengage from the thought?
+    1) Very difficult
+    2) Difficult
+    3) Neither difficult nor easy
+    4) Easy
+    5) Very easy
+    Press the number that matches your answer to continue
+
+    Q3) What was the valence of your recent thought?
+    positive - negative (slider bar)
+    -->
 
 </resources>

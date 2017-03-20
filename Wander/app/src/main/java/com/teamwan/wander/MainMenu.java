@@ -86,7 +86,9 @@ public class MainMenu extends AppCompatActivity {
         }
     }
     public void onClickOptions(View v){
-        //TODO:: switch out info fragment for options fragment
+        Intent intent = new Intent(MainMenu.this, OptionsActivity.class);
+        MainMenu.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 
     public void onClickInfo(View v){
