@@ -20,4 +20,8 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="WanderSeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+
+    </style>
+
 </resources>

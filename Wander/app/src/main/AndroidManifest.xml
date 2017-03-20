@@ -20,19 +20,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".NumberGame" />
-        <activity android:name=".DebugActivity"></activity>
-        <activity android:name=".InGameMultiQuestion"></activity>
-        <activity android:name=".InGameSliderQuestion"></activity>
+        <activity android:name=".InGameMultiQuestion"/>
+        <activity android:name=".InGameSliderQuestion"/>
+        <activity android:name=".DebugActivity"/>
 
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
-            android:exported="false" >
-        </receiver>
+            android:exported="false"></receiver>
+
         <service
             android:name=".MyNewIntentService"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
+
+        <activity
+            android:name=".OptionsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_options"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
