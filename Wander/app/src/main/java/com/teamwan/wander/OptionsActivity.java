@@ -1,3 +1,14 @@
+/**
+ *  This class is the main activity for the application.
+ *  It handles the main menu and starts other activities
+ *  to actually play the game.
+ *
+ * @author  Jake Davison
+ * @version 1.0
+ * @since   2017-03-20
+ */
+
+
 package com.teamwan.wander;
 
 import android.annotation.SuppressLint;

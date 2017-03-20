@@ -1,15 +1,18 @@
-/*
-Ashton Spina
-07/03/2017
-
-This class handles the basic number game
-generating when clicked and ends the game
-after gameLength seconds.
+/**
+ *  This Class contains the the game which presents
+ *  random digits to a user and has them click all but one
+ *  digit.  The user is also asked questions
+ *
+ * @author  Ashton Spina
+ * @version 1.1
+ * @since   2017-03-20
  */
 
 package com.teamwan.wander;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -18,63 +21,75 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Random;
-
 import static java.lang.Math.abs;
 
+/**
+ * This class contains the number game which displays random digits
+ * and asks questions the the user.
+ */
 public class NumberGame extends AppCompatActivity {
 
     private TextView numberDisplay; //where the number is shown
     private Random rn;//random number generator
     private long startTime;//game start time
     private long gameLength; //game duration in seconds for testing
-    private int amountOfQuestions;
     private final int unClickableNum = 3;//number which should not be clicked
     private int currentNum;//current displayed number
-    private int successValue;//state of game represented as -1 | 0 | 1 == failure |  nothing | success
     private int questionID;
     private ArrayList<QuestionInfo> questionIntervals;
 
     private int successCounter;
     private int failCounter;
-    private long timeLastClicked;//last time the number was clicked
-    private long timeNumberDisplayed;//Time last number was displayed
+    private long timeLastClicked; //last time the number was clicked
+    private long timeNumberDisplayed; //Time last number was displayed
     private RelativeLayout rl;
+    private GameState gameState;
 
+    public enum GameState {
+        SUCCESS, NEUTRAL;
+    }
+
+    /**
+     * This method is essentially the constructor for the game activity
+     * It sets the appearances and initializes a Handler to check
+     * the gameState every delay + random jitter milliseconds to ensure
+     * the game isn't too predicatble.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_number_game);
 
-        //This uses a custom typeface for the number displayed
         TextView numberDisplay=(TextView)findViewById(R.id.numberDisplay);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
 
-        rl = (RelativeLayout)findViewById(R.id.gameUI);
-        questionID = 0;
-        gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
-        amountOfQuestions = getResources().getInteger(R.integer.amount_questions);
+        runGame();
+
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
-        runGame();//setup the game values
-
-        //This handler checks if the number has been successfully interacted with each delay period
         final Handler handle = new Handler();
         handle.postDelayed(new Runnable(){
             public void run(){
-                if(System.currentTimeMillis() - timeLastClicked > delay)
                     checkSuccess();
-                handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));//adds a jitter in the next time check of a random value + or - jitter
+                handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
             }
         }, delay);
     }
 
-    //This function initializes the objects needed to run the game
+    /**
+     * This method initializes values pertaining to the
+     * game such that the game can run.
+     * The purpose of this is simply organizational
+     */
     protected void runGame(){
+        rl = (RelativeLayout)findViewById(R.id.gameUI);
+        questionID = 0;
+        gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
+
         startTime = System.currentTimeMillis();
         timeLastClicked = System.currentTimeMillis();
 
@@ -82,16 +97,20 @@ public class NumberGame extends AppCompatActivity {
         failCounter = 0;
 
         questionIntervals = new ArrayList<QuestionInfo>();
-        questionIntervals.add(new QuestionInfo(0, 2));//TODO:: add all questions here using this example
+        questionIntervals.add(new QuestionInfo(0, 10));//TODO:: add all questions here using this example of (questionType, QuestionOrder) Constructor
 
         numberDisplay = (TextView) findViewById(R.id.numberDisplay);
-        rn = new Random();
+        rn = new Random(System.nanoTime());
         genNewNumber();
     }
 
-    //Puts a new integer in the textView when the TextView is clicked
+    /**
+     * This method is activated when a number in the game is tapped
+     * and takes actions based on whether this was the expected action
+     * of the player.
+     */
     public void onClickNumber(View v){
-        if(successValue == 0) {
+        if(gameState.equals(GameState.NEUTRAL)) {
             if (currentNum == unClickableNum)
                 failOnNum();
             else
@@ -100,21 +119,18 @@ public class NumberGame extends AppCompatActivity {
         }
     }
 
-    //actions taken if the player does things wrong
+    /**
+     * This is the method for an incorrect action from the user
+     * clicking a number.  It changes the colour of the background
+     * and increases the failCounter as well as setting the text
+     * to an empty string until a new number can be generated.
+     *
+     * If the game length is expired at this point the game ends.
+     */
     private void failOnNum(){
         rl.setBackgroundColor(getResources().getColor(R.color.negativeResult));
-        successValue = 1;
+        gameState = GameState.SUCCESS;
         ++failCounter;
-        System.out.println("fail");
-        numberDisplay.setText("");
-    }
-
-    //actions taken if the player does things successfully
-    private void successOnNum(){
-        rl.setBackgroundColor(getResources().getColor(R.color.positiveResult));
-        successValue = 1;
-        ++successCounter;
-        System.out.println("success");
         numberDisplay.setText("");
 
         if(System.currentTimeMillis() - startTime > gameLength) {
@@ -123,22 +139,41 @@ public class NumberGame extends AppCompatActivity {
         }
     }
 
+    /**
+     * This is the method for an correct action from the user
+     * clicking a number.  It changes the colour of the background
+     * and increases the failCounter as well as setting the text
+     * to an empty string until a new number can be generated.
+     *
+     * If the game length is expired at this point the game ends.
+     */
+    private void successOnNum(){
+        rl.setBackgroundColor(getResources().getColor(R.color.positiveResult));
+        gameState = GameState.SUCCESS;
+        ++successCounter;
+        numberDisplay.setText("");
+
+        if(System.currentTimeMillis() - startTime > gameLength) {
+            finish();
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        }
+    }
+    /**
+     * This method runs every time the handler cycle is complete.  The
+     * handler calls this method to check the current state of the game
+     * and update it as necessary.  If it is time for a question this method
+     * calls a new activity and pauses the current one until the question activity
+     * has finished.
+     *
+     * If it is not time for a new question it simply generates a new random digit for the game
+     */
     private void checkSuccess(){
-        // if the number is the one that should not be clicked and they've not touched it for 3 seconds they are successful time can be changed to a set value
-        if(currentNum == unClickableNum && successValue == 0){
-            System.out.println("success in check");
+        if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL))
             ++successCounter;
-        }
-
-        //number was not clicked when it should have been so it is a failure
-        else if(currentNum == unClickableNum && successValue == 1){
-            System.out.println("fail in check");
+        else if(currentNum == unClickableNum && gameState.equals(GameState.SUCCESS))
             ++failCounter;
-        }
 
-        //after a certain amount of numbers ask a question
-        System.out.println(successCounter + failCounter);
-        if(questionID < questionIntervals.size() && (successCounter + failCounter) >= questionIntervals.get(questionID).getQuestionOrder()){
+        if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID).getQuestionOrder()){
             Intent intent;
             if(questionIntervals.get(questionID).getQuestionType() == 1)
                 intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
@@ -148,48 +183,64 @@ public class NumberGame extends AppCompatActivity {
             intent.putExtra("questionID", questionID);
             startActivityForResult(intent, 1);
             ++questionID;
-            //TODO::pause current activity
         }
-        else{
+        else
             genNewNumber();
-        }
     }
 
+    /**
+     * This method takes action when an activity that is initated by this activity
+     * has completed.  In this case it simply generates a new number to continue the game.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         genNewNumber();
     }
 
-    //generates a new number and resets the text appearance
+    /**
+     * This method generates a new random number between 0 and 9.
+     * It also sets the background back to its standard colour and ensures
+     * that the new number is different from the previous one for simple
+     * preference purposes.  The gameState is reverted to NEUTRAL.
+     */
     public void genNewNumber(){
         saveLastNumberData();
 
         rl.setBackgroundColor(Color.parseColor("#FFFFFF"));
         long hold = currentNum;
-        while(hold == currentNum)//ensure new value is different from old one.
-            currentNum = abs(rn.nextInt() % 9);
-        numberDisplay.setText(Integer.toString(currentNum));//set text in textView as the generated integer
+        while(hold == currentNum)
+            currentNum = abs(rn.nextInt() % 10);
+
+        numberDisplay.setText(Integer.toString(currentNum));
         numberDisplay.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        successValue = 0;
+        gameState = GameState.NEUTRAL;
         timeNumberDisplayed = System.currentTimeMillis();
     }
 
-    //sends user back to main menu when quit button is clicked
+    /**
+     * Upon clicking the "QUIT" imageview the activity finishes and returns the player to the mainMenu
+     */
     public void onClickQuit(View v){
+        saveLastNumberData();
         finish();
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
-
-    private void saveLastNumberData(){
-        boolean goodNum = (currentNum != unClickableNum);
-        //TODO:: save needed values here
-        /*
-            These values are available and need to be stored for the session for each number clicked:
-                -timeLastClicked == system time at last number click
-                -timeNumberDisplayed == last time a number was displayed
-                -successCounter == successful clicks
-                -failCounter == unsuccessful clicks
-                -goodNum == TRUE if last displayed number was a clickable one, else FALSE
-         */
+    /**
+     * This method saves all the data that is requested in the database.
+     * It only does this if the "consent?" value in the preferences is true.
+     */
+    private void saveLastNumberData() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        if (sharedPref.getBoolean("Consent?", false)) {
+            boolean goodNum = (currentNum != unClickableNum);
+            //TODO:: save needed values here
+            /*
+                These values are available and need to be stored for the session for each number clicked:
+                    -timeLastClicked == system time at last number click
+                    -timeNumberDisplayed == last time a number was displayed
+                    -successCounter == successful clicks
+                    -failCounter == unsuccessful clicks
+                    -goodNum == TRUE if last displayed number was a clickable one, else FALSE
+             */
+        }
     }
-
 }
