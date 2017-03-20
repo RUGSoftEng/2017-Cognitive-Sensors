@@ -30,6 +30,13 @@ public class DebugActivity extends AppCompatActivity {
     public void onClickNotify(View v){
         sendNotification();
     }
+  
+  
+    public void onClickMultiChoice(View v) {
+        Intent intent = new Intent(DebugActivity.this, InGameMultiQuestion.class);
+        DebugActivity.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     /**
      * This method returns the activity to the main menu activity
