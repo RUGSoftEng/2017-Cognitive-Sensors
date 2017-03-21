@@ -47,7 +47,10 @@
             android:max="2"
             android:progress="1"
             android:id="@+id/seekBar2"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:thumbTint="@color/colorPrimaryDark"
+            android:progressTint="@color/UncheckedBox"
+            />
 
         <LinearLayout
             android:orientation="horizontal"

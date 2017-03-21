@@ -30,7 +30,15 @@ public class DebugActivity extends AppCompatActivity {
     public void onClickNotify(View v){
         sendNotification();
     }
-  
+
+    /**
+     * Launches a slider activity
+     */
+    public void onClickSlider(View v) {
+        Intent intent = new Intent(DebugActivity.this, InGameSliderQuestion.class);
+        DebugActivity.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
   
     public void onClickMultiChoice(View v) {
         Intent intent = new Intent(DebugActivity.this, InGameMultiQuestion.class);

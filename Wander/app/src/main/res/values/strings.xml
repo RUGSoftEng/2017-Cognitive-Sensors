@@ -21,6 +21,10 @@ My responses will be treated confidentially and my anonymity will be ensured. He
     <string name="OptionsNever">Never</string>
     <string name="OptionsDaily">Daily</string>
     <string name="OptionsWeekly">Weekly</string>
+    <string name="Confirm">CONFIRM</string>
+    <string name="Positive">Positive</string>
+    <string name="Negative">Negative</string>
+    <string name="SliderQuestion">What was the valence of your recent thought?</string>
 
     <string-array name="Questions">
         <item>What were you just thinking about?</item>

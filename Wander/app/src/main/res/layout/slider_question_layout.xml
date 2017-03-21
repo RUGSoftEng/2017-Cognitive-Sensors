@@ -13,10 +13,22 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/multiChoice">
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/quit"
+        android:id="@+id/quitFromSlider"
+        android:clickable="false"
+        android:onClick="onClickQuit"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_gravity="bottom" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:layout_width="match_parent"
@@ -24,36 +36,66 @@
             app:srcCompat="@drawable/wandertitle"
             android:id="@+id/TitleSlider" />
 
+        <TextView
+            android:text="@string/SliderQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:id="@+id/textViewForSliderQuestion"
+            android:layout_weight="0"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
 
-        <ImageView
+        <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/quit"
-            android:id="@+id/quitFromSlider"
-            android:clickable="false"
-            android:onClick="onClickQuit"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
+            android:id="@+id/SliderSeekBar"
+            android:thumbTint="@color/colorPrimaryDark"
+            android:progressTint="@color/UncheckedBox"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:progress="50" />
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|center"
-            android:weightSum="1"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/quitFromMultiChoice"
-            android:layout_below="@+id/TitleMultiChoice">
-
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp">
 
             <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
+                android:text="@string/Negative"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewForSliderQuestion"
-                android:layout_weight="0.46" />
+                android:id="@+id/Negative"
+                android:layout_weight="1"
+                android:textColor="@color/negativeResult"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:text="@string/Positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Positive"
+                android:layout_weight="1"
+                android:textColor="@color/positiveResult"
+                android:textAlignment="textEnd" />
         </LinearLayout>
 
-    </RelativeLayout>
+        <TextView
+            android:text="@string/Confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ConfirmSlider"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="26sp"
+            android:textAlignment="center" />
+    </LinearLayout>
 
 </FrameLayout>
