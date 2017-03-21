@@ -44,14 +44,15 @@
         android:layout_alignStart="@+id/button" />
 
     <Button
-        android:text="Test PlaceHolder"
+        android:text="Test MultiChoice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:id="@+id/button3"
         android:layout_below="@+id/button2"
         android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2" />
+        android:layout_alignStart="@+id/button2"
+        android:onClick="onClickMultiChoice" />
 
     <Button
         android:text="Back"
