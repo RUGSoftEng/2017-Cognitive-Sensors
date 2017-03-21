@@ -22,21 +22,28 @@ My responses will be treated confidentially and my anonymity will be ensured. He
     <string name="OptionsDaily">Daily</string>
     <string name="OptionsWeekly">Weekly</string>
 
-    <string name="QuestionFirst">What were you just thinking about?</string>
-    <string name="QuestionSecond">How difficult was it to disengage from the thought?</string>
-    <string name="QuestionThird">What was the valence of your recent thought?</string>
+    <string-array name="Questions">
+        <item>What were you just thinking about?</item>
+        <item>How difficult was it to disengage from the thought?</item>
+        <item> What was the valence of your recent thought?</item>
+    </string-array>
 
-    <string name="Q1AnswerFirst">I was completely focused on the task.</string>
-    <string name="Q1AnswerSecond">I was evaluating aspects of the task. (For example my performance or how long it is taking)</string>
-    <string name="Q1AnswerThird">I was thinking about personal matters.</string>
-    <string name="Q1AnswerFourth">I was distracted by my environment. (For example sound, temperature, my physical state)</string>
-    <string name="Q1AnswerFifth">I was daydreaming / I was thinking of task-unrelated matters.</string>
-    <string name="Q1AnswerSixth">I was not paying attention, but neither was I thinking about anything specifically.</string>
+    <string-array name="Q1Answers">
+        <item>I was completely focused on the task.</item>
+        <item>I was evaluating aspects of the task. (For example my performance or how long it is taking)</item>
+        <item>I was thinking about personal matters.</item>
+        <item>I was distracted by my environment. (For example sound, temperature, my physical state)</item>
+        <item>I was daydreaming / I was thinking of task-unrelated matters.</item>
+        <item>I was not paying attention, but neither was I thinking about anything specifically.</item>
+    </string-array>
 
-    <string name="Q2AnswerFirst">Very difficult</string>
-    <string name="Q2AnswerSecond">Difficult</string>
-    <string name="Q2AnswerThird">Neither difficult nor easy</string>
-    <string name="Q2AnswerFourth">Easy</string>
-    <string name="Q2AnswerFifth">Very easy</string>
+    <string-array name="Q2Answers">
+        <item>Very difficult</item>
+        <item>Difficult</item>
+        <item>Neither difficult nor easy</item>
+        <item>Easy</item>
+        <item>Very easy</item>
+    </string-array>
+
 
 </resources>
