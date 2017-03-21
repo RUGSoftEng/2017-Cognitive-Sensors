@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -199,13 +200,11 @@ public class NumberGame extends AppCompatActivity {
      * has completed.  In this case it simply generates a new number to continue the game.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {//If type
-            int choice = data.getIntExtra("choice", -1);
-            saveLastNumberData(choice);
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            saveLastNumberData(data.getIntExtra("choice", -1), questionID);
         }
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            int slider = data.getIntExtra("choice", -1);
-            saveLastNumberData(slider);
+            saveLastNumberData(data.getIntExtra("choice", -1), questionID);
         }
         genNewNumber();
     }
@@ -261,19 +260,11 @@ public class NumberGame extends AppCompatActivity {
      * In this version save the question result with a reference
      * to the previous numberData
      */
-    private void saveLastNumberData(int questionResult) {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("Consent?", false)) {
-            boolean goodNum = (currentNum != unClickableNum);
-            //TODO:: save needed values here
-            /*
-                These values are available and need to be stored for the session for each number clicked:
-                    -timeLastClicked == system time at last number click
-                    -timeNumberDisplayed == last time a number was displayed
-                    -successCounter == successful clicks
-                    -failCounter == unsuccessful clicks
-                    -goodNum == TRUE if last displayed number was a clickable one, else FALSE
-             */
+    private void saveLastNumberData(int questionResult, int questionID) {
+        System.out.println(questionResult + " " + questionID);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(sharedPref.getBoolean("Consent?", false)) {
+            System.out.println(questionResult + " " + questionID);
         }
     }
 }

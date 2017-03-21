@@ -22,26 +22,26 @@ import android.widget.TextView;
 public class InGameSliderQuestion extends AppCompatActivity {
 
     private TextView questionDisplay; //where the number is shown
+    private int questionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slider_question_layout);
-        int questionID = 0;
+
+        questionDisplay = (TextView)findViewById(R.id.textViewForSliderQuestion);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             questionID = extras.getInt("questionID");
-            //The key argument here must match that used in the other activity
+            String[] questions = getResources().getStringArray(R.array.Questions);
+            questionDisplay.setText(questions[questionID]);
         }
-
+        else{
+            questionDisplay.setText("No Question to Display");
+        }
         //This uses a custom typeface for the number displayed
         initialiseTypefaces();
-
-
-
-        //TODO:: get question at questionID index and place it in the textview
-        //TODO:: display appropriate responses for that question ID
-        //TODO:: return answer to the numberGame and save it
     }
 
 
@@ -57,7 +57,6 @@ public class InGameSliderQuestion extends AppCompatActivity {
         TextView pos = (TextView)findViewById(R.id.Positive);
         TextView neg = (TextView)findViewById(R.id.Negative);
 
-
         confirm.setTypeface(tf);
         questionDisplay.setTypeface(tf);
         pos.setTypeface(tf);
@@ -67,16 +66,16 @@ public class InGameSliderQuestion extends AppCompatActivity {
     /**
      * Finds which answer is selected and saves this answer.
      */
-    public void onClickConfirm(View v) {
+    public void onClickConfirmSlider(View v) {
 
         SeekBar slider = (SeekBar) findViewById(R.id.SliderSeekBar);
-        //slider.getProgress();
-
+        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", slider.getProgress()));
+        finish();
     }
 
     //sends user back to main menu when quit button is clicked
     public void onClickQuit(View v){
-        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", 0));
+        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", -1));
         finish();
     }
 }

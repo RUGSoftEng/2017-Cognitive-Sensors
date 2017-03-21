@@ -31,25 +31,21 @@ public class InGameMultiQuestion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiple_choice_question_layout);
-
-        populateCheckBoxes();
         TextView questionDisplay = (TextView)findViewById(R.id.textViewForQuestion);
-
-        //This uses a custom typeface for the number displayed
-        initialiseTypefaces();
-
+        questionID = -1;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             questionID = extras.getInt("questionID");
             String[] questions = getResources().getStringArray(R.array.Questions);
             questionDisplay.setText(questions[questionID]);
+
         }
         else{
             questionDisplay.setText("No Question to Display");
         }
-
-        //TODO:: display appropriate responses for that question ID
-        //TODO:: return answer to the numberGame and save it
+        populateCheckBoxes();
+        //This uses a custom typeface for the number displayed
+        initialiseTypefaces();
     }
 
     /**
@@ -71,7 +67,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
     }
 
     /**
-     * Adds all checkboxes to array.
+     * Adds all checkboxes to array and sets the answer texts
      */
     public void populateCheckBoxes() {
 
@@ -88,60 +84,54 @@ public class InGameMultiQuestion extends AppCompatActivity {
         CheckBox cb5 = (CheckBox) findViewById(R.id.checkBox5);
         checkBoxes.add(cb5);
         CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
-        checkBoxes.add(cb6);
-
-
-    }
-
-    /*
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_pirates:
-                if (checked)
-                    // Pirates are the best
-                    break;
-            case R.id.radio_ninjas:
-                if (checked)
-                    // Ninjas rule
-                    break;
+        String[] answers;
+        //TODO:: find a better way of checking which question it is and how many answers are required
+        if(questionID != -1) {
+            if (questionID == 0) {
+                checkBoxes.add(cb6);
+                answers = getResources().getStringArray(R.array.Q1Answers);
+            } else {
+                cb6.setVisibility(View.INVISIBLE);
+                answers = getResources().getStringArray(R.array.Q2Answers);
+            }
+            int i = 0;
+            for (CheckBox cb : checkBoxes) {
+                cb.setText(answers[i]);
+                ++i;
+            }
         }
-    }*/
-
+    }
 
     /**
      * Toggles any other checkboxes off when any checkbox is checked.
      */
     public void onClickCheckBox (View v) {
-
         for (CheckBox cb : checkBoxes) {
             if (!cb.equals((CheckBox) v) && cb.isChecked()) {
                 cb.toggle();
             }
         }
-
     }
 
     /**
      * Finds which answer is selected and saves this answer.
      */
     public void onClickConfirm(View v) {
-
+        int i = 0;
         for (CheckBox cb : checkBoxes) {
             if (cb.isChecked()) {
-                //insert question answer saving action;
+                setResult(Activity.RESULT_OK, new Intent().putExtra("choice", i));
+                finish();
                 break;
             }
+            ++i;
         }
-
     }
-
-    //sends user back to main menu when quit button is clicked
+    /**
+     * Sends user back to main menu when quit button is clicked
+     */
     public void onClickQuit(View v){
-        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", 0));
+        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", -1));
         finish();
     }
 }

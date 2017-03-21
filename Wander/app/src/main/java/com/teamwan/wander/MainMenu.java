@@ -70,9 +70,8 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
-
         if(!sharedPref.getBoolean("Consent?", false)){
             initialiseICA();
             editor.putBoolean("Consent?", true);
