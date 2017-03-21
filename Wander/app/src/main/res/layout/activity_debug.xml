@@ -24,14 +24,15 @@
         android:id="@+id/button" />
 
     <Button
-        android:text="Test PlaceHolder"
+        android:text="Test Slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button3"
         android:layout_alignLeft="@+id/button3"
         android:layout_alignStart="@+id/button3"
         android:layout_marginTop="43dp"
-        android:id="@+id/button4" />
+        android:id="@+id/button4"
+        android:onClick="onClickSlider" />
 
     <Button
         android:text="Test Data send"
