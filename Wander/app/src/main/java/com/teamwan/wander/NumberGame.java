@@ -10,6 +10,7 @@
 
 package com.teamwan.wander;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,7 +98,9 @@ public class NumberGame extends AppCompatActivity {
         failCounter = 0;
 
         questionIntervals = new ArrayList<QuestionInfo>();
-        questionIntervals.add(new QuestionInfo(0, 10));//TODO:: add all questions here using this example of (questionType, QuestionOrder) Constructor
+            questionIntervals.add(new QuestionInfo(0, 5));
+            questionIntervals.add(new QuestionInfo(0, 10));
+            questionIntervals.add(new QuestionInfo(1, 15));
 
         numberDisplay = (TextView) findViewById(R.id.numberDisplay);
         rn = new Random(System.nanoTime());
@@ -175,13 +178,16 @@ public class NumberGame extends AppCompatActivity {
 
         if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID).getQuestionOrder()){
             Intent intent;
-            if(questionIntervals.get(questionID).getQuestionType() == 1)
+            if(questionIntervals.get(questionID).getQuestionType() == 1) {
                 intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
-            else
+                intent.putExtra("questionID", questionID);
+                startActivityForResult(intent, 1);
+            }
+            else{
                 intent = new Intent(getApplicationContext(), InGameMultiQuestion.class);
-
-            intent.putExtra("questionID", questionID);
-            startActivityForResult(intent, 1);
+                intent.putExtra("questionID", questionID);
+                startActivityForResult(intent, 0);
+            }
             ++questionID;
         }
         else
@@ -193,6 +199,14 @@ public class NumberGame extends AppCompatActivity {
      * has completed.  In this case it simply generates a new number to continue the game.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {//If type
+            int choice = data.getIntExtra("choice", -1);
+            saveLastNumberData(choice);
+        }
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            int slider = data.getIntExtra("choice", -1);
+            saveLastNumberData(slider);
+        }
         genNewNumber();
     }
 
@@ -229,6 +243,25 @@ public class NumberGame extends AppCompatActivity {
      * It only does this if the "consent?" value in the preferences is true.
      */
     private void saveLastNumberData() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        if (sharedPref.getBoolean("Consent?", false)) {
+            boolean goodNum = (currentNum != unClickableNum);
+            //TODO:: save needed values here
+            /*
+                These values are available and need to be stored for the session for each number clicked:
+                    -timeLastClicked == system time at last number click
+                    -timeNumberDisplayed == last time a number was displayed
+                    -successCounter == successful clicks
+                    -failCounter == unsuccessful clicks
+                    -goodNum == TRUE if last displayed number was a clickable one, else FALSE
+             */
+        }
+    }
+    /**
+     * In this version save the question result with a reference
+     * to the previous numberData
+     */
+    private void saveLastNumberData(int questionResult) {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
