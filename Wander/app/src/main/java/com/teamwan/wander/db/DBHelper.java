@@ -130,8 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(NG_COLUMN_RESPONSETIME, ng.getResponseTime());
         contentValues.put(NG_COLUMN_ISGO, ng.isGo());
         contentValues.put(NG_COLUMN_CORRECT, ng.isCorrect());
-        //TODO Find out why it says that the NumberGuesses table doesnt have a Number column
-//        contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
+        contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
         db.insert(NG_TABLE_NAME, null, contentValues);
         return true;
     }
