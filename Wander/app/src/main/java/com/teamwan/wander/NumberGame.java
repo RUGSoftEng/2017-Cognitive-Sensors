@@ -19,6 +19,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.teamwan.wander.db.NumberGuess;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,11 +65,7 @@ public class NumberGame extends AppCompatActivity {
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd,MMMM,YYYY hh,mm,a");
-        String strDate = sdf.format(c.getTime());
-
-        gs = new GameSession(strDate,"numberGame");
+        gs = new GameSession(System.currentTimeMillis(),"numberGame");
         runGame();//setup the game values
 
         //This handler checks if the number has been successfully interacted with each delay period
@@ -82,8 +81,8 @@ public class NumberGame extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
-        super.onDestroy();
         saveGameSession();
+        super.onDestroy();
     }
 
     //This function initializes the objects needed to run the game
@@ -188,7 +187,11 @@ public class NumberGame extends AppCompatActivity {
     }
 
     public void saveGameSession(){
+        //TODO remove toasts
+        Toast.makeText(this, "Starting saving data", Toast.LENGTH_SHORT).show();
         gs.save(this);
+        //TODO remove toasts
+        Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
     }
 
 }

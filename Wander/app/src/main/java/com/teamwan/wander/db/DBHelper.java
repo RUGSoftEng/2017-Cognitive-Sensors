@@ -1,11 +1,20 @@
-package com.teamwan.wander;
+package com.teamwan.wander.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.teamwan.wander.GameSession;
+import com.teamwan.wander.db.NumberGuess;
+
+import com.google.gson.*;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 //http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
@@ -47,28 +56,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private static final String CREATE_TABLE_GS = "CREATE TABLE " + GS_TABLE_NAME + "(" +
-            GS_COLUMN_GSID + " INTEGER PRIMARY KEY AUNTOINCREMENT," +
+            GS_COLUMN_GSID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             GS_COLUMN_PLAYERID + " INTEGER," +
-            GS_COLUMN_TIME + " TEXT," +
+            GS_COLUMN_TIME + " INTEGER," +
             GS_COLUMN_GAMETYPE + " TEXT" + ")";
 
     private static final String CREATE_TABLE_NG = "CREATE TABLE " + NG_TABLE_NAME + "(" +
-            NG_COLUMN_NGID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            NG_COLUMN_GSID + "TEXT, " +
-            NG_COLUMN_TIME + " TEXT,"+
-            NG_COLUMN_RESPONSETIME + " TEXT," +
-            NG_COLUMN_ISGO+ " BOOLEAN,"+
-            NG_COLUMN_CORRECT+" BOOLEAN,"+
-            NG_COLUMN_NUMBER + "INTEGER" +")";
+            NG_COLUMN_NGID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            NG_COLUMN_GSID + " TEXT," +
+            NG_COLUMN_TIME + " INTEGER,"+
+            NG_COLUMN_RESPONSETIME + " INTEGER," +
+            NG_COLUMN_ISGO + " BOOLEAN,"+
+            NG_COLUMN_CORRECT + " BOOLEAN,"+
+            NG_COLUMN_NUMBER + " INTEGER" +")";
 
     private static final String CREATE_TABLE_Q = "CREATE TABLE " + Q_TABLE_NAME + "(" +
-            Q_COLUMN_QID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            Q_COLUMN_QUESTION + " TEXT," + Q_COLUMN_TYPE + " TEXT," +
+            Q_COLUMN_QID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            Q_COLUMN_QUESTION + " TEXT," +
+            Q_COLUMN_TYPE + " TEXT," +
             Q_COLUMN_MCOPTIONS + " TEXT" + ")";
 
     private static final String CREATE_TABLE_QA = "CREATE TABLE " + QA_TABLE_NAME + "(" +
-            QA_COLUMN_GSID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            QA_COLUMN_TIME + " TEXT," + QA_COLUMN_ANSWER + " INTEGER," +
+            QA_COLUMN_GSID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            QA_COLUMN_TIME + " INTEGER," +
+            QA_COLUMN_ANSWER + " INTEGER," +
             QA_COLUMN_QID + " INTEGER" + ")";
 
     @Override
@@ -95,45 +106,74 @@ public class DBHelper extends SQLiteOpenHelper {
         return getReadableDatabase();
     }
 
-    public void closeDB(SQLiteDatabase db){
-        db.close();
+    public void closeDB(){this.close();
     }
 
-    public boolean insertGameSession(int playerId, String time, String gameType) {
+    public boolean insertGameSession(GameSession gs) {
+        Gson gson = new Gson();
+        String json = gson.toJson(gs);
+        Log.i("GSON_TEST", "Printing JSON of GameSession");
+        Log.i("GSON_TEST", json);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GS_COLUMN_PLAYERID, playerId);
-        contentValues.put(GS_COLUMN_TIME, time);
-        contentValues.put(GS_COLUMN_GAMETYPE, gameType);
+        contentValues.put(GS_COLUMN_PLAYERID, gs.getPlayerId());
+        contentValues.put(GS_COLUMN_TIME, gs.getTime());
+        contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
         db.insert(GS_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public boolean insertNumberGuess(int playerId, String time, String gameType) {
+    public boolean insertNumberGuess(NumberGuess ng) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GS_COLUMN_PLAYERID, playerId);
-        contentValues.put(GS_COLUMN_TIME, time);
-        contentValues.put(GS_COLUMN_GAMETYPE, gameType);
-        db.insert(GS_TABLE_NAME, null, contentValues);
+        contentValues.put(NG_COLUMN_TIME, ng.getTime());
+        contentValues.put(NG_COLUMN_RESPONSETIME, ng.getResponseTime());
+        contentValues.put(NG_COLUMN_ISGO, ng.isGo());
+        contentValues.put(NG_COLUMN_CORRECT, ng.isCorrect());
+        //TODO Find out why it says that the NumberGuesses table doesnt have a Number column
+//        contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
+        db.insert(NG_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public Cursor getData(int id) {
+    public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_GSID +" = " + id + "", null);
-        return res;
+        ArrayList<GameSession> gameSessions = new ArrayList<GameSession>();
+
+        Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);
+
+        if(res.moveToFirst()){
+            do{
+                GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
+                gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
+                gs.setPlayerId(res.getInt(res.getColumnIndex(GS_COLUMN_PLAYERID)));
+
+                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + "", null);
+                if(ngs.moveToFirst()){
+                    do {
+                        NumberGuess ng = new NumberGuess(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_NUMBER)), ngs.getInt(ngs.getColumnIndex(NG_COLUMN_ISGO))!=0, ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
+                        ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
+                        ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
+
+                        gs.addNumberGuess(ng);
+                    }while (ngs.moveToNext());
+                }
+                gameSessions.add(gs);
+            }while (res.moveToNext());
+        }
+
+        return gameSessions;
     }
 
-    public boolean updateGameSession(int playerId, String time, String gameType) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(GS_COLUMN_PLAYERID, playerId);
-        contentValues.put(GS_COLUMN_TIME, time);
-        contentValues.put(GS_COLUMN_GAMETYPE, gameType);
-        db.update(GS_TABLE_NAME, contentValues, GS_COLUMN_GSID +" = ? ", new String[]{GS_COLUMN_GSID});
-        return true;
-    }
+//    public boolean updateGameSession(int playerId, Long time, String gameType) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(GS_COLUMN_PLAYERID, playerId);
+//        contentValues.put(GS_COLUMN_TIME, time);
+//        contentValues.put(GS_COLUMN_GAMETYPE, gameType);
+//        db.update(GS_TABLE_NAME, contentValues, GS_COLUMN_GSID +" = ? ", new String[]{GS_COLUMN_GSID});
+//        return true;
+//    }
 
 //    public Integer deleteGameSession(Integer id) {
 //        SQLiteDatabase db = this.getWritableDatabase();

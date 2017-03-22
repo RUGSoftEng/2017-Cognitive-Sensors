@@ -1,4 +1,4 @@
-package com.teamwan.wander;
+package com.teamwan.wander.db;
 
 public class NumberGuess {
 
