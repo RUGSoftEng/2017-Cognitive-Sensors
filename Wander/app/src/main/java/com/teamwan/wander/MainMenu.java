@@ -69,9 +69,10 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
-        if(sharedPref.getBoolean("Consent?", false)){
+        System.out.println(sharedPref.getBoolean("Consent?", false));
+        if(!sharedPref.getBoolean("Consent?", false)){
             initialiseICA();
         }
         if(!sharedPref.getBoolean("Setup?", false)){
@@ -79,6 +80,7 @@ public class MainMenu extends AppCompatActivity {
             editor.putBoolean("Setup?", true);
         }
         editor.commit();
+        System.out.println(sharedPref.getBoolean("Consent?", false));
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
@@ -191,7 +193,7 @@ public class MainMenu extends AppCompatActivity {
      * Method for accepting/rejecting ICA. Returns boolean representing whether consent is given.
      */
     public void onClickICAAcceptReject(View v) {
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         closeICA();
 

@@ -175,10 +175,10 @@ public class Options extends AppCompatActivity {
     }
 
     private void initialiseConsentButton() {
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
 
-        if (sharedPref.getBoolean("Consent?", false)) {
+        if (!sharedPref.getBoolean("Consent?", false)) {
             consentButton.setText(R.string.ConsentNotGiven);
             consentButton.setClickable(false);
         } else {
@@ -187,7 +187,7 @@ public class Options extends AppCompatActivity {
     }
 
     public void onClickRevoke(View v) {
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
 

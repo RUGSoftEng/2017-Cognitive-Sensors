@@ -242,7 +242,7 @@ public class NumberGame extends AppCompatActivity {
      * It only does this if the "consent?" value in the preferences is true.
      */
     private void saveLastNumberData() {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
             //TODO:: save needed values here
