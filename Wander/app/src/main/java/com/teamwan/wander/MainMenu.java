@@ -1,3 +1,13 @@
+/**
+ *  This class is the main activity for the application.
+ *  It handles the main menu and starts other activities
+ *  to actually play the game.
+ *
+ * @author  Ashton Spina
+ * @version 1.1
+ * @since   2017-03-20
+ */
+
 package com.teamwan.wander;
 
 import android.app.AlarmManager;
@@ -9,15 +19,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
-
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -46,6 +54,13 @@ public class MainMenu extends AppCompatActivity {
     private int countClicks;
     private PendingIntent pendingIntent;
 
+    /**
+     * This method is the constructor for the game.
+     * It checks that a consent agreement has been agree to
+     * and that the alarm has been created to send notifications.
+     * It also has a countClicks variable to enable deBug.  Appearances
+     * are set here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.animator.fade_in, 0);
@@ -54,12 +69,18 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        //if this is the first time the app has started setup the notifications, else don't do anything
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false))
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        System.out.println(sharedPref.getBoolean("Consent?", false));
+        if(!sharedPref.getBoolean("Consent?", false)){
             initialiseICA();
+        }
+        if(!sharedPref.getBoolean("Setup?", false)){
             setUpNotifications();
-
+            editor.putBoolean("Setup?", true);
+        }
+        editor.commit();
+        System.out.println(sharedPref.getBoolean("Consent?", false));
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
@@ -75,7 +96,11 @@ public class MainMenu extends AppCompatActivity {
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         countClicks = 0;
     }
-    //click the copyright image 3 times to start the debug menu
+    /**
+     * This is activated when the copyright imageview is clicked.
+     * After three clicks the debug menu is opened for debugging
+     * the application.
+     */
     public void onClickDebug(View v){
         ++countClicks;
         if(countClicks >= 3)
@@ -85,16 +110,60 @@ public class MainMenu extends AppCompatActivity {
             countClicks = 0;
         }
     }
+
+    /**
+     * This method opens an options menu for tweaking settings in the application.
+     */
     public void onClickOptions(View v){
-        //TODO:: switch out info fragment for options fragment
+        Intent intent = new Intent(MainMenu.this, Options.class);
+        MainMenu.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 
+    /**
+     * Opens info overlay.
+     */
     public void onClickInfo(View v){
-        //TODO:: switch out options fragment for info fragment
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView close = (TextView)findViewById(R.id.InfoClose);
+        body.setMovementMethod(new ScrollingMovementMethod());
+        title.setText(R.string.InfoTitle);
+        body.setText(R.string.InfoBody);
+        close.setText(R.string.InfoClose);
+        overlay.setVisibility(View.VISIBLE);
+        contentBox.setVisibility(View.VISIBLE);
+        title.setVisibility(View.VISIBLE);
+        body.setVisibility(View.VISIBLE);
+        close.setVisibility(View.VISIBLE);
+        Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        title.setTypeface(tf);
+        body.setTypeface(tf);
+        close.setTypeface(tf);
     }
 
-    //this sets up the notification to fire at the time set in the calendar
-    //TODO:: test that this actually works
+    /**
+     * Closes info overlay.
+     */
+    public void onClickCloseInfo(View v) {
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView close = (TextView)findViewById(R.id.InfoClose);
+        overlay.setVisibility(View.INVISIBLE);
+        contentBox.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
+        body.setVisibility(View.INVISIBLE);
+        close.setVisibility(View.INVISIBLE);
+    }
+
+    //TODO:: test that this actually works and de-hardcode it to work with the Options.
+    /**
+     * This method sets a daily alarm for a certain time
+     */
     public void setUpNotifications(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -103,11 +172,8 @@ public class MainMenu extends AppCompatActivity {
         calendar.set(Calendar.SECOND, 1);
 
         Intent alarmIntent = new Intent(this, MyReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
@@ -115,13 +181,15 @@ public class MainMenu extends AppCompatActivity {
      * Method for displaying ICA overlay and content.
      */
     public void initialiseICA() {
-        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
-        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
 
-        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
-        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+        TextView quit = (TextView)findViewById(R.id.ICAReject);
+
+        body.setMovementMethod(new ScrollingMovementMethod());
 
         overlay.setVisibility(View.VISIBLE);
         contentBox.setVisibility(View.VISIBLE);
@@ -130,27 +198,25 @@ public class MainMenu extends AppCompatActivity {
         accept.setVisibility(View.VISIBLE);
         quit.setVisibility(View.VISIBLE);
 
-
-
         Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
         body.setTypeface(tf);
         accept.setTypeface(tf);
         quit.setTypeface(tf);
-
     }
 
+    //todo look into refactoring overlay classes
     /**
-     * Method for accepting ICA and closing overlay.
+     * Method for closing ICA overlay.
      */
-    public void onClickICAAccept(View v) {
-        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
-        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+    public void closeICA() {
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
 
-        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
-        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+        TextView quit = (TextView)findViewById(R.id.ICAReject);
 
         overlay.setVisibility(View.INVISIBLE);
         contentBox.setVisibility(View.INVISIBLE);
@@ -158,14 +224,22 @@ public class MainMenu extends AppCompatActivity {
         body.setVisibility(View.INVISIBLE);
         accept.setVisibility(View.INVISIBLE);
         quit.setVisibility(View.INVISIBLE);
-
     }
 
     /**
-     * Method for closing app when quit selected at ICA overlay.
-     * @param v
+     * Method for accepting/rejecting ICA. Sets consent true or false depending on view clicked.
      */
-    public void onClickICAQuit(View v) {
-        finish();
+    public void onClickICAAcceptReject(View v) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        closeICA();
+
+        if (v.getId()==R.id.ICAAccept) {
+            editor.putBoolean("Consent?", true);
+        } else{
+            editor.putBoolean("Consent?", false);
+        }
+        editor.commit();
     }
+
 }

@@ -20,4 +20,13 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="WanderSeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+
+    </style>
+
+    <style name="WanderCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/UncheckedBox</item>
+        <item name="colorControlActivated">@color/positiveResult</item>
+    </style>
+
 </resources>

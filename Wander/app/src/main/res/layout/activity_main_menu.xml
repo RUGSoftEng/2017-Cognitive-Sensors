@@ -22,7 +22,7 @@
         android:weightSum="1"
         android:background="@color/black_overlay"
         android:gravity="center_vertical"
-        android:id="@+id/ICAOverlay">
+        android:id="@+id/Overlay">
 
         <LinearLayout
             android:orientation="vertical"
@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/background_light"
             android:layout_margin="20dp"
-            android:id="@+id/ICAContentBox"
+            android:id="@+id/ContentBox"
             android:visibility="invisible"
             android:clickable="true">
 
@@ -38,7 +38,7 @@
                 android:text="@string/ICATitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ICATitle"
+                android:id="@+id/OverlayTitle"
                 android:translationZ="3dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
@@ -51,14 +51,17 @@
             <TextView
                 android:text="@string/ICABody"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="280dp"
                 android:id="@+id/ICABody"
-                android:layout_marginTop="40dp"
-                android:layout_margin="30dp"
+                android:layout_marginTop="30dp"
                 android:translationZ="3dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:scrollbars="vertical"
+                android:minLines="15"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
             <TextView
                 android:text="@string/ICAAccept"
@@ -73,13 +76,14 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:visibility="invisible"
-                android:onClick="onClickICAAccept" />
+                android:onClick="onClickICAAcceptReject"
+                android:maxLines="25" />
 
             <TextView
-                android:text="@string/ICAQuit"
+                android:text="@string/Reject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ICAQuit"
+                android:id="@+id/ICAReject"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
                 android:textSize="@dimen/ICAARSize"
@@ -87,7 +91,18 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:visibility="invisible"
-                android:onClick="onClickICAQuit" />
+                android:onClick="onClickICAAcceptReject" />
+
+            <TextView
+                android:text="@string/InfoClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/InfoClose"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="invisible"
+                android:textColor="@color/colorPrimaryDark"
+                android:onClick="onClickCloseInfo" />
         </LinearLayout>
     </LinearLayout>
 
