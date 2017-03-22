@@ -110,6 +110,7 @@ public class MainMenu extends AppCompatActivity {
             countClicks = 0;
         }
     }
+
     /**
      * This method opens an options menu for tweaking settings in the application.
      */
@@ -120,12 +121,44 @@ public class MainMenu extends AppCompatActivity {
     }
 
     /**
-     *
+     * Opens info overlay.
      */
     public void onClickInfo(View v){
-        //TODO:: switch out info text for info text for the current game that has been selected to play
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView close = (TextView)findViewById(R.id.InfoClose);
+        body.setMovementMethod(new ScrollingMovementMethod());
+        title.setText(R.string.InfoTitle);
+        body.setText(R.string.InfoBody);
+        close.setText(R.string.InfoClose);
+        overlay.setVisibility(View.VISIBLE);
+        contentBox.setVisibility(View.VISIBLE);
+        title.setVisibility(View.VISIBLE);
+        body.setVisibility(View.VISIBLE);
+        close.setVisibility(View.VISIBLE);
+        Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        title.setTypeface(tf);
+        body.setTypeface(tf);
+        close.setTypeface(tf);
     }
 
+    /**
+     * Closes info overlay.
+     */
+    public void onClickCloseInfo(View v) {
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
+        TextView body = (TextView)findViewById(R.id.ICABody);
+        TextView close = (TextView)findViewById(R.id.InfoClose);
+        overlay.setVisibility(View.INVISIBLE);
+        contentBox.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
+        body.setVisibility(View.INVISIBLE);
+        close.setVisibility(View.INVISIBLE);
+    }
 
     //TODO:: test that this actually works and de-hardcode it to work with the Options.
     /**
@@ -148,13 +181,13 @@ public class MainMenu extends AppCompatActivity {
      * Method for displaying ICA overlay and content.
      */
     public void initialiseICA() {
-        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
-        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
 
-        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
-        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+        TextView quit = (TextView)findViewById(R.id.ICAReject);
 
         body.setMovementMethod(new ScrollingMovementMethod());
 
@@ -172,14 +205,18 @@ public class MainMenu extends AppCompatActivity {
         quit.setTypeface(tf);
     }
 
+    //todo look into refactoring overlay classes
+    /**
+     * Method for closing ICA overlay.
+     */
     public void closeICA() {
-        LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
-        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
+        LinearLayout overlay = (LinearLayout)findViewById(R.id.Overlay);
+        LinearLayout contentBox = (LinearLayout)findViewById(R.id.ContentBox);
 
-        TextView title = (TextView)findViewById(R.id.ICATitle);
+        TextView title = (TextView)findViewById(R.id.OverlayTitle);
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
-        TextView quit = (TextView)findViewById(R.id.ICAQuit);
+        TextView quit = (TextView)findViewById(R.id.ICAReject);
 
         overlay.setVisibility(View.INVISIBLE);
         contentBox.setVisibility(View.INVISIBLE);
@@ -190,7 +227,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     /**
-     * Method for accepting/rejecting ICA. Returns boolean representing whether consent is given.
+     * Method for accepting/rejecting ICA. Sets consent true or false depending on view clicked.
      */
     public void onClickICAAcceptReject(View v) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

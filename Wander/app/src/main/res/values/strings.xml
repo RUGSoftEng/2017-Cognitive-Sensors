@@ -15,7 +15,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="OptionsTitle">OPTIONS</string>
-    <string name="OptionNotification" >Notification Frequency</string>
+    <string name="OptionNotification">Notification Frequency</string>
     <string name="OptionsNever">Never</string>
     <string name="OptionsDaily">Daily</string>
     <string name="OptionsWeekly">Weekly</string>
@@ -28,6 +28,13 @@
     <string name="ConsentNotGiven">Consent Not Given</string>
     <string name="ConsentRevoked">Consent Revoked</string>
     <string name="Reject">Reject</string>
+    <string name="InfoTitle">INFO</string>
+    <string name="InfoBody">Wander is a cognitive sensing app created by Team Wan, a team of Computing
+        Science students at the University of Groningen in the Netherlands. The application was created
+        in partnership with Marieke van Vugt, an Assistant Professor in the Cognitive Modelling Group at
+        the University of Groningen. \n\n
+        [Any Extra Info Here]</string>
+    <string name="InfoClose">CLOSE</string>
 
     <string-array name="Questions">
         <item>What were you just thinking about?</item>
@@ -51,6 +58,8 @@
         <item>Easy</item>
         <item>Very easy</item>
     </string-array>
+
+    <string name="title_activity_info">InfoActivity</string>
 
 
 </resources>
