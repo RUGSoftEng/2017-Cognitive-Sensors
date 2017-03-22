@@ -11,6 +11,8 @@ package com.teamwan.wander;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+//import android.icu.text.SimpleDateFormat;
+//import android.icu.util.Calendar;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,11 +20,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import static android.R.attr.textColor;
 import static java.lang.Math.abs;
 
 public class NumberGame extends AppCompatActivity {
@@ -41,6 +42,8 @@ public class NumberGame extends AppCompatActivity {
     private int successCounter;
     private int failCounter;
     private RelativeLayout rl;
+    private boolean lastCorrect;
+    private  GameSession gs;
 
 
     @Override
@@ -59,6 +62,11 @@ public class NumberGame extends AppCompatActivity {
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd,MMMM,YYYY hh,mm,a");
+        String strDate = sdf.format(c.getTime());
+
+        gs = new GameSession(strDate,"numberGame");
         runGame();//setup the game values
 
         //This handler checks if the number has been successfully interacted with each delay period
@@ -70,6 +78,12 @@ public class NumberGame extends AppCompatActivity {
                 handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));//adds a jitter in the next time check of a random value + or - jitter
             }
         }, delay);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        saveGameSession();
     }
 
     //This function initializes the objects needed to run the game
@@ -119,11 +133,15 @@ public class NumberGame extends AppCompatActivity {
 
     private void checkSuccess(){
         // if the number is the one that should not be clicked and they've not touched it for 3 seconds they are successful time can be changed to a set value
-        if(currentNum == unClickableNum && successValue == 0)
+        if(currentNum == unClickableNum && successValue == 0){
+            lastCorrect=true;
             ++successCounter;
+        }
         //number was not clicked when it should have been so it is a failure
-        else
+        else{
+            lastCorrect=false;
             ++failCounter;
+        }
         genNewNumber();
     }
 
@@ -158,8 +176,19 @@ public class NumberGame extends AppCompatActivity {
                 -failCounter == unsuccessful clicks
                 -goodNum == TRUE if last displayed number was a clickable one, else FALSE
          */
+        NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
+        if(timeLastClicked<timeNumberDisplayed){
+            ng.setResponseTime(0);
+        }else{
+            ng.setResponseTime(timeLastClicked-timeNumberDisplayed);
+        }
 
+        ng.setCorrect(lastCorrect);
+        gs.addNumberGuess(ng);
+    }
 
+    public void saveGameSession(){
+        gs.save(this);
     }
 
 }
