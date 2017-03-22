@@ -6,10 +6,8 @@
     <string name="gameTitle1">Digits</string>
     <string name="ICATitle">Informed Consent Agreement</string>
     <string name="ICABody">I hereby consent to be a participant in the research performed by Dr. Marieke van Vugt. I have agreed to take part in the study entitled "thoughts in daily life" and I understand that my participation is entirely voluntary. I understand that my responses will be kept strictly confidential and anonymous. I have the option to withdraw from this study at any time, without penalty, and I also have the right to request that my responses not be used. The goal of this study is to better understand how cognitive function changes in the course of daily life.
-
-Participation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
-
-My responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
+                           \n\nParticipation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
+                           \n\nMy responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
     <string name="ICAAccept">Accept</string>
     <string name="ICAQuit">Quit</string>
 
@@ -25,6 +23,11 @@ My responses will be treated confidentially and my anonymity will be ensured. He
     <string name="Positive">Positive</string>
     <string name="Negative">Negative</string>
     <string name="SliderQuestion">What was the valence of your recent thought?</string>
+    <string name="RevokeConsent">Revoke Data Gathering Consent</string>
+    <string name="TapToRevoke">Tap Here To Revoke Consent</string>
+    <string name="ConsentNotGiven">Consent Not Given</string>
+    <string name="ConsentRevoked">Consent Revoked</string>
+    <string name="Reject">Reject</string>
 
     <string-array name="Questions">
         <item>What were you just thinking about?</item>

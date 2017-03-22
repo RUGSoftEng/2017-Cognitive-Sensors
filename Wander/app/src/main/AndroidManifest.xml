@@ -34,7 +34,7 @@
             android:exported="false"></service>
 
         <activity
-            android:name=".OptionsActivity"
+            android:name=".Options"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_options"
             android:theme="@style/FullscreenTheme"></activity>

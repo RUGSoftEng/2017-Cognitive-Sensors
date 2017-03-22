@@ -19,12 +19,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -70,11 +69,10 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        if(!sharedPref.getBoolean("Consent?", false)){
+        if(sharedPref.getBoolean("Consent?", false)){
             initialiseICA();
-            editor.putBoolean("Consent?", true);
         }
         if(!sharedPref.getBoolean("Setup?", false)){
             setUpNotifications();
@@ -114,7 +112,7 @@ public class MainMenu extends AppCompatActivity {
      * This method opens an options menu for tweaking settings in the application.
      */
     public void onClickOptions(View v){
-        Intent intent = new Intent(MainMenu.this, OptionsActivity.class);
+        Intent intent = new Intent(MainMenu.this, Options.class);
         MainMenu.this.startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
@@ -156,6 +154,8 @@ public class MainMenu extends AppCompatActivity {
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
         TextView quit = (TextView)findViewById(R.id.ICAQuit);
 
+        body.setMovementMethod(new ScrollingMovementMethod());
+
         overlay.setVisibility(View.VISIBLE);
         contentBox.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
@@ -170,10 +170,7 @@ public class MainMenu extends AppCompatActivity {
         quit.setTypeface(tf);
     }
 
-    /**
-     * Method for accepting ICA and closing overlay.
-     */
-    public void onClickICAAccept(View v) {
+    public void closeICA() {
         LinearLayout overlay = (LinearLayout)findViewById(R.id.ICAOverlay);
         LinearLayout contentBox = (LinearLayout)findViewById(R.id.ICAContentBox);
 
@@ -188,14 +185,22 @@ public class MainMenu extends AppCompatActivity {
         body.setVisibility(View.INVISIBLE);
         accept.setVisibility(View.INVISIBLE);
         quit.setVisibility(View.INVISIBLE);
-        //TODO:: move the closing of the ICA to another function and set acceptance of ICA Based on button clicked.
     }
 
     /**
-     * Method for closing app when quit selected at ICA overlay.
-     * @param v
+     * Method for accepting/rejecting ICA. Returns boolean representing whether consent is given.
      */
-    public void onClickICAQuit(View v) {
-        finish();
+    public void onClickICAAcceptReject(View v) {
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        closeICA();
+
+        if (v.getId()==R.id.ICAAccept) {
+            editor.putBoolean("Consent?", true);
+        } else{
+            editor.putBoolean("Consent?", false);
+        }
+        editor.commit();
     }
+
 }

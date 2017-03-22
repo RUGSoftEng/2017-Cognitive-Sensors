@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -90,6 +91,10 @@ public class InGameMultiQuestion extends AppCompatActivity {
             if (questionID == 0) {
                 checkBoxes.add(cb6);
                 answers = getResources().getStringArray(R.array.Q1Answers);
+                int pad = (int) (0.5f * 8 * getResources().getDisplayMetrics().density);
+                    for (CheckBox cb : checkBoxes) {
+                        cb.setPadding(0,pad,0,pad);
+                    }
             } else {
                 cb6.setVisibility(View.INVISIBLE);
                 answers = getResources().getStringArray(R.array.Q2Answers);

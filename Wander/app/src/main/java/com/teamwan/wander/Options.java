@@ -12,7 +12,9 @@
 package com.teamwan.wander;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +27,7 @@ import android.widget.TextView;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class OptionsActivity extends AppCompatActivity {
+public class Options extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -96,6 +98,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         mVisible = true;
 
+        initialiseConsentButton();
         setTypefaces();
 
     }
@@ -153,12 +156,13 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void setTypefaces() {
-
         TextView title = (TextView) findViewById(R.id.OptionsTitle);
-        TextView notif = (TextView) findViewById(R.id.NotifFreq);
+        TextView notif = (TextView) findViewById(R.id.NotifFreqHead);
         TextView never = (TextView) findViewById(R.id.Never);
         TextView daily = (TextView) findViewById(R.id.Daily);
         TextView weekly = (TextView) findViewById(R.id.Weekly);
+        TextView consent = (TextView) findViewById(R.id.ConsentHead);
+        TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
 
         Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
@@ -166,5 +170,32 @@ public class OptionsActivity extends AppCompatActivity {
         never.setTypeface(tf);
         daily.setTypeface(tf);
         weekly.setTypeface(tf);
+        consent.setTypeface(tf);
+        consentButton.setTypeface(tf);
+    }
+
+    private void initialiseConsentButton() {
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
+
+        if (sharedPref.getBoolean("Consent?", false)) {
+            consentButton.setText(R.string.ConsentNotGiven);
+            consentButton.setClickable(false);
+        } else {
+            consentButton.setText(R.string.TapToRevoke);
+        }
+    }
+
+    public void onClickRevoke(View v) {
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
+
+        editor.putBoolean("Consent?", false);
+        editor.commit();
+        consentButton.setText(R.string.ConsentRevoked);
+        consentButton.setTextColor(getResources().getColor(R.color.positiveResult));
+        consentButton.setClickable(false);
+
     }
 }

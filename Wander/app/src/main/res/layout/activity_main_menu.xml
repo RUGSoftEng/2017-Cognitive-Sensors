@@ -54,13 +54,14 @@
                 android:layout_height="280dp"
                 android:id="@+id/ICABody"
                 android:layout_marginTop="30dp"
-                android:layout_margin="20dp"
                 android:translationZ="3dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
                 android:visibility="invisible"
                 android:scrollbars="vertical"
-                android:minLines="15" />
+                android:minLines="15"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
             <TextView
                 android:text="@string/ICAAccept"
@@ -75,11 +76,11 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:visibility="invisible"
-                android:onClick="onClickICAAccept"
+                android:onClick="onClickICAAcceptReject"
                 android:maxLines="25" />
 
             <TextView
-                android:text="@string/ICAQuit"
+                android:text="@string/Reject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/ICAQuit"
@@ -90,7 +91,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:visibility="invisible"
-                android:onClick="onClickICAQuit" />
+                android:onClick="onClickICAAcceptReject" />
         </LinearLayout>
     </LinearLayout>
 

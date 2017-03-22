@@ -58,14 +58,15 @@
             android:duplicateParentState="false"
             android:layout_gravity="top"
             android:layout_weight="1"
-            android:layout_height="80dp" />
+            android:layout_height="60dp" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginLeft="30dp">
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp">
 
             <CheckBox
                 android:text="CheckBox"
@@ -74,9 +75,11 @@
                 android:id="@+id/checkBox1"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
+                android:paddingLeft="20dp"
                 android:layout_gravity="top"
-                android:onClick="onClickCheckBox" />
+                android:onClick="onClickCheckBox"
+                android:textSize="14sp"
+                android:paddingRight="30dp" />
 
             <CheckBox
                 android:text="CheckBox"
@@ -86,8 +89,8 @@
                 android:layout_weight="0"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
-                android:onClick="onClickCheckBox" />
+                android:paddingLeft="20dp"
+                android:onClick="onClickCheckBox"/>
 
             <CheckBox
                 android:text="CheckBox"
@@ -97,7 +100,7 @@
                 android:layout_weight="0"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
+                android:paddingLeft="20dp"
                 android:onClick="onClickCheckBox" />
 
             <CheckBox
@@ -108,8 +111,8 @@
                 android:layout_weight="0"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
-                android:onClick="onClickCheckBox" />
+                android:paddingLeft="20dp"
+                android:onClick="onClickCheckBox"/>
 
             <CheckBox
                 android:text="CheckBox"
@@ -119,8 +122,8 @@
                 android:layout_weight="0"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
-                android:onClick="onClickCheckBox" />
+                android:paddingLeft="20dp"
+                android:onClick="onClickCheckBox"/>
 
             <CheckBox
                 android:text="CheckBox"
@@ -130,8 +133,8 @@
                 android:layout_weight="0"
                 android:textColor="@color/colorPrimaryDark"
                 android:theme="@style/WanderCheckBox"
-                android:paddingLeft="25dp"
-                android:onClick="onClickCheckBox" />
+                android:paddingLeft="20dp"
+                android:onClick="onClickCheckBox"/>
         </LinearLayout>
 
         <TextView
@@ -143,7 +146,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center"
             android:textSize="26sp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:onClick="onClickConfirm" />
 
     </LinearLayout>
