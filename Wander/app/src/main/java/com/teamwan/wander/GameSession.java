@@ -4,27 +4,17 @@ import android.content.Context;
 
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.NumberGuess;
+import com.teamwan.wander.db.QuestionAnswer;
 
 import java.util.ArrayList;
 
 public class GameSession{
 
-    private int gameSessionId;
-    private int playerId;
     private Long time;
     private String gameType;
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<NumberGuess>();
-    private ArrayList<String> questions = new ArrayList<String>();
-
-    public ArrayList<Integer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(ArrayList<Integer> answers) {
-        this.answers = answers;
-    }
-
-    private ArrayList<Integer> answers = new ArrayList<Integer>();
+    private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<>();
+    private int gameSessionId;
 
 
     public GameSession(Long time, String gameType) {
@@ -38,14 +28,6 @@ public class GameSession{
 
     public void setGameSessionId(int gameSessionId) {
         this.gameSessionId = gameSessionId;
-    }
-
-    public int getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
     }
 
     public Long getTime() {
@@ -76,22 +58,19 @@ public class GameSession{
         this.numberGuesses.add(ng);
     }
 
-    public ArrayList<String> getQuestions() {
-        return questions;
+    public ArrayList<QuestionAnswer> getQuestionAnswers() {
+        return questionAnswers;
     }
 
-    public void setQuestions(ArrayList<String> questions) {
-        this.questions = questions;
+    public void setQuestionAnswers(ArrayList<QuestionAnswer> questionAnswers) {
+        this.questionAnswers = questionAnswers;
     }
 
     public void save(Context context){
 
         DBHelper dbHelper = new DBHelper(context);
         dbHelper.insertGameSession(this);
-
-        for(NumberGuess ng: numberGuesses){
-            dbHelper.insertNumberGuess(ng);
-        }
+        dbHelper.insertNumberGuesses(this);
     }
 
 }

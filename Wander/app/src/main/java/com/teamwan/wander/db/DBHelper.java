@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.teamwan.wander.GameSession;
+import com.teamwan.wander.NumberGame;
 import com.teamwan.wander.db.NumberGuess;
 
 import com.google.gson.*;
@@ -105,7 +106,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GS_COLUMN_PLAYERID, gs.getPlayerId());
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
         db.insert(GS_TABLE_NAME, null, contentValues);
@@ -113,33 +113,35 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertNumberGuess(NumberGuess ng) {
+    public boolean insertNumberGuesses(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NG_COLUMN_TIME, ng.getTime());
-        contentValues.put(NG_COLUMN_RESPONSETIME, ng.getResponseTime());
-        contentValues.put(NG_COLUMN_ISGO, ng.isGo());
-        contentValues.put(NG_COLUMN_CORRECT, ng.isCorrect());
-        contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
-        db.insert(NG_TABLE_NAME, null, contentValues);
+        for(NumberGuess ng : gs.getNumberGuesses()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NG_COLUMN_GSID, gs.getGameSessionId());
+            contentValues.put(NG_COLUMN_TIME, ng.getTime());
+            contentValues.put(NG_COLUMN_RESPONSETIME, ng.getResponseTime());
+            contentValues.put(NG_COLUMN_ISGO, ng.isGo());
+            contentValues.put(NG_COLUMN_CORRECT, ng.isCorrect());
+            contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
+            db.insert(NG_TABLE_NAME, null, contentValues);
+        }
         db.close();
         return true;
     }
 
-    public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
+    public UploadObject getUploadObjectsAfter(Long lastTime){
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<GameSession> gameSessions = new ArrayList<GameSession>();
 
         Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);
+        ArrayList<GameSession> gameSessions = new ArrayList<GameSession>();
 
         if(res.moveToFirst()){
             do{
                 GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),
                                                  res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
-                gs.setPlayerId(res.getInt(res.getColumnIndex(GS_COLUMN_PLAYERID)));
 
-//                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + "", null);
+                //Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
                 Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
                 //DEBUG SQLiteQuery: select * from NumberGuesses where GameSessionId = 15
                 //DEBUG Above SQL statement returns an empty result, whereas the sql statement without the "+'where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + """ succesfully returns every numberguess.
@@ -151,7 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                                                     ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
                         ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
-
+                        Log.d("GAMESESSIONID", ""+ngs.getInt(ngs.getColumnIndex(NG_COLUMN_GSID)));
                         gs.addNumberGuess(ng);
                     }while (ngs.moveToNext());
                 }
@@ -159,7 +161,8 @@ public class DBHelper extends SQLiteOpenHelper {
             }while (res.moveToNext());
         }
         db.close();
-        return gameSessions;
+        UploadObject uploadObject = new UploadObject(-1, gameSessions);
+        return uploadObject;
     }
 
 //    public boolean updateGameSession(int playerId, Long time, String gameType) {

@@ -9,18 +9,28 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.teamwan.wander.GameSession;
-import com.teamwan.wander.R;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 //TODO Replace hardcoded strings by string.xml declaration
 public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
+    private static final String API_URL = "https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec";
     Context context;
 
-    protected void onPreExecute(){
-    }
+    protected void onPreExecute(){}
 
     @Override
     protected Void doInBackground(DBpars... params) {
@@ -34,14 +44,32 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         Long newTime = System.currentTimeMillis();
 
         DBHelper dbHelper= new DBHelper(this.context);
-        ArrayList<GameSession> gameSessions = dbHelper.getGameSessionsAfter(lastTime);
+        UploadObject uploadObject = dbHelper.getUploadObjectsAfter(lastTime);
 
         Log.i("GSON_TEST", "Printing JSON of GameSessions");
         Gson gson = new Gson();
-        String json = gson.toJson(gameSessions);
+        String json = gson.toJson(uploadObject);
         Log.i("GSON_TEST", json);
 
         //TODO: Make connection to server and upload the array
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(API_URL);
+
+        List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+        nvp.add(new BasicNameValuePair("data",json));
+
+        try {
+            post.setEntity(new UrlEncodedFormEntity(nvp));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpResponse response = client.execute(post);
+            Log.d("uploadResponse",response.getStatusLine().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         //Update lastTime after updating

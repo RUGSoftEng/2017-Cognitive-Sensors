@@ -2,12 +2,11 @@ package com.teamwan.wander.db;
 
 public class NumberGuess {
 
-    private int number;
+    private long time;
+    private long responseTime;
     private boolean isGo;
     private boolean correct;
-    private long responseTime;
-    private long time;
-
+    private int number;
 
     public NumberGuess(int number, boolean isGo, long time) {
         this.number = number;
