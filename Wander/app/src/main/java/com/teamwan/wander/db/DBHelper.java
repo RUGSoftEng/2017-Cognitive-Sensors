@@ -102,24 +102,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public SQLiteDatabase openDB(){
-        return getReadableDatabase();
-    }
-
-    public void closeDB(){this.close();
-    }
-
     public boolean insertGameSession(GameSession gs) {
-        Gson gson = new Gson();
-        String json = gson.toJson(gs);
-        Log.i("GSON_TEST", "Printing JSON of GameSession");
-        Log.i("GSON_TEST", json);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_PLAYERID, gs.getPlayerId());
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
         db.insert(GS_TABLE_NAME, null, contentValues);
+        db.close();
         return true;
     }
 
@@ -132,6 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(NG_COLUMN_CORRECT, ng.isCorrect());
         contentValues.put(NG_COLUMN_NUMBER, ng.getNumber());
         db.insert(NG_TABLE_NAME, null, contentValues);
+        db.close();
         return true;
     }
 
@@ -143,14 +134,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if(res.moveToFirst()){
             do{
-                GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
+                GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),
+                                                 res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
                 gs.setPlayerId(res.getInt(res.getColumnIndex(GS_COLUMN_PLAYERID)));
 
-                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + "", null);
+//                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + "", null);
+                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
+                //DEBUG SQLiteQuery: select * from NumberGuesses where GameSessionId = 15
+                //DEBUG Above SQL statement returns an empty result, whereas the sql statement without the "+'where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + """ succesfully returns every numberguess.
+                //DEBUG ngs.moveToFirst() is false
                 if(ngs.moveToFirst()){
                     do {
-                        NumberGuess ng = new NumberGuess(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_NUMBER)), ngs.getInt(ngs.getColumnIndex(NG_COLUMN_ISGO))!=0, ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
+                        NumberGuess ng = new NumberGuess(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_NUMBER)),
+                                                                    ngs.getInt(ngs.getColumnIndex(NG_COLUMN_ISGO))!=0,
+                                                                    ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
                         ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
 
@@ -160,7 +158,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 gameSessions.add(gs);
             }while (res.moveToNext());
         }
-
+        db.close();
         return gameSessions;
     }
 

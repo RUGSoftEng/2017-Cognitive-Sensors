@@ -15,7 +15,16 @@ public class GameSession{
     private String gameType;
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<NumberGuess>();
     private ArrayList<String> questions = new ArrayList<String>();
-    private  int answer;
+
+    public ArrayList<Integer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(ArrayList<Integer> answers) {
+        this.answers = answers;
+    }
+
+    private ArrayList<Integer> answers = new ArrayList<Integer>();
 
 
     public GameSession(Long time, String gameType) {
@@ -75,26 +84,14 @@ public class GameSession{
         this.questions = questions;
     }
 
-    public int getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(int answer) {
-        this.answer = answer;
-    }
-
     public void save(Context context){
 
         DBHelper dbHelper = new DBHelper(context);
-        dbHelper.openDB();
-
         dbHelper.insertGameSession(this);
 
         for(NumberGuess ng: numberGuesses){
             dbHelper.insertNumberGuess(ng);
         }
-
-        dbHelper.closeDB();
     }
 
 }

@@ -25,7 +25,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 //                context.startActivity(uplIntent);
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 // connected to the mobile provider's data plan
-                Toast.makeText(context, "No WiFi connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Connected to " + activeNetwork.getTypeName() + ", not uploading data", Toast.LENGTH_LONG).show();
             }
         } else {
             // not connected to the internet

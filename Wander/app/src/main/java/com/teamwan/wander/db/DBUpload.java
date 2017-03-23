@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.teamwan.wander.GameSession;
 import com.teamwan.wander.R;
 
@@ -23,7 +25,7 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
     @Override
     protected Void doInBackground(DBpars... params) {
         this.context = params[0].context;
-
+        Log.i("DBUPLOAD_DOINBACKGROUND", "DBUpload.doInBackground() executing");
         //Timestamp of last time data was uploaded
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         Long lastTime=prefs.getLong("last upload",0);
@@ -34,8 +36,13 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         DBHelper dbHelper= new DBHelper(this.context);
         ArrayList<GameSession> gameSessions = dbHelper.getGameSessionsAfter(lastTime);
 
+        Log.i("GSON_TEST", "Printing JSON of GameSessions");
+        Gson gson = new Gson();
+        String json = gson.toJson(gameSessions);
+        Log.i("GSON_TEST", json);
+
         //TODO: Make connection to server and upload the array
-        //TODO: Set lastTime to time of update
+
 
         //Update lastTime after updating
         SharedPreferences.Editor editor = prefs.edit();
