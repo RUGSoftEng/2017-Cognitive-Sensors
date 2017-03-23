@@ -7,4 +7,6 @@ Team Wander aims to create an app designed for scientific research on cognitive 
 The Android application files are located in /Wander. The application was developed and can be built using Android Studio.
 
 ## Server
-For the server side, a Google Web App is used. This document can be found [here](https://docs.google.com/spreadsheets/d/11B4swCBJJOPQxJuCC7GZ-atJyUtk2wHHVclxLwEtkOI/edit#gid=978512187). To send requests and data, [this URL](https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec) should be used. The structure follows the ORM design file located in /Server.
+For the server side, a Google Web App is used. This document can be found [here](https://docs.google.com/spreadsheets/d/11B4swCBJJOPQxJuCC7GZ-atJyUtk2wHHVclxLwEtkOI/edit#gid=978512187). The structure follows the ORM design file located in /Server. To send requests and data, [this URL](https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec) should be used. The following JSON structure is required to upload to the web app: 
+
+![JSON structure accepted by web app. This is also available in the architecture document.](https://raw.githubusercontent.com/RUGSoftEng/2017-Cognitive-Sensors/feature-readme/Server/JSON_structure.png)
