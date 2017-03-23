@@ -1,8 +1,10 @@
-/*
-Ashton Spina
-07/03/2017
-
-Setup the notifications to be sent
+/**
+ *  This handles creating a new notification that is scheduled
+ *  for a certain time.
+ *
+ * @author  Ashton Spina
+ * @version 1.0
+ * @since   2017-03-07
  */
 
 package com.teamwan.wander;
