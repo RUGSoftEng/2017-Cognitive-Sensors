@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="game_length" > 120 </integer>
+    <integer name="number_display" > 3 </integer>
+    <integer name="jitter_range" > 3 </integer>
+    <integer name="value_display_delay" > 3 </integer>
+    <integer name="amount_questions" > 3 </integer>
+</resources>
