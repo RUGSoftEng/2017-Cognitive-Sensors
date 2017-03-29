@@ -62,6 +62,7 @@ public class NumberGame extends AppCompatActivity {
     private GameState gameState;
     private boolean lastCorrect;
     private GameSession gs;
+    public static final String AttemptDBUpload = "com.teamwan.wander.android.action.broadcast";
 
     public enum GameState {
         SUCCESS, NEUTRAL;
@@ -144,7 +145,6 @@ public class NumberGame extends AppCompatActivity {
                 successOnNum();
             timeLastClicked = System.currentTimeMillis();
         }
-        saveLastNumberData();
     }
 
     /**
@@ -246,6 +246,10 @@ public class NumberGame extends AppCompatActivity {
      */
     public void genNewNumber(){
 
+        if(gs!= null) {
+            saveLastNumberData();
+        }
+
         rl.setBackgroundColor(Color.parseColor("#FFFFFF"));
         long hold = currentNum;
         while(hold == currentNum)
@@ -311,6 +315,8 @@ public class NumberGame extends AppCompatActivity {
         gs.save(this);
         //TODO remove toasts
         Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
+
+        //Upload data if connected to wifi
         new DBUpload().execute(new DBpars(this));
     }
 }

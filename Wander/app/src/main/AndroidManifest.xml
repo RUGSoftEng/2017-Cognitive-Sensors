@@ -45,6 +45,7 @@
         <receiver android:name=".db.ConnectivityReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.teamwan.wander.android.action.broadcast" />
             </intent-filter>
         </receiver>
     </application>

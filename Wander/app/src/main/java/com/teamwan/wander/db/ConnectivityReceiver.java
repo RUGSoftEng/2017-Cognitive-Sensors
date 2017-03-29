@@ -18,7 +18,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         if (activeNetwork != null) { // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // connected to wifi
-                Toast.makeText(context, "Connected to " + activeNetwork.getTypeName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
                 new DBUpload().execute(new DBpars(context));
 //                Intent uplIntent = new Intent(context, DBUpload.class);
 //                uplIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

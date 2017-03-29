@@ -69,7 +69,9 @@ public class GameSession{
     public void save(Context context){
 
         DBHelper dbHelper = new DBHelper(context);
-        dbHelper.insertGameSession(this);
+        //TODO dbHelper insertGameSession should also store the numberGuesses, without a seperate external call
+        int gameSessionID = dbHelper.insertGameSession(this);
+        this.setGameSessionId(gameSessionID);
         dbHelper.insertNumberGuesses(this);
     }
 

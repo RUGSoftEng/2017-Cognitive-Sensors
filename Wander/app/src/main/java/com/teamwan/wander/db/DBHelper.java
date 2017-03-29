@@ -103,14 +103,15 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertGameSession(GameSession gs) {
+    public int insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
-        db.insert(GS_TABLE_NAME, null, contentValues);
+        //Cast without checks, will throw exception when more than MAX_INT gameSessions are played.
+        int gameSessionID = (int) db.insert(GS_TABLE_NAME, null, contentValues);
         db.close();
-        return true;
+        return gameSessionID;
     }
 
     public boolean insertNumberGuesses(GameSession gs) {
@@ -141,8 +142,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                                  res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
 
-                //Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
-                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
+                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
+//                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
                 //DEBUG SQLiteQuery: select * from NumberGuesses where GameSessionId = 15
                 //DEBUG Above SQL statement returns an empty result, whereas the sql statement without the "+'where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + """ succesfully returns every numberguess.
                 //DEBUG ngs.moveToFirst() is false
