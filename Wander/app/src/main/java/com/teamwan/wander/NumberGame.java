@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+//import android.icu.text.SimpleDateFormat;
+//import android.icu.util.Calendar;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
+import android.widget.Toast;
+
+import com.teamwan.wander.db.NumberGuess;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Random;
+
 import static java.lang.Math.abs;
 
 /**
@@ -48,6 +58,8 @@ public class NumberGame extends AppCompatActivity {
     private long timeNumberDisplayed; //Time last number was displayed
     private RelativeLayout rl;
     private GameState gameState;
+    private boolean lastCorrect;
+    private  GameSession gs;
 
     public enum GameState {
         SUCCESS, NEUTRAL;
@@ -73,6 +85,9 @@ public class NumberGame extends AppCompatActivity {
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
+        gs = new GameSession(System.currentTimeMillis(),"numberGame");
+        runGame();
+      
         final Handler handle = new Handler();
         handle.postDelayed(new Runnable(){
             public void run(){
@@ -80,6 +95,12 @@ public class NumberGame extends AppCompatActivity {
                 handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
             }
         }, delay);
+    }
+
+    @Override
+    protected void onDestroy(){
+        saveGameSession();
+        super.onDestroy();
     }
 
     /**
@@ -172,10 +193,15 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
-        if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL))
+
+        if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
             ++successCounter;
-        else if(currentNum == unClickableNum && gameState.equals(GameState.SUCCESS))
+            lastCorrect=true;
+        }
+        else if(currentNum == unClickableNum && gameState.equals(GameState.SUCCESS)){
             ++failCounter;
+            lastCorrect=false;
+        }
 
         if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID).getQuestionOrder()){
             Intent intent;
@@ -254,7 +280,16 @@ public class NumberGame extends AppCompatActivity {
                     -failCounter == unsuccessful clicks
                     -goodNum == TRUE if last displayed number was a clickable one, else FALSE
              */
-        }
+            NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
+            if(timeLastClicked<timeNumberDisplayed){
+                ng.setResponseTime(0);
+            }else{
+                ng.setResponseTime(timeLastClicked-timeNumberDisplayed);
+            }
+
+            ng.setCorrect(lastCorrect);
+            gs.addNumberGuess(ng);
+         }
     }
     /**
      * In this version save the question result with a reference
@@ -266,5 +301,12 @@ public class NumberGame extends AppCompatActivity {
         if(sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
         }
+
+    public void saveGameSession(){
+        //TODO remove toasts
+        Toast.makeText(this, "Starting saving data", Toast.LENGTH_SHORT).show();
+        gs.save(this);
+        //TODO remove toasts
+        Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
     }
 }
