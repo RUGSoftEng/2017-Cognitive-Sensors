@@ -1,25 +1,22 @@
-/*
-Ashton Spina
-07/03/2017
-
-Receives broadcasts from notifications and starts the main menu
+/**
+ *  This class receives an intent from a broadcast and
+ *  starts the mainActivity if a notification is clicked.
+ *
+ * @author  Ashton Spina
+ * @version 1.0
+ * @since   2017-03-07
  */
+
 package com.teamwan.wander;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by LaminatedLama on 07-Mar-17.
- */
-
 public class MyReceiver extends BroadcastReceiver {
-    public MyReceiver() {
-    }
+    public MyReceiver() {}
 
     @Override
-    //receives intent from broadcast and starts the mainmenu
     public void onReceive(Context context, Intent intent) {
         Intent intent1 = new Intent(context, MyNewIntentService.class);
         context.startService(intent1);

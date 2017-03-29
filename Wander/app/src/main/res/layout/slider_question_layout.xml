@@ -1,0 +1,102 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.teamwan.wander.NumberGame">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/quit"
+        android:id="@+id/quitFromSlider"
+        android:clickable="false"
+        android:onClick="onClickQuit"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_gravity="bottom" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/wandertitle"
+            android:id="@+id/TitleSlider" />
+
+        <TextView
+            android:text="@string/SliderQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:id="@+id/textViewForSliderQuestion"
+            android:layout_weight="0"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SliderSeekBar"
+            android:thumbTint="@color/colorPrimaryDark"
+            android:progressTint="@color/UncheckedBox"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:progress="50" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:text="@string/Negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Negative"
+                android:layout_weight="1"
+                android:textColor="@color/negativeResult"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:text="@string/Positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Positive"
+                android:layout_weight="1"
+                android:textColor="@color/positiveResult"
+                android:textAlignment="textEnd" />
+        </LinearLayout>
+
+        <TextView
+            android:text="@string/Confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ConfirmSlider"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="26sp"
+            android:textAlignment="center"
+            android:onClick="onClickConfirmSlider" />
+    </LinearLayout>
+
+</FrameLayout>
