@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import android.widget.Toast;
 
+import com.teamwan.wander.db.DBUpload;
+import com.teamwan.wander.db.DBpars;
 import com.teamwan.wander.db.NumberGuess;
 
 import java.text.SimpleDateFormat;
@@ -59,7 +61,7 @@ public class NumberGame extends AppCompatActivity {
     private RelativeLayout rl;
     private GameState gameState;
     private boolean lastCorrect;
-    private  GameSession gs;
+    private GameSession gs;
 
     public enum GameState {
         SUCCESS, NEUTRAL;
@@ -142,6 +144,7 @@ public class NumberGame extends AppCompatActivity {
                 successOnNum();
             timeLastClicked = System.currentTimeMillis();
         }
+        saveLastNumberData();
     }
 
     /**
@@ -242,7 +245,6 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
-        saveLastNumberData();
 
         rl.setBackgroundColor(Color.parseColor("#FFFFFF"));
         long hold = currentNum;
@@ -298,9 +300,10 @@ public class NumberGame extends AppCompatActivity {
     private void saveLastNumberData(int questionResult, int questionID) {
         System.out.println(questionResult + " " + questionID);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(sharedPref.getBoolean("Consent?", false)) {
+        if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
         }
+    }
 
     public void saveGameSession(){
         //TODO remove toasts
@@ -308,5 +311,6 @@ public class NumberGame extends AppCompatActivity {
         gs.save(this);
         //TODO remove toasts
         Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
+        new DBUpload().execute(new DBpars(this));
     }
 }

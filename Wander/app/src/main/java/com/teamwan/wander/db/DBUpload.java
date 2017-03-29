@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.teamwan.wander.GameSession;
 
 import org.apache.http.HttpResponse;
@@ -17,6 +18,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -47,11 +49,12 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         UploadObject uploadObject = dbHelper.getUploadObjectsAfter(lastTime);
 
         Log.i("GSON_TEST", "Printing JSON of GameSessions");
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Gson gson = new Gson();
         String json = gson.toJson(uploadObject);
-        Log.i("GSON_TEST", json);
-
-        //TODO: Make connection to server and upload the array
+        // Log and System.out.println cut off after 1024chars I think, so debug and a breakpoint at the print to inspect the json string
+          Log.i("GSON_TEST", json);
+//        System.out.println("GSONTEST\n"+json);
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(API_URL);
@@ -60,7 +63,7 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         nvp.add(new BasicNameValuePair("data",json));
 
         try {
-            post.setEntity(new UrlEncodedFormEntity(nvp));
+            post.setEntity(new UrlEncodedFormEntity(nvp, HTTP.UTF_8));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
