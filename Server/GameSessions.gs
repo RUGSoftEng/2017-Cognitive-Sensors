@@ -52,7 +52,7 @@ function doPost(e) {
       return;
     }
     
-    gameSessionSheet.appendRow([gameSessionId + i, playerId, gameSessionTime, gameType]);
+    gameSessionSheet.appendRow([gameSessionId + i, playerId, gameSessionMs, gameSessionTime, gameType]);
     
     // Read the numberguesses
     const numberGuesses = gameSession['numberGuesses'];
