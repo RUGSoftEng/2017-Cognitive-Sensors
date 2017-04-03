@@ -152,7 +152,6 @@ public class NumberGame extends AppCompatActivity {
      * If the game length is expired at this point the game ends.
      */
     private void failOnNum(){
-        rl.setBackgroundColor(getResources().getColor(R.color.negativeResult));
         gameState = GameState.SUCCESS;
         ++failCounter;
         numberDisplay.setText("");
@@ -172,7 +171,6 @@ public class NumberGame extends AppCompatActivity {
      * If the game length is expired at this point the game ends.
      */
     private void successOnNum(){
-        rl.setBackgroundColor(getResources().getColor(R.color.positiveResult));
         gameState = GameState.SUCCESS;
         ++successCounter;
         numberDisplay.setText("");
@@ -246,7 +244,6 @@ public class NumberGame extends AppCompatActivity {
             saveLastNumberData();
         }
 
-        rl.setBackgroundColor(Color.parseColor("#FFFFFF"));
         long hold = currentNum;
         while(hold == currentNum)
             currentNum = abs(rn.nextInt() % 10);
