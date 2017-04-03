@@ -7,14 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.teamwan.wander.GameSession;
-import com.teamwan.wander.NumberGame;
-import com.teamwan.wander.db.NumberGuess;
-
-import com.google.gson.*;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 
@@ -52,8 +44,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String QA_COLUMN_ANSWER = "Answer";
     public static final String QA_COLUMN_QID = "QuestionId";
 
+    public Context context;
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context=context;
     }
 
     private static final String CREATE_TABLE_GS = "CREATE TABLE " + GS_TABLE_NAME + "(" +
@@ -103,14 +98,16 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertGameSession(GameSession gs) {
+    public int insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
-        db.insert(GS_TABLE_NAME, null, contentValues);
+        contentValues.put(GS_COLUMN_PLAYERID, gs.getUniqueID(context));
+        //Cast without checks, will throw exception when more than MAX_INT gameSessions are played.
+        int gameSessionID = (int) db.insert(GS_TABLE_NAME, null, contentValues);
         db.close();
-        return true;
+        return gameSessionID;
     }
 
     public boolean insertNumberGuesses(GameSession gs) {
@@ -129,6 +126,32 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /*public boolean insertQuestions(GameSession gs) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(Question q : gs.getQuestionAnswers()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(QA_COLUMN_GSID, gs.getGameSessionId());
+            contentValues.put(QA_COLUMN_QID, qa.getQuestionId());
+            db.insert(QA_TABLE_NAME, null, contentValues);
+        }
+        db.close();
+        return true;
+    }*/
+
+    public boolean insertQuestionAnswer(GameSession gs) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(QuestionAnswer qa : gs.getQuestionAnswers()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(QA_COLUMN_GSID, gs.getGameSessionId());
+            contentValues.put(QA_COLUMN_QID, qa.getQuestionId());
+            contentValues.put(QA_COLUMN_TIME, qa.getTime());
+            contentValues.put(QA_COLUMN_ANSWER, qa.getAnswer());
+            db.insert(QA_TABLE_NAME, null, contentValues);
+        }
+        db.close();
+        return true;
+    }
+
     public UploadObject getUploadObjectsAfter(Long lastTime){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -141,8 +164,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                                  res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
 
-                //Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
-                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
+                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
+//                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
                 //DEBUG SQLiteQuery: select * from NumberGuesses where GameSessionId = 15
                 //DEBUG Above SQL statement returns an empty result, whereas the sql statement without the "+'where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + """ succesfully returns every numberguess.
                 //DEBUG ngs.moveToFirst() is false
@@ -154,6 +177,20 @@ public class DBHelper extends SQLiteOpenHelper {
                         ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
                         Log.d("GAMESESSIONID", ""+ngs.getInt(ngs.getColumnIndex(NG_COLUMN_GSID)));
+
+
+                        Cursor qac = db.rawQuery("select * from "+ QA_TABLE_NAME +" where " + QA_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
+                        if(qac.moveToFirst()){
+                            do{
+                                QuestionAnswer qa = new QuestionAnswer(qac.getLong(qac.getColumnIndex(QA_COLUMN_TIME)),
+                                                                       qac.getInt(qac.getColumnIndex(QA_COLUMN_QID)),
+                                                                        qac.getInt(qac.getColumnIndex(QA_COLUMN_ANSWER)));
+
+                                gs.addQuestionAnswers(qa);
+
+                            }while (qac.moveToNext());
+                        }
+
                         gs.addNumberGuess(ng);
                     }while (ngs.moveToNext());
                 }
@@ -161,7 +198,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }while (res.moveToNext());
         }
         db.close();
-        UploadObject uploadObject = new UploadObject(-1, gameSessions);
+        UploadObject uploadObject = new UploadObject(gameSessions.get(0).getUniqueID(context).hashCode(), gameSessions);
         return uploadObject;
     }
 

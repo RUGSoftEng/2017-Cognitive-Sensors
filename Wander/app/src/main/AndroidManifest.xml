@@ -32,7 +32,7 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service>
+        <service
             android:name=".MyNewIntentService"
             android:exported="false" />
 
@@ -41,11 +41,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_options"
             android:theme="@style/FullscreenTheme" />
-        </service>
 
         <receiver android:name=".db.ConnectivityReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.teamwan.wander.android.action.broadcast" />
             </intent-filter>
         </receiver>
     </application>

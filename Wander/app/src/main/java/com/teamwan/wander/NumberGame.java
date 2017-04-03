@@ -11,7 +11,6 @@
 package com.teamwan.wander;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -29,11 +28,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import android.widget.Toast;
 
+import com.teamwan.wander.db.DBUpload;
+import com.teamwan.wander.db.DBpars;
+import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.NumberGuess;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Random;
 
 import static java.lang.Math.abs;
 
@@ -59,7 +57,8 @@ public class NumberGame extends AppCompatActivity {
     private RelativeLayout rl;
     private GameState gameState;
     private boolean lastCorrect;
-    private  GameSession gs;
+    private GameSession gs;
+    public static final String AttemptDBUpload = "com.teamwan.wander.android.action.broadcast";
 
     public enum GameState {
         SUCCESS, NEUTRAL;
@@ -242,7 +241,10 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
-        saveLastNumberData();
+
+        if(gs!= null) {
+            saveLastNumberData();
+        }
 
         rl.setBackgroundColor(Color.parseColor("#FFFFFF"));
         long hold = currentNum;
@@ -298,9 +300,11 @@ public class NumberGame extends AppCompatActivity {
     private void saveLastNumberData(int questionResult, int questionID) {
         System.out.println(questionResult + " " + questionID);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(sharedPref.getBoolean("Consent?", false)) {
+        if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
         }
+    }
+
 
     public void saveGameSession(){
         //TODO remove toasts
@@ -308,5 +312,8 @@ public class NumberGame extends AppCompatActivity {
         gs.save(this);
         //TODO remove toasts
         Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
+
+        //Upload data if connected to wifi
+        new DBUpload().execute(new DBpars(this));
     }
 }
