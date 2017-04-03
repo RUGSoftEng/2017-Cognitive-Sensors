@@ -11,7 +11,6 @@
 package com.teamwan.wander;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -31,11 +30,8 @@ import android.widget.Toast;
 
 import com.teamwan.wander.db.DBUpload;
 import com.teamwan.wander.db.DBpars;
+import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.NumberGuess;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Random;
 
 import static java.lang.Math.abs;
 
@@ -308,6 +304,7 @@ public class NumberGame extends AppCompatActivity {
             System.out.println(questionResult + " " + questionID);
         }
     }
+
 
     public void saveGameSession(){
         //TODO remove toasts

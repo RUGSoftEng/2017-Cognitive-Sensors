@@ -1,7 +1,5 @@
 package com.teamwan.wander.db;
 
-import com.teamwan.wander.GameSession;
-
 import java.util.ArrayList;
 
 /**
