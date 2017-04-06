@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Wander</string>
-    <string name="gameDescription1">In this game, a stream of different digits appear on screen. Tap
-        each number as you see it, excluding the number 3. Throughout the test, questions will also
-        appear infrequently, answer these truthfully.</string>
-    <string name="gameTitle1">Digits</string>
+    <string name="DigitsDescription">You will see digits on the screen, and your task is to click each
+        digit as soon as it appears, but to withold your response when the digit is the number 3. We
+        know that people daydream. Every now and then, you will be asked about your thoughts just prior
+        to the prompt. Please respond to those as accurately as possible.</string>
+    <string name="DigitsTitle">Digits</string>
     <string name="ICATitle">Informed Consent Agreement</string>
     <string name="ICABody">I hereby consent to be a participant in the research performed by Dr. Marieke van Vugt. I have agreed to take part in the study entitled "thoughts in daily life" and I understand that my participation is entirely voluntary. I understand that my responses will be kept strictly confidential and anonymous. I have the option to withdraw from this study at any time, without penalty, and I also have the right to request that my responses not be used. The goal of this study is to better understand how cognitive function changes in the course of daily life.
-                           \n\nParticipation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
-                           \n\nMy responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
+        \n\nParticipation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
+        \n\nMy responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
     <string name="ICAAccept">Accept</string>
     <string name="ICAQuit">Quit</string>
 
@@ -33,7 +34,10 @@
         Science students at the University of Groningen in the Netherlands. The application was created
         in partnership with Marieke van Vugt, an Assistant Professor in the Cognitive Modelling Group at
         the University of Groningen. \n\n
-        [Any Extra Info Here]</string>
+        With this app, the Cognitive Modelling Group would like to learn more about how the human mind works,
+        and how its ability to perform changes over time. Moreover, we want to give you, the user, insight into
+        your own brain as well. By using this app, and consenting to having your anonymous game data sent
+        to us, you are contributing to real research into how the human mind works.</string>
     <string name="InfoClose">CLOSE</string>
 
     <string-array name="Questions">

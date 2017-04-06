@@ -23,6 +23,8 @@ import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
+import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -131,6 +133,9 @@ public class MainMenu extends AppCompatActivity {
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView close = (TextView)findViewById(R.id.InfoClose);
         body.setMovementMethod(new ScrollingMovementMethod());
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) body.getLayoutParams();
+        params.height = (int) ( 370 * getResources().getDisplayMetrics().density);
+        body.setLayoutParams(params);
         title.setText(R.string.InfoTitle);
         body.setText(R.string.InfoBody);
         close.setText(R.string.InfoClose);
@@ -217,14 +222,16 @@ public class MainMenu extends AppCompatActivity {
         TextView title = (TextView)findViewById(R.id.OverlayTitle);
         TextView body = (TextView)findViewById(R.id.ICABody);
         TextView accept = (TextView)findViewById(R.id.ICAAccept);
-        TextView quit = (TextView)findViewById(R.id.ICAReject);
+        TextView reject = (TextView)findViewById(R.id.ICAReject);
 
         overlay.setVisibility(View.INVISIBLE);
         contentBox.setVisibility(View.INVISIBLE);
         title.setVisibility(View.INVISIBLE);
         body.setVisibility(View.INVISIBLE);
         accept.setVisibility(View.INVISIBLE);
-        quit.setVisibility(View.INVISIBLE);
+        reject.setVisibility(View.INVISIBLE);
+        ((ViewGroup) accept.getParent()).removeView(accept);
+        ((ViewGroup) reject.getParent()).removeView(reject);
     }
 
     /**
