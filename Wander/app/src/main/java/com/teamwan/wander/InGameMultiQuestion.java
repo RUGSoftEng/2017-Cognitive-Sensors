@@ -28,6 +28,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
     private TextView questionDisplay; //where the number is shown
     private int questionID;
     private ArrayList<CheckBox> checkBoxes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
