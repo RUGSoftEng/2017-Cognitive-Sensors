@@ -32,14 +32,16 @@ public class DebugActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches a slider activity
+     * Launches a slider question activity
      */
     public void onClickSlider(View v) {
         Intent intent = new Intent(DebugActivity.this, InGameSliderQuestion.class);
         DebugActivity.this.startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
-  
+    /**
+     * Launches a multiple choice question activity
+     */
     public void onClickMultiChoice(View v) {
         Intent intent = new Intent(DebugActivity.this, InGameMultiQuestion.class);
         DebugActivity.this.startActivity(intent);
@@ -57,11 +59,8 @@ public class DebugActivity extends AppCompatActivity {
     //TODO:: create tests for the other buttons
     public void sendNotification(){
         Intent alarmIntent = new Intent(this, MyReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, 10, pendingIntent);
     }
 }

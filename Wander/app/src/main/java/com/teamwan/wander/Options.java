@@ -8,7 +8,6 @@
  * @since   2017-03-20
  */
 
-
 package com.teamwan.wander;
 
 import android.annotation.SuppressLint;
@@ -28,7 +27,9 @@ import android.widget.TextView;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Options extends AppCompatActivity {
-
+    /**
+     * TODO:: comment these methods
+     */
     private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
@@ -39,8 +40,6 @@ public class Options extends AppCompatActivity {
         @Override
         public void run() {
             // Delayed removal of status and navigation bar
-
-
         }
     };
     private View mControlsView;
@@ -82,52 +81,54 @@ public class Options extends AppCompatActivity {
 
         initialiseConsentButton();
         setTypefaces();
-
     }
 
     @Override
+    /**
+    * Trigger the initial hide() shortly after the activity has been
+    * created, to briefly hint to the user that UI controls are available.
+    */
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
         delayedHide(100);
     }
 
     private void toggle() {
-        if (mVisible) {
+        if (mVisible)
             hide();
-        } else {
+        else
             show();
-        }
     }
-
+    /**
+     * This first hides the UI then
+     * schedules a runnable to remove the status and navigation bar after a delay
+     */
     private void hide() {
-        // Hide UI first
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null)
             actionBar.hide();
-        }
-         mVisible = false;
-
-        // Schedule a runnable to remove the status and navigation bar after a delay
+        mVisible = false;
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
     @SuppressLint("InlinedApi")
+    /**
+     * This first shows the system bar then
+     * Schedules a runnable to display UI elements after a delay
+     */
     private void show() {
         // Show the system bar
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         mVisible = true;
 
-        // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
     }
-
+    /**
+     * TODO:: explain this method
+     */
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
@@ -183,6 +184,5 @@ public class Options extends AppCompatActivity {
         consentButton.setText(R.string.ConsentRevoked);
         consentButton.setTextColor(getResources().getColor(R.color.positiveResult));
         consentButton.setClickable(false);
-
     }
 }

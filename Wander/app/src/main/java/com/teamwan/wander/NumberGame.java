@@ -13,10 +13,7 @@ package com.teamwan.wander;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
-//import android.icu.text.SimpleDateFormat;
-//import android.icu.util.Calendar;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -41,19 +38,19 @@ import static java.lang.Math.abs;
  */
 public class NumberGame extends AppCompatActivity {
 
-    private TextView numberDisplay; //where the number is shown
-    private Random rn;//random number generator
-    private long startTime;//game start time
-    private long gameLength; //game duration in seconds for testing
-    private final int unClickableNum = 3;//number which should not be clicked
-    private int currentNum;//current displayed number
+    private TextView numberDisplay;
+    private Random rn;
+    private long startTime;
+    private long gameLength;
+    private final int unClickableNum = 3;
+    private int currentNum;
     private int questionID;
     private ArrayList<QuestionInfo> questionIntervals;
 
     private int successCounter;
     private int failCounter;
-    private long timeLastClicked; //last time the number was clicked
-    private long timeNumberDisplayed; //Time last number was displayed
+    private long timeLastClicked;
+    private long timeNumberDisplayed;
     private RelativeLayout rl;
     private GameState gameState;
     private boolean lastCorrect;
@@ -78,8 +75,6 @@ public class NumberGame extends AppCompatActivity {
         TextView numberDisplay=(TextView)findViewById(R.id.numberDisplay);
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
-
-        runGame();
 
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
@@ -200,15 +195,17 @@ public class NumberGame extends AppCompatActivity {
             lastCorrect=false;
         }
 
-        if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID).getQuestionOrder()){
-            Intent intent;
+        if(questionID < questionIntervals.size() &&
+             (successCounter + failCounter + (rn.nextInt() % 3)) >=
+             questionIntervals.get(questionID).getQuestionOrder()){
+
             if(questionIntervals.get(questionID).getQuestionType() == 1) {
-                intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
+                Intent intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
                 intent.putExtra("questionID", questionID);
                 startActivityForResult(intent, 1);
             }
             else{
-                intent = new Intent(getApplicationContext(), InGameMultiQuestion.class);
+                Intent intent = new Intent(getApplicationContext(), InGameMultiQuestion.class);
                 intent.putExtra("questionID", questionID);
                 startActivityForResult(intent, 0);
             }
@@ -223,12 +220,10 @@ public class NumberGame extends AppCompatActivity {
      * has completed.  In this case it simply generates a new number to continue the game.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK)
             saveLastNumberData(data.getIntExtra("choice", -1), questionID);
-        }
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
             saveLastNumberData(data.getIntExtra("choice", -1), questionID);
-        }
         genNewNumber();
     }
 
@@ -262,29 +257,26 @@ public class NumberGame extends AppCompatActivity {
         finish();
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
+
     /**
      * This method saves all the data that is requested in the database.
      * It only does this if the "consent?" value in the preferences is true.
+     * These values are available and need to be stored for the session for each number clicked:
+     *  -timeLastClicked == system time at last number click
+     *  -timeNumberDisplayed == last time a number was displayed
+     *  -successCounter == successful clicks
+     *  -failCounter == unsuccessful clicks
+     *  -goodNum == TRUE if last displayed number was a clickable one, else FALSE
      */
     private void saveLastNumberData() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
-            //TODO:: save needed values here
-            /*
-                These values are available and need to be stored for the session for each number clicked:
-                    -timeLastClicked == system time at last number click
-                    -timeNumberDisplayed == last time a number was displayed
-                    -successCounter == successful clicks
-                    -failCounter == unsuccessful clicks
-                    -goodNum == TRUE if last displayed number was a clickable one, else FALSE
-             */
             NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
-            if(timeLastClicked<timeNumberDisplayed){
+            if(timeLastClicked<timeNumberDisplayed)
                 ng.setResponseTime(0);
-            }else{
+            else
                 ng.setResponseTime(timeLastClicked-timeNumberDisplayed);
-            }
 
             ng.setCorrect(lastCorrect);
             gs.addNumberGuess(ng);
@@ -299,10 +291,13 @@ public class NumberGame extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
+            //TODO:: save question results
         }
     }
 
-
+    /**
+     * TODO:: comment these methods
+     */
     public void saveGameSession(){
         //TODO remove toasts
         Toast.makeText(this, "Starting saving data", Toast.LENGTH_SHORT).show();

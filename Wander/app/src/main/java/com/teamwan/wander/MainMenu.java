@@ -13,7 +13,6 @@ package com.teamwan.wander;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -24,39 +23,15 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class MainMenu extends AppCompatActivity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
 
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * Some older devices needs a small delay between UI widget updates
-     * and a change of the status and navigation bar.
-     */
-    private static final int UI_ANIMATION_DELAY = 300;
-    private final Handler mHideHandler = new Handler();
-    private View mContentView;
     private int countClicks;
-    private PendingIntent pendingIntent;
     private MenuLayoutComponents mlc;
 
     /**
@@ -79,9 +54,8 @@ public class MainMenu extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         System.out.println(sharedPref.getBoolean("Consent?", false));
-        if(!sharedPref.getBoolean("Consent?", false)){
+        if(!sharedPref.getBoolean("Consent?", false))
             toggleICA();
-        }
         if(!sharedPref.getBoolean("Setup?", false)){
             setUpNotifications();
             editor.putBoolean("Setup?", true);
@@ -134,9 +108,9 @@ public class MainMenu extends AppCompatActivity {
         toggleInfo();
     }
 
-    //TODO:: test that this actually works and de-hardcode it to work with the Options.
     /**
      * This method sets a daily alarm for a certain time
+     * //TODO:: test that this actually works and de-hardcode it to work with the Options settings for notification times
      */
     public void setUpNotifications(){
         Calendar calendar = Calendar.getInstance();
@@ -151,7 +125,6 @@ public class MainMenu extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-
     /**
      * Method for accepting/rejecting ICA. Sets consent true or false depending on view clicked.
      */
@@ -160,16 +133,15 @@ public class MainMenu extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         toggleICA();
 
-        if (v.getId()==R.id.ICAAccept) {
+        if (v.getId() == R.id.ICAAccept)
             editor.putBoolean("Consent?", true);
-        } else{
+        else
             editor.putBoolean("Consent?", false);
-        }
         editor.commit();
     }
 
     /**
-     *  Method for passing view objects for overlay from layout to MLC object.
+     *  Method for passing view objects for overlay from layout to menu layout components object.
      */
     public void initialiseMLC() {
         mlc.overlay = (LinearLayout) findViewById(R.id.Overlay);
@@ -195,10 +167,8 @@ public class MainMenu extends AppCompatActivity {
      * Sets all overlay text to Futura
      */
     private void setTypefaces() {
-
-        for (TextView v : mlc.text) {
+        for (TextView v : mlc.text)
             v.setTypeface(mlc.futura);
-        }
     }
 
     /**
@@ -223,6 +193,7 @@ public class MainMenu extends AppCompatActivity {
 
     /**
      * Initialises info components after ICA has been closed.
+     * //TODO:: explain these "magic numbers"
      */
     private void initialiseInfo() {
         mlc.params.height = (int) ( 370 * getResources().getDisplayMetrics().density);
@@ -246,9 +217,8 @@ public class MainMenu extends AppCompatActivity {
         mlc.accept.setVisibility(vis);
         mlc.reject.setVisibility(vis);
 
-        if (vis==View.INVISIBLE) {
+        if (vis==View.INVISIBLE)
             initialiseInfo();
-        }
     }
 
 }

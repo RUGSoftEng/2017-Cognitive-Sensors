@@ -32,5 +32,4 @@ public class MenuLayoutComponents {
     public LinearLayout.LayoutParams params;
     public int overlayVis = View.INVISIBLE;
     public int infoVis = View.INVISIBLE;
-
 }
