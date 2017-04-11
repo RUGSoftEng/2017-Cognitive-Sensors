@@ -11,6 +11,10 @@
 package com.teamwan.wander;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -26,6 +30,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -82,6 +87,11 @@ public class Options extends AppCompatActivity {
     private ArrayList<TextView> text;
 
     @Override
+    /**
+     * When the activity is created the layout is setup,
+     * the buttons and typefaces are initialised,
+     * and the seekbar is set to show progress == to its current setting
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -91,6 +101,8 @@ public class Options extends AppCompatActivity {
 
         initialiseConsentButton();
         setTypefaces();
+
+        ((SeekBar)findViewById(R.id.NotifSlider)).setProgress(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("noteSetting", 1));
     }
 
     @Override
@@ -164,7 +176,6 @@ public class Options extends AppCompatActivity {
         for (TextView v : text) {
             v.setTypeface(tf);
         }
-
     }
 
     /**
@@ -177,7 +188,8 @@ public class Options extends AppCompatActivity {
         if (!sharedPref.getBoolean("Consent?", false)) {
             consentButton.setText(R.string.ConsentNotGiven);
             consentButton.setClickable(false);
-        } else {
+        }
+        else {
             consentButton.setText(R.string.TapToRevoke);
         }
     }
@@ -198,20 +210,45 @@ public class Options extends AppCompatActivity {
 
     /**
      * Saves notifications preference and changes text to give feedback through UI.
+     * TODO:: do proper testing of this, it currently changes the sharedPrefs, but we don't know if it actually sets a weekly alarm, because it hasn't been a week
      */
     public void onClickNotifSave(View v) {
         final TextView save = (TextView) findViewById(R.id.NotifSave);
         SeekBar sb = (SeekBar) findViewById(R.id.NotifSlider);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putInt("noteSetting", sb.getProgress());
+
+        //TODO:: if we want to make time of day dynamic, we can change this
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent = new Intent();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent.cancel();
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+
+        intent = new Intent(this, MyReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
         switch (sb.getProgress()) {
-            case 0:
-                //todo: turn notifications off
-                break;
             case 1:
-                //todo: set daily notifcations
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                 break;
             case 2:
-                //todo: set weekly notifications
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+                break;
+            default:
+                break;
         }
+
+        editor.commit();
         save.setText(R.string.SAVED);
         save.setTextColor(getResources().getColor(R.color.positiveResult));
         Handler handler = new Handler();

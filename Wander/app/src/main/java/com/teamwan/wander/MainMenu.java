@@ -52,19 +52,15 @@ public class MainMenu extends AppCompatActivity {
         mlc = new MenuLayoutComponents();
         initialiseMLC();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
         System.out.println(sharedPref.getBoolean("Consent?", false));
         if(!sharedPref.getBoolean("Consent?", false))
             toggleICA();
-        if(!sharedPref.getBoolean("Setup?", false)){
-            setUpNotifications();
-            editor.putBoolean("Setup?", true);
-        }
-        editor.commit();
+
+        setUpNotifications(sharedPref.getInt("noteSetting", -1));
         System.out.println(sharedPref.getBoolean("Consent?", false));
 
         TextView descriptionBox1=(TextView)findViewById(R.id.DescriptionBox1);
-        Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         descriptionBox1.setTypeface(tf);
     }
 
@@ -84,8 +80,7 @@ public class MainMenu extends AppCompatActivity {
      */
     public void onClickDebug(View v){
         ++countClicks;
-        if(countClicks >= 3)
-        {
+        if(countClicks >= 3){
             Intent intent = new Intent(MainMenu.this, DebugActivity.class);
             MainMenu.this.startActivity(intent);
             countClicks = 0;
@@ -110,19 +105,22 @@ public class MainMenu extends AppCompatActivity {
 
     /**
      * This method sets a daily alarm for a certain time
-     * //TODO:: test that this actually works and de-hardcode it to work with the Options settings for notification times
+     * //TODO:: right now we use a default, we might wanna change this if we ever give optional times
      */
-    public void setUpNotifications(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 1);
+    public void setUpNotifications(int currentSetting) {
+        if(currentSetting == -1){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 10);
+            calendar.set(Calendar.MINUTE, 30);
+            calendar.set(Calendar.SECOND, 0);
 
-        Intent alarmIntent = new Intent(this, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            Intent alarmIntent = new Intent(this, MyReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+
     }
 
     /**

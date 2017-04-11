@@ -25,12 +25,18 @@ public class DebugActivity extends AppCompatActivity {
         setContentView(R.layout.activity_debug);
     }
     /**
-     *  This method sends a notification to test notification function.
+     *  This method and the one below sends a notification to test notification function.
      */
     public void onClickNotify(View v){
         sendNotification();
     }
 
+    public void sendNotification(){
+        Intent alarmIntent = new Intent(this, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 10, pendingIntent);
+    }
     /**
      * Launches a slider question activity
      */
@@ -57,11 +63,6 @@ public class DebugActivity extends AppCompatActivity {
     }
 
     //TODO:: create tests for the other buttons
-    public void sendNotification(){
-        Intent alarmIntent = new Intent(this, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 10, pendingIntent);
-    }
+
 }
 
