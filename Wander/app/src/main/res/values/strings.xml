@@ -64,6 +64,8 @@
     </string-array>
 
     <string name="title_activity_info">InfoActivity</string>
+    <string name="SAVE" >SAVE</string>
+    <string name="SAVED">SAVED</string>
 
 
 </resources>

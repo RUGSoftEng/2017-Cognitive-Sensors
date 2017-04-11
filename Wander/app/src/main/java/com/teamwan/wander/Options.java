@@ -20,7 +20,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -28,7 +33,7 @@ import android.widget.TextView;
  */
 public class Options extends AppCompatActivity {
     /**
-     * TODO:: comment these methods
+     * Auto generated system variables
      */
     private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
@@ -71,6 +76,11 @@ public class Options extends AppCompatActivity {
         }
     };
 
+    /**
+     * Holds all text views to allow for more efficient typeface setting.
+     */
+    private ArrayList<TextView> text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +111,7 @@ public class Options extends AppCompatActivity {
     }
     /**
      * This first hides the UI then
-     * schedules a runnable to remove the status and navigation bar after a delay
+     * schedules a runnable to remove the status and navigation bar after a default delay time
      */
     private void hide() {
         ActionBar actionBar = getSupportActionBar();
@@ -127,7 +137,8 @@ public class Options extends AppCompatActivity {
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
     }
     /**
-     * TODO:: explain this method
+     * This first hides the UI then
+     * schedules a runnable to remove the status and navigation bar after a specified delay
      */
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
@@ -138,22 +149,22 @@ public class Options extends AppCompatActivity {
      *  Sets custom typefaces for all text.
      */
     private void setTypefaces() {
-        TextView title = (TextView) findViewById(R.id.OptionsTitle);
-        TextView notif = (TextView) findViewById(R.id.NotifFreqHead);
-        TextView never = (TextView) findViewById(R.id.Never);
-        TextView daily = (TextView) findViewById(R.id.Daily);
-        TextView weekly = (TextView) findViewById(R.id.Weekly);
-        TextView consent = (TextView) findViewById(R.id.ConsentHead);
-        TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
+        text = new ArrayList<TextView>();
+        text.add((TextView) findViewById(R.id.OptionsTitle));
+        text.add((TextView) findViewById(R.id.NotifFreqHead));
+        text.add((TextView) findViewById(R.id.Never));
+        text.add((TextView) findViewById(R.id.Daily));
+        text.add((TextView) findViewById(R.id.Weekly));
+        text.add((TextView) findViewById(R.id.ConsentHead));
+        text.add((TextView) findViewById(R.id.ConsentButton));
+        text.add((TextView) findViewById(R.id.NotifSave));
 
-        Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
-        title.setTypeface(tf);
-        notif.setTypeface(tf);
-        never.setTypeface(tf);
-        daily.setTypeface(tf);
-        weekly.setTypeface(tf);
-        consent.setTypeface(tf);
-        consentButton.setTypeface(tf);
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+
+        for (TextView v : text) {
+            v.setTypeface(tf);
+        }
+
     }
 
     /**
@@ -178,11 +189,35 @@ public class Options extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
-
         editor.putBoolean("Consent?", false);
         editor.commit();
         consentButton.setText(R.string.ConsentRevoked);
         consentButton.setTextColor(getResources().getColor(R.color.positiveResult));
         consentButton.setClickable(false);
+    }
+
+
+    public void onClickNotifSave(View v) {
+        final TextView save = (TextView) findViewById(R.id.NotifSave);
+        SeekBar sb = (SeekBar) findViewById(R.id.NotifSlider);
+        switch (sb.getProgress()) {
+            case 0:
+                //todo: turn notifications off
+                break;
+            case 1:
+                //todo: set daily notifcations
+                break;
+            case 2:
+                //todo: set weekly notifications
+        }
+        save.setText(R.string.SAVED);
+        save.setTextColor(getResources().getColor(R.color.positiveResult));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                save.setText(R.string.SAVE);
+                save.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        }, 1500);
     }
 }

@@ -88,6 +88,17 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/NotifSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickNotifSave"
+            android:paddingTop="15dp"
+            android:text="@string/SAVE"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+        <TextView
             android:text="@string/RevokeConsent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
