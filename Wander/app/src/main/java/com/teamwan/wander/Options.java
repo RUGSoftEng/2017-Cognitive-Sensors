@@ -196,7 +196,9 @@ public class Options extends AppCompatActivity {
         consentButton.setClickable(false);
     }
 
-
+    /**
+     * Saves notifications preference and changes text to give feedback through UI.
+     */
     public void onClickNotifSave(View v) {
         final TextView save = (TextView) findViewById(R.id.NotifSave);
         SeekBar sb = (SeekBar) findViewById(R.id.NotifSlider);
