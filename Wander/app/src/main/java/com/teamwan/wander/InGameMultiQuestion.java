@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -70,34 +71,22 @@ public class InGameMultiQuestion extends AppCompatActivity {
 
         int NUMBER_OF_QUESTIONS = 5;
 
-        for(int i = 1; i <= NUMBER_OF_QUESTIONS; ++i)
+        if (questionID == 0) {
+            NUMBER_OF_QUESTIONS = 6;
+        }
+        String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID+1) + "Answers", "array", getPackageName()));
+        for(int i = 1; i <= NUMBER_OF_QUESTIONS; i++)
         {
-            checkBoxes.add((CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName())));
-            //TODO:: once question getting is updated, add string values right in here
+            CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
+            cb.setText(answers[i-1]);
+            checkBoxes.add(cb);
         }
-        //TODO:: pass a number of questions and change which are visible accordingly
-        CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
-        String[] answers;
-        //TODO:: dynamically access question data
-        if(questionID != -1) {
-            if (questionID == 0) {
-                checkBoxes.add(cb6);
-                answers = getResources().getStringArray(R.array.Q1Answers);
-                int pad = (int) (0.5f * 8 * getResources().getDisplayMetrics().density);
-                for (CheckBox cb : checkBoxes) {
-                    cb.setPadding(0,pad,0,pad);
-                }
-            }
-            else {
-                cb6.setVisibility(View.INVISIBLE);
-                answers = getResources().getStringArray(R.array.Q2Answers);
-            }
-            int i = 0;
-            for (CheckBox cb : checkBoxes) {
-                cb.setText(answers[i]);
-                ++i;
-            }
+
+        for(int i = NUMBER_OF_QUESTIONS + 1; i <= 6; i++) {
+            CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
+            cb.setVisibility(View.INVISIBLE);
         }
+
     }
 
     /**
