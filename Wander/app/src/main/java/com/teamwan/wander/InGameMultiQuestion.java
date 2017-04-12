@@ -74,7 +74,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
         if (questionID == 0) {
             NUMBER_OF_QUESTIONS = 6;
         }
-        String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID+1) + "Answers", "array", getPackageName()));
+        String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID + 1) + "Answers", "array", getPackageName()));
         for(int i = 1; i <= NUMBER_OF_QUESTIONS; i++)
         {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
