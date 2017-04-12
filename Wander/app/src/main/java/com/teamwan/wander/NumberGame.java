@@ -29,6 +29,7 @@ import com.teamwan.wander.db.DBUpload;
 import com.teamwan.wander.db.DBpars;
 import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.NumberGuess;
+import com.teamwan.wander.db.QuestionAnswer;
 
 import static java.lang.Math.abs;
 
@@ -335,7 +336,7 @@ public class NumberGame extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
-            //TODO:: save question results
+            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
         }
     }
 

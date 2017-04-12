@@ -77,7 +77,7 @@ public class GameSession{
         this.questionAnswers = questionAnswers;
     }
 
-    public void addQuestionAnswers(QuestionAnswer qa){
+    public void addQuestionAnswer(QuestionAnswer qa){
         this.questionAnswers.add(qa);
     }
 

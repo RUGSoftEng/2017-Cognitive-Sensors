@@ -83,14 +83,14 @@ public class DBHelper extends SQLiteOpenHelper {
             Q_COLUMN_MCOPTIONS + " TEXT" + ")";
 
     private static final String CREATE_TABLE_QA = "CREATE TABLE " + QA_TABLE_NAME + "(" +
-            QA_COLUMN_GSID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            QA_COLUMN_GSID + " INTEGER," +
             QA_COLUMN_TIME + " INTEGER," +
             QA_COLUMN_ANSWER + " INTEGER," +
             QA_COLUMN_QID + " INTEGER" + ")";
 
     private static final String CREATE_TABLE_MCQA = "CREATE TABLE " + MCQA_TABLE_NAME + "(" +
-            MCQA_COLUMN_QID + " INTEGER PRIMARY KEY NOT NULL," +
-            MCQA_COLUMN_ANSWERNR + " INTEGER PRIMARY KEY NOT NULL," +
+            MCQA_COLUMN_QID + " INTEGER," +
+            MCQA_COLUMN_ANSWERNR + " INTEGER," +
             MCQA_COLUMN_ANSWER + " TEXT" + ")";
 
     @Override
@@ -199,21 +199,20 @@ public class DBHelper extends SQLiteOpenHelper {
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
                         Log.d("GAMESESSIONID", ""+ngs.getInt(ngs.getColumnIndex(NG_COLUMN_GSID)));
 
-
-                        Cursor qac = db.rawQuery("select * from "+ QA_TABLE_NAME +" where " + QA_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
-                        if(qac.moveToFirst()){
-                            do{
-                                QuestionAnswer qa = new QuestionAnswer(qac.getLong(qac.getColumnIndex(QA_COLUMN_TIME)),
-                                                                       qac.getInt(qac.getColumnIndex(QA_COLUMN_QID)),
-                                                                        qac.getInt(qac.getColumnIndex(QA_COLUMN_ANSWER)));
-
-                                gs.addQuestionAnswers(qa);
-
-                            }while (qac.moveToNext());
-                        }
-
                         gs.addNumberGuess(ng);
                     }while (ngs.moveToNext());
+                }
+
+                Cursor qac = db.rawQuery("select * from "+ QA_TABLE_NAME +" where " + QA_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
+                if(qac.moveToFirst()){
+                    do{
+                        QuestionAnswer qa = new QuestionAnswer(qac.getLong(qac.getColumnIndex(QA_COLUMN_TIME)),
+                                                               qac.getInt(qac.getColumnIndex(QA_COLUMN_QID)),
+                                                               qac.getInt(qac.getColumnIndex(QA_COLUMN_ANSWER)));
+
+                        gs.addQuestionAnswer(qa);
+
+                    }while (qac.moveToNext());
                 }
                 gameSessions.add(gs);
             }while (res.moveToNext());
