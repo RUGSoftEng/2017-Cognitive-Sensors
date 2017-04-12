@@ -19,9 +19,10 @@ import android.widget.TextView;
 /**
  * Created by Ashton Spina on 20-Mar-17.
  */
+//TODO:: we need an abstract class for this and multi question
 public class InGameSliderQuestion extends AppCompatActivity {
 
-    private TextView questionDisplay; //where the number is shown
+    private TextView questionDisplay;
     private int questionID;
 
     @Override
@@ -40,7 +41,6 @@ public class InGameSliderQuestion extends AppCompatActivity {
         else{
             questionDisplay.setText("No Question to Display");
         }
-        //This uses a custom typeface for the number displayed
         initialiseTypefaces();
     }
 
