@@ -7,6 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+/*
+* Class that checks whether there is wifi connection; if so, send the data to the server.
+*/
+
 //TODO for class: Remove toasts
 public class ConnectivityReceiver extends BroadcastReceiver {
 
@@ -14,21 +18,21 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
+
+        if (activeNetwork != null) { // if we are connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                // connected to wifi
+                // Connected to WIFI
                 Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
-                new DBUpload().execute(new DBpars(context));
-//                Intent uplIntent = new Intent(context, DBUpload.class);
-//                uplIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(uplIntent);
+                new DBUpload().execute(new DBpars(context)); //send the stored local data to server
+
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                // connected to the mobile provider's data plan
+                // Connected to the mobile provider's data plan
                 Toast.makeText(context, "Connected to " + activeNetwork.getTypeName() + ", not uploading data", Toast.LENGTH_LONG).show();
             }
         } else {
-            // not connected to the internet
+            // Not connected to the internet
             Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
         }
 

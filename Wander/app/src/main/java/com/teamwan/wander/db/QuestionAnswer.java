@@ -1,8 +1,10 @@
 package com.teamwan.wander.db;
 
-/**
- * Created by lore on 23/03/2017.
- */
+/* Class that represensts a question's answer object
+*
+*In this class we can find the answers given by the player to the questions that were
+*asked during the game session and at what time the answer was given.
+*/
 
 public class QuestionAnswer {
 

@@ -10,6 +10,14 @@ import com.teamwan.wander.db.QuestionAnswer;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * This class represents a game session object.
+ *
+ * In this class the player id is stored alongside of which game was played at what certain
+ * point of time. Together this three types of data create a unique game session which
+ * will be represented as game session id in the other tables of the database.
+ */
+
 public class GameSession{
 
     private Long time;
@@ -17,7 +25,6 @@ public class GameSession{
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<NumberGuess>();
     private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<QuestionAnswer>();
     private int gameSessionId;
-
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
 
@@ -75,7 +82,7 @@ public class GameSession{
     }
 
 
-    //Method to get a universal unique identifier (UUID)
+    //Method to get a universal unique identifier (UUID) for representing the player Id
     public synchronized static String getUniqueID(Context context) {
         if (uniqueID == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(
@@ -94,6 +101,7 @@ public class GameSession{
     }
 
 
+    // Method to insert all the data into the local database.
     public void save(Context context){
 
         DBHelper dbHelper = new DBHelper(context);

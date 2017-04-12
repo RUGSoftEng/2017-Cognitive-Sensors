@@ -34,8 +34,10 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
     @Override
     protected Void doInBackground(DBpars... params) {
+
         this.context = params[0].context;
         Log.i("DBUPLOAD_DOINBACKGROUND", "DBUpload.doInBackground() executing");
+
         //Timestamp of last time data was uploaded
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         Long lastTime=prefs.getLong("last upload",0);

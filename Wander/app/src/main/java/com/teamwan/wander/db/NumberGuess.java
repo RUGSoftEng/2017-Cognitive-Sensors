@@ -1,5 +1,11 @@
 package com.teamwan.wander.db;
 
+/**
+ * This class stores the game session data that the client want. That includes response
+ * time of the player, whether the action done by the player was correct or not, the game session id
+ * and the time and number that was tapped on.
+ */
+
 public class NumberGuess {
 
     private long time;

@@ -3,7 +3,9 @@ package com.teamwan.wander.db;
 import java.util.ArrayList;
 
 /**
- * Created by lore on 23/03/2017.
+ * Class that represents the final object that is going to be sent to the server database.
+ * It is composed by the player id and by the corresponding game sessions which include the time spent playing,
+ * game type, the number guessses and the corresponding question's answers.
  */
 
 public class UploadObject {

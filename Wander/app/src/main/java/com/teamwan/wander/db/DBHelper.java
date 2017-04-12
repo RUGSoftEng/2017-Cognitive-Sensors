@@ -9,9 +9,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+/**
+ * Class that represents the SQLite database
+ *
+ * All the tables and its corresponding rows are stored.
+ *
+ */
 
-//http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
-//https://developer.android.com/training/basics/data-storage/databases.html#DbHelper
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "WanderDB.db";
@@ -20,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String NG_TABLE_NAME = "NumberGuesses";
     public static final String Q_TABLE_NAME = "Questions";
     public static final String QA_TABLE_NAME = "QuestionAnswers";
+    public static final String MCQA_TABLE_NAME = "MCQuestionAnswers";
 
     public static final String GS_COLUMN_GSID = "GameSessionId";
     public static final String GS_COLUMN_PLAYERID = "PlayerId";
@@ -43,6 +48,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String QA_COLUMN_TIME = "Time";
     public static final String QA_COLUMN_ANSWER = "Answer";
     public static final String QA_COLUMN_QID = "QuestionId";
+
+    public static final String MCQA_COLUMN_QID = "QuestionId";
+    public static final String MCQA_COLUMN_ANSWERNR = "AnswerNumber";
+    public static final String MCQA_COLUMN_ANSWER = "Answer";
+
 
     public Context context;
 
@@ -78,13 +88,18 @@ public class DBHelper extends SQLiteOpenHelper {
             QA_COLUMN_ANSWER + " INTEGER," +
             QA_COLUMN_QID + " INTEGER" + ")";
 
+    private static final String CREATE_TABLE_MCQA = "CREATE TABLE " + MCQA_TABLE_NAME + "(" +
+            MCQA_COLUMN_QID + " INTEGER PRIMARY KEY NOT NULL," +
+            MCQA_COLUMN_ANSWERNR + " INTEGER PRIMARY KEY NOT NULL," +
+            MCQA_COLUMN_ANSWER + " TEXT" + ")";
+
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        // TODO Auto-generated method stub
+    public void onCreate(SQLiteDatabase db) { //create the tables
         db.execSQL(CREATE_TABLE_GS);
         db.execSQL(CREATE_TABLE_NG);
         db.execSQL(CREATE_TABLE_Q);
         db.execSQL(CREATE_TABLE_QA);
+        db.execSQL(CREATE_TABLE_MCQA);
     }
 
     @Override
@@ -94,10 +109,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + NG_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Q_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + QA_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MCQA_TABLE_NAME);
         // create new tables
         onCreate(db);
     }
 
+    //Method to introduce values in the Game session table
     public int insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -110,6 +127,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return gameSessionID;
     }
 
+    //Method to introduce values in the Number guesses table
     public boolean insertNumberGuesses(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(NumberGuess ng : gs.getNumberGuesses()){
@@ -126,18 +144,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    /*public boolean insertQuestions(GameSession gs) {
+   /* //Method to introduce values in the Questions table
+    public boolean insertQuestions(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
-        for(Question q : gs.getQuestionAnswers()){
+        for(Question q : gs.getQuestions()){
             ContentValues contentValues = new ContentValues();
             contentValues.put(QA_COLUMN_GSID, gs.getGameSessionId());
-            contentValues.put(QA_COLUMN_QID, qa.getQuestionId());
+            contentValues.put(QA_COLUMN_QID, q.getQuestionId());
             db.insert(QA_TABLE_NAME, null, contentValues);
         }
         db.close();
         return true;
-    }*/
-
+    }
+*/
+    //Method to introduce values in the Question Answer table
     public boolean insertQuestionAnswer(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(QuestionAnswer qa : gs.getQuestionAnswers()){
@@ -153,6 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public UploadObject getUploadObjectsAfter(Long lastTime){
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);
