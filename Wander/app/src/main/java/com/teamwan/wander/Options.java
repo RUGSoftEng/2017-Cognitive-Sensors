@@ -8,10 +8,13 @@
  * @since   2017-03-20
  */
 
-
 package com.teamwan.wander;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -21,14 +24,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class Options extends AppCompatActivity {
-
+    /**
+     * Auto generated system variables
+     */
     private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
@@ -39,8 +50,6 @@ public class Options extends AppCompatActivity {
         @Override
         public void run() {
             // Delayed removal of status and navigation bar
-
-
         }
     };
     private View mControlsView;
@@ -72,7 +81,17 @@ public class Options extends AppCompatActivity {
         }
     };
 
+    /**
+     * Holds all text views to allow for more efficient typeface setting.
+     */
+    private ArrayList<TextView> text;
+
     @Override
+    /**
+     * When the activity is created the layout is setup,
+     * the buttons and typefaces are initialised,
+     * and the seekbar is set to show progress == to its current setting
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -83,51 +102,56 @@ public class Options extends AppCompatActivity {
         initialiseConsentButton();
         setTypefaces();
 
+        ((SeekBar)findViewById(R.id.NotifSlider)).setProgress(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("noteSetting", 1));
     }
 
     @Override
+    /**
+    * Trigger the initial hide() shortly after the activity has been
+    * created, to briefly hint to the user that UI controls are available.
+    */
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
         delayedHide(100);
     }
 
     private void toggle() {
-        if (mVisible) {
+        if (mVisible)
             hide();
-        } else {
+        else
             show();
-        }
     }
-
+    /**
+     * This first hides the UI then
+     * schedules a runnable to remove the status and navigation bar after a default delay time
+     */
     private void hide() {
-        // Hide UI first
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null)
             actionBar.hide();
-        }
-         mVisible = false;
-
-        // Schedule a runnable to remove the status and navigation bar after a delay
+        mVisible = false;
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
     @SuppressLint("InlinedApi")
+    /**
+     * This first shows the system bar then
+     * Schedules a runnable to display UI elements after a delay
+     */
     private void show() {
         // Show the system bar
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         mVisible = true;
 
-        // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
     }
-
+    /**
+     * This first hides the UI then
+     * schedules a runnable to remove the status and navigation bar after a specified delay
+     */
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
@@ -137,22 +161,21 @@ public class Options extends AppCompatActivity {
      *  Sets custom typefaces for all text.
      */
     private void setTypefaces() {
-        TextView title = (TextView) findViewById(R.id.OptionsTitle);
-        TextView notif = (TextView) findViewById(R.id.NotifFreqHead);
-        TextView never = (TextView) findViewById(R.id.Never);
-        TextView daily = (TextView) findViewById(R.id.Daily);
-        TextView weekly = (TextView) findViewById(R.id.Weekly);
-        TextView consent = (TextView) findViewById(R.id.ConsentHead);
-        TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
+        text = new ArrayList<TextView>();
+        text.add((TextView) findViewById(R.id.OptionsTitle));
+        text.add((TextView) findViewById(R.id.NotifFreqHead));
+        text.add((TextView) findViewById(R.id.Never));
+        text.add((TextView) findViewById(R.id.Daily));
+        text.add((TextView) findViewById(R.id.Weekly));
+        text.add((TextView) findViewById(R.id.ConsentHead));
+        text.add((TextView) findViewById(R.id.ConsentButton));
+        text.add((TextView) findViewById(R.id.NotifSave));
 
-        Typeface tf =Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
-        title.setTypeface(tf);
-        notif.setTypeface(tf);
-        never.setTypeface(tf);
-        daily.setTypeface(tf);
-        weekly.setTypeface(tf);
-        consent.setTypeface(tf);
-        consentButton.setTypeface(tf);
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+
+        for (TextView v : text) {
+            v.setTypeface(tf);
+        }
     }
 
     /**
@@ -165,7 +188,8 @@ public class Options extends AppCompatActivity {
         if (!sharedPref.getBoolean("Consent?", false)) {
             consentButton.setText(R.string.ConsentNotGiven);
             consentButton.setClickable(false);
-        } else {
+        }
+        else {
             consentButton.setText(R.string.TapToRevoke);
         }
     }
@@ -177,12 +201,62 @@ public class Options extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         TextView consentButton = (TextView) findViewById(R.id.ConsentButton);
-
         editor.putBoolean("Consent?", false);
         editor.commit();
         consentButton.setText(R.string.ConsentRevoked);
         consentButton.setTextColor(getResources().getColor(R.color.positiveResult));
         consentButton.setClickable(false);
+    }
 
+    /**
+     * Saves notifications preference and changes text to give feedback through UI.
+     * TODO:: do proper testing of this, it currently changes the sharedPrefs, but we don't know if it actually sets a weekly alarm, because it hasn't been a week
+     */
+    public void onClickNotifSave(View v) {
+        final TextView save = (TextView) findViewById(R.id.NotifSave);
+        SeekBar sb = (SeekBar) findViewById(R.id.NotifSlider);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putInt("noteSetting", sb.getProgress());
+
+        //TODO:: if we want to make time of day dynamic, we can change this
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent = new Intent();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent.cancel();
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+
+        intent = new Intent(this, MyReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        switch (sb.getProgress()) {
+            case 1:
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                break;
+            case 2:
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+                break;
+            default:
+                break;
+        }
+
+        editor.commit();
+        save.setText(R.string.SAVED);
+        save.setTextColor(getResources().getColor(R.color.positiveResult));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                save.setText(R.string.SAVE);
+                save.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        }, 1500);
     }
 }
