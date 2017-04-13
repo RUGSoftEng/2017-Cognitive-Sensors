@@ -47,7 +47,9 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
         DBHelper dbHelper= new DBHelper(this.context);
         UploadObject uploadObject = dbHelper.getUploadObjectsAfter(lastTime);
-
+        if(uploadObject == null) {
+            return null;
+        }
         Log.i("GSON_TEST", "Printing JSON of GameSessions");
 //        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Gson gson = new Gson();

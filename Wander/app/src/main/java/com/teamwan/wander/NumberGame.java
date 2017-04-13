@@ -336,7 +336,9 @@ public class NumberGame extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
-            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
+//            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
+//            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber, questionResult));
+            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber + 3*(questionID-1)-1, questionResult));
         }
     }
 

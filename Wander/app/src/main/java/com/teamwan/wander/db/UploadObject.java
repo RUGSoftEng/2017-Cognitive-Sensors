@@ -31,7 +31,7 @@ public class UploadObject {
         return gameSessions;
     }
 
-    public void setGameSessionss(ArrayList<GameSession> gameSessions) {
+    public void setGameSessions(ArrayList<GameSession> gameSessions) {
         this.gameSessions = gameSessions;
     }
 }

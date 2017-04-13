@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -41,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String Q_COLUMN_QID = "QuestionId";
     public static final String Q_COLUMN_QUESTION = "Question";
+    public static final String Q_COLUMN_START = "Start";
     public static final String Q_COLUMN_TYPE = "QuestionType";
     public static final String Q_COLUMN_MCOPTIONS = "MCOptions";
 
@@ -77,8 +82,9 @@ public class DBHelper extends SQLiteOpenHelper {
             NG_COLUMN_NUMBER + " INTEGER" +")";
 
     private static final String CREATE_TABLE_Q = "CREATE TABLE " + Q_TABLE_NAME + "(" +
-            Q_COLUMN_QID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            Q_COLUMN_QID + " INTEGER," +
             Q_COLUMN_QUESTION + " TEXT," +
+            Q_COLUMN_START + " BOOLEAN," +
             Q_COLUMN_TYPE + " TEXT," +
             Q_COLUMN_MCOPTIONS + " TEXT" + ")";
 
@@ -112,6 +118,50 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MCQA_TABLE_NAME);
         // create new tables
         onCreate(db);
+    }
+
+    public void insertQuestions(ArrayList<Question> questions){
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(Question q : questions){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(Q_COLUMN_QID, q.getQuestionId());
+            contentValues.put(Q_COLUMN_QUESTION, q.getQuestion());
+            contentValues.put(Q_COLUMN_START, q.isStart());
+            contentValues.put(Q_COLUMN_TYPE, q.getType());
+            if(q.getType() == "MC"){
+                Gson gson = new Gson();
+                String answers = gson.toJson(q.getMcAnswers());
+                contentValues.put(Q_COLUMN_MCOPTIONS, answers);
+            }
+            db.insert(Q_TABLE_NAME, null, contentValues);
+        }
+        db.close();
+    }
+
+    public ArrayList<Question> getQuestions(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select * from "+ Q_TABLE_NAME, null);
+        ArrayList<Question> questions = new ArrayList<Question>();
+
+        if(res.moveToFirst()) {
+            do {
+                Question q = new Question(res.getInt(res.getColumnIndex(Q_COLUMN_QID)),
+                        (res.getInt(res.getColumnIndex(Q_COLUMN_START)) != 0),
+                        res.getString(res.getColumnIndex(Q_COLUMN_TYPE)),
+                        res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)));
+                if (q.getType() == "MC") {
+                    Gson gson = new Gson();
+                    String json = res.getString(res.getColumnIndex(Q_COLUMN_MCOPTIONS));
+                    Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+                    ArrayList<String> answers = gson.fromJson(json, listType);
+
+                    q.setMcAnswers(answers);
+                }
+                questions.add(q);
+            } while (res.moveToNext());
+        }
+        return questions;
     }
 
     //Method to introduce values in the Game session table
@@ -218,6 +268,9 @@ public class DBHelper extends SQLiteOpenHelper {
             }while (res.moveToNext());
         }
         db.close();
+        if(gameSessions.size() == 0){
+            return null;
+        }
         UploadObject uploadObject = new UploadObject(gameSessions.get(0).getUniqueID(context).hashCode(), gameSessions);
         return uploadObject;
     }

@@ -26,6 +26,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                 // Connected to WIFI
                 Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
                 new DBUpload().execute(new DBpars(context)); //send the stored local data to server
+//                new DBDownload().execute(new DBpars(context)); //Download quesitons from database and store locally
 
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 // Connected to the mobile provider's data plan

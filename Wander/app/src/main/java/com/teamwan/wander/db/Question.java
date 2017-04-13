@@ -1,5 +1,8 @@
 package com.teamwan.wander.db;
 
+
+import java.util.ArrayList;
+
 /* Class that represensts a question object
 *
 * A question is represented by its id, the question itself and its type.
@@ -14,6 +17,7 @@ public class Question {
     private String type;
     private String question;
     private int nextQuestion;
+    private ArrayList<String> mcAnswers;
 
     public Question(int questionId, boolean start, String type, String question) {
         this.questionId = questionId;
@@ -59,4 +63,11 @@ public class Question {
 
     public void setNextQuestion(int nextQuestion) {this.nextQuestion = nextQuestion; }
 
+    public ArrayList<String> getMcAnswers() {
+        return mcAnswers;
+    }
+
+    public void setMcAnswers(ArrayList<String> mcAnswers) {
+        this.mcAnswers = mcAnswers;
+    }
 }
