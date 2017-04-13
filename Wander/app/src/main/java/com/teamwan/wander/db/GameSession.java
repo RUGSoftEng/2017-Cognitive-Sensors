@@ -10,6 +10,14 @@ import com.teamwan.wander.db.QuestionAnswer;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * This class represents a game session object.
+ *
+ * In this class the player id is stored alongside of which game was played at what certain
+ * point of time. Together this three types of data create a unique game session which
+ * will be represented as game session id in the other tables of the database.
+ */
+
 public class GameSession{
 
     private Long time;
@@ -17,7 +25,6 @@ public class GameSession{
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<NumberGuess>();
     private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<QuestionAnswer>();
     private int gameSessionId;
-
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
 
@@ -70,12 +77,15 @@ public class GameSession{
         this.questionAnswers = questionAnswers;
     }
 
-    public void addQuestionAnswers(QuestionAnswer qa){
+    public void addQuestionAnswer(QuestionAnswer qa){
         this.questionAnswers.add(qa);
     }
 
-
-    //Method to get a universal unique identifier (UUID)
+    /**
+     * getUniqueID creates an universally unique identifier (UUID), which is used for representing the playerID
+     * @param context
+     * @return
+     */
     public synchronized static String getUniqueID(Context context) {
         if (uniqueID == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(
@@ -94,10 +104,14 @@ public class GameSession{
     }
 
 
-    public void save(Context context){
+    // Method to insert all the data into the local database.
 
+    /**
+     * Saves this gameSession into the local database, during which the local gameSessionID is generated, which is used when saving the data in the other tables.
+     * @param context
+     */
+    public void save(Context context){
         DBHelper dbHelper = new DBHelper(context);
-        //TODO dbHelper insertGameSession should also store the numberGuesses and questionAnswers, without a seperate external call
         int gameSessionID = dbHelper.insertGameSession(this);
         this.setGameSessionId(gameSessionID);
         dbHelper.insertNumberGuesses(this);

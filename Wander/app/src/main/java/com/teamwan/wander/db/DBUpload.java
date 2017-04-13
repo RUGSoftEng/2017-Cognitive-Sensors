@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -23,42 +22,46 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Task that can be executed to upload every new gameSession since last upload.
+ */
 
-//TODO Replace hardcoded strings by string.xml declaration
 public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
     private static final String API_URL = "https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec";
+    private static final String API_PARAM = "data";
+    private static final String LAST_UPLOAD = "last upload";
     Context context;
 
     protected void onPreExecute(){}
 
     @Override
     protected Void doInBackground(DBpars... params) {
-        this.context = params[0].context;
-        Log.i("DBUPLOAD_DOINBACKGROUND", "DBUpload.doInBackground() executing");
+
+        this.context = params[0].getContext();
+        Log.i("DBUPLOAD", "DBUpload.doInBackground() executing");
+
         //Timestamp of last time data was uploaded
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
-        Long lastTime=prefs.getLong("last upload",0);
+        Long lastTime=prefs.getLong(LAST_UPLOAD,0);
 
         //Measure this before data upload, so data generated during the uploading isn't skipped.
         Long newTime = System.currentTimeMillis();
 
         DBHelper dbHelper= new DBHelper(this.context);
-        UploadObject uploadObject = dbHelper.getUploadObjectsAfter(lastTime);
+        UploadObject uploadObject = dbHelper.getUploadObjectAfter(lastTime);
+        if(uploadObject == null) {
+            return null;
+        }
 
-        Log.i("GSON_TEST", "Printing JSON of GameSessions");
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Gson gson = new Gson();
         String json = gson.toJson(uploadObject);
-        // Log and System.out.println cut off after 1024chars I think, so debug and a breakpoint at the print to inspect the json string
-          Log.i("GSON_TEST", json);
-//        System.out.println("GSONTEST\n"+json);
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(API_URL);
 
         List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
-        nvp.add(new BasicNameValuePair("data",json));
+        nvp.add(new BasicNameValuePair(API_PARAM,json));
 
         try {
             post.setEntity(new UrlEncodedFormEntity(nvp, HTTP.UTF_8));
@@ -75,12 +78,11 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
         //Update lastTime after updating
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong("last upload", newTime);
+        editor.putLong(LAST_UPLOAD, newTime);
         editor.apply();
         return null;
     }
 
     protected void onPostExecute(String result) {
-        Toast.makeText(this.context, "Succesfully uploaded data", Toast.LENGTH_SHORT).show();
     }
 }

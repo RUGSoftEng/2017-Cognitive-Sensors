@@ -69,20 +69,20 @@ public class InGameMultiQuestion extends AppCompatActivity {
 
         checkBoxes = new ArrayList<CheckBox>();
 
-        int NUMBER_OF_QUESTIONS = 5;
+        int numberOfQuestions = 5;
 
         if (questionID == 0) {
-            NUMBER_OF_QUESTIONS = 6;
+            numberOfQuestions = 6;
         }
         String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID + 1) + "Answers", "array", getPackageName()));
-        for(int i = 1; i <= NUMBER_OF_QUESTIONS; i++)
+        for(int i = 1; i <= numberOfQuestions; i++)
         {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
             cb.setText(answers[i-1]);
             checkBoxes.add(cb);
         }
 
-        for(int i = NUMBER_OF_QUESTIONS + 1; i <= 6; i++) {
+        for(int i = numberOfQuestions + 1; i <= 6; i++) {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
             cb.setVisibility(View.INVISIBLE);
         }

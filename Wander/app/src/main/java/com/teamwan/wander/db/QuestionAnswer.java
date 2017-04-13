@@ -1,8 +1,9 @@
 package com.teamwan.wander.db;
 
-/**
- * Created by lore on 23/03/2017.
- */
+/* Class that represents a question's answer object
+*
+* This stores the answer given by the player to a single question, including the time it was answered.
+*/
 
 public class QuestionAnswer {
 
