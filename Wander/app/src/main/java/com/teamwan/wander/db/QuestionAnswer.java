@@ -1,9 +1,8 @@
 package com.teamwan.wander.db;
 
-/* Class that represensts a question's answer object
+/* Class that represents a question's answer object
 *
-*In this class we can find the answers given by the player to the questions that were
-*asked during the game session and at what time the answer was given.
+* This stores the answer given by the player to a single question, including the time it was answered.
 */
 
 public class QuestionAnswer {

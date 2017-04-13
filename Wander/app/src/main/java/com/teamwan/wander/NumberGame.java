@@ -336,23 +336,15 @@ public class NumberGame extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
             System.out.println(questionResult + " " + questionID);
-//            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
-//            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber, questionResult));
             gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber + 3*(questionID-1)-1, questionResult));
         }
     }
 
     /**
-     * TODO:: comment these methods
+     * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     public void saveGameSession(){
-        //TODO remove toasts
-        Toast.makeText(this, "Starting saving data", Toast.LENGTH_SHORT).show();
         gs.save(this);
-        //TODO remove toasts
-        Toast.makeText(this, "Completed saving data", Toast.LENGTH_SHORT).show();
-
-        //Upload data if connected to wifi
         new DBUpload().execute(new DBpars(this));
     }
 }

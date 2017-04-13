@@ -81,8 +81,11 @@ public class GameSession{
         this.questionAnswers.add(qa);
     }
 
-
-    //Method to get a universal unique identifier (UUID) for representing the player Id
+    /**
+     * getUniqueID creates an universally unique identifier (UUID), which is used for representing the playerID
+     * @param context
+     * @return
+     */
     public synchronized static String getUniqueID(Context context) {
         if (uniqueID == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(
@@ -102,10 +105,13 @@ public class GameSession{
 
 
     // Method to insert all the data into the local database.
-    public void save(Context context){
 
+    /**
+     * Saves this gameSession into the local database, during which the local gameSessionID is generated, which is used when saving the data in the other tables.
+     * @param context
+     */
+    public void save(Context context){
         DBHelper dbHelper = new DBHelper(context);
-        //TODO dbHelper insertGameSession should also store the numberGuesses and questionAnswers, without a seperate external call
         int gameSessionID = dbHelper.insertGameSession(this);
         this.setGameSessionId(gameSessionID);
         dbHelper.insertNumberGuesses(this);

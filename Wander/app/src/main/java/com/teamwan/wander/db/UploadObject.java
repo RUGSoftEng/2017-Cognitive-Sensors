@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Class that represents the final object that is going to be sent to the server database.
- * It is composed by the player id and by the corresponding game sessions which include the time spent playing,
- * game type, the number guessses and the corresponding question's answers.
+ * It is composed by the player id and by the corresponding game sessions, game types, the numberGuesses and the corresponding question's answers.
  */
 
 public class UploadObject {

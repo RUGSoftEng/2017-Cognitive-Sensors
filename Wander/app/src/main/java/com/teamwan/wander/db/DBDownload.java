@@ -33,7 +33,7 @@ public class DBDownload extends AsyncTask<DBpars, Void, Void> {
     @Override
     protected Void doInBackground(DBpars... params) {
 
-        this.context = params[0].context;
+        this.context = params[0].getContext();
 //        Log.i("Download_DOINBACKGROUND", "DBUpload.doInBackground() executing");
 
 

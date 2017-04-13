@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.widget.Toast;
 
 /*
-* Class that checks whether there is wifi connection; if so, send the data to the server.
+* Class that checks whether there is wifi connection; if so, send the data to the server
 */
 
 //TODO for class: Remove toasts
@@ -21,20 +21,12 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        if (activeNetwork != null) { // if we are connected to the internet
+        if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // Connected to WIFI
                 Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
                 new DBUpload().execute(new DBpars(context)); //send the stored local data to server
-//                new DBDownload().execute(new DBpars(context)); //Download quesitons from database and store locally
-
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                // Connected to the mobile provider's data plan
-                Toast.makeText(context, "Connected to " + activeNetwork.getTypeName() + ", not uploading data", Toast.LENGTH_LONG).show();
             }
-        } else {
-            // Not connected to the internet
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show();
         }
 
     }

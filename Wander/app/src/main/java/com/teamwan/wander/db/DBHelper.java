@@ -14,9 +14,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
- * Class that represents the SQLite database
- *
- * All the tables and its corresponding rows are stored.
+ * Class that represents the SQLite database, and contains methods to store and retrieve objects from the database.
  *
  */
 
@@ -120,6 +118,10 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Inserts the questions downloaded from the sheets into the server.
+     * @param questions
+     */
     public void insertQuestions(ArrayList<Question> questions){
         SQLiteDatabase db = this.getWritableDatabase();
         for(Question q : questions){
@@ -138,6 +140,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Returns all the questions from the database, including their multiple choice options if applicable.
+     * @return
+     */
     public ArrayList<Question> getQuestions(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -164,7 +170,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return questions;
     }
 
-    //Method to introduce values in the Game session table
+    /**
+     * Adds the passed @param gs to the GameSessions table in the local database.
+     * @param gs
+     * @return
+     */
     public int insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -177,7 +187,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return gameSessionID;
     }
 
-    //Method to introduce values in the Number guesses table
+    /**
+     * Adds the numberGuesses from the passed GameSessiosn @param gs to the numberGuesses table in the local database.
+     * @param gs
+     * @return
+     */
     public boolean insertNumberGuesses(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(NumberGuess ng : gs.getNumberGuesses()){
@@ -194,20 +208,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-   /* //Method to introduce values in the Questions table
-    public boolean insertQuestions(GameSession gs) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        for(Question q : gs.getQuestions()){
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(QA_COLUMN_GSID, gs.getGameSessionId());
-            contentValues.put(QA_COLUMN_QID, q.getQuestionId());
-            db.insert(QA_TABLE_NAME, null, contentValues);
-        }
-        db.close();
-        return true;
-    }
-*/
-    //Method to introduce values in the Question Answer table
+    /**
+     * Adds the question answers from the passed GameSessiosn @param gs to the questionAnswers table in the local database.
+     * @param gs
+     * @return
+     */
     public boolean insertQuestionAnswer(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(QuestionAnswer qa : gs.getQuestionAnswers()){
@@ -222,7 +227,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public UploadObject getUploadObjectsAfter(Long lastTime){
+    /**
+     * Fetches an uploadObject which contains all gameSessions after the passed @param lastTime from the local database. The playerID is passed on as well, so that the uploadObject contains every field needed to send to the server.
+     * @param lastTime
+     * @return
+     */
+    public UploadObject getUploadObjectAfter(Long lastTime){
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -274,21 +284,4 @@ public class DBHelper extends SQLiteOpenHelper {
         UploadObject uploadObject = new UploadObject(gameSessions.get(0).getUniqueID(context).hashCode(), gameSessions);
         return uploadObject;
     }
-
-//    public boolean updateGameSession(int playerId, Long time, String gameType) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(GS_COLUMN_PLAYERID, playerId);
-//        contentValues.put(GS_COLUMN_TIME, time);
-//        contentValues.put(GS_COLUMN_GAMETYPE, gameType);
-//        db.update(GS_TABLE_NAME, contentValues, GS_COLUMN_GSID +" = ? ", new String[]{GS_COLUMN_GSID});
-//        return true;
-//    }
-
-//    public Integer deleteGameSession(Integer id) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        return db.delete(GS_TABLE_NAME,
-//                GS_COLUMN_GSID +" = ? ", id.toString());
-//    }
-
 }
