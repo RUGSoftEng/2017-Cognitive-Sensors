@@ -9,4 +9,9 @@ The Android application files are located in /Wander. The application was develo
 ## Server
 For the server side, a Google Web App is used. This document can be found [here](https://docs.google.com/spreadsheets/d/11B4swCBJJOPQxJuCC7GZ-atJyUtk2wHHVclxLwEtkOI/edit#gid=978512187). The structure follows the ORM design file located in /Server. To send requests and data, [this URL](https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec) should be used. The following JSON structure is required to upload to the web app: 
 
-![JSON structure accepted by web app. This is also available in the architecture document.](https://raw.githubusercontent.com/RUGSoftEng/2017-Cognitive-Sensors/feature-readme/Server/JSON_structure.png)
+![JSON structure accepted by web app. This is also available in the architecture document.](Server/JSON_structure.png)
+
+## Setup
+
+### Server
+To set up the server, first create a new Google Spreadsheet. Add four sheets to the spreadsheet, called *GameSessions*, *NumberGuesses*, *QuestionAnswers* and *Questions*. The data will be stored in these sheets. Now open the scripteditor (*Extra*, *Scripteditor…*). Add the scripts in the folder [Server](Server) to the project. To deploy the app, click *Publish* and then *Implement as web app…*. This will give you a URL you can use for your application.
