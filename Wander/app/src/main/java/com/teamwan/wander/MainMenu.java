@@ -18,7 +18,6 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
@@ -151,7 +150,7 @@ public class MainMenu extends AppCompatActivity {
         mlc.futura = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         mlc.params = (LinearLayout.LayoutParams) mlc.body.getLayoutParams();
         mlc.body.setMovementMethod(new ScrollingMovementMethod());
-        mlc.text = new ArrayList<TextView>();
+        mlc.text = new ArrayList<>();
         mlc.text.add(mlc.title);
         mlc.text.add(mlc.body);
         mlc.text.add(mlc.accept);

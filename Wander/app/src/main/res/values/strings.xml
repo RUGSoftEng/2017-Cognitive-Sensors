@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Wander</string>
     <string name="DigitsDescription">You will see digits on the screen, and your task is to click each
-        digit as soon as it appears, but to withold your response when the digit is the number 3. We
+        digit as soon as it appears, but to withhold your response when the digit is the number 3. We
         know that people daydream. Every now and then, you will be asked about your thoughts just prior
         to the prompt. Please respond to those as accurately as possible.</string>
     <string name="DigitsTitle">Digits</string>

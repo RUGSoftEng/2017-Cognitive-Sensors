@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -67,7 +66,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
      */
     public void populateCheckBoxes() {
 
-        checkBoxes = new ArrayList<CheckBox>();
+        checkBoxes = new ArrayList<>();
 
         int numberOfQuestions = 5;
 
@@ -94,7 +93,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
      */
     public void onClickCheckBox (View v) {
         for (CheckBox cb : checkBoxes) {
-            if (!cb.equals((CheckBox) v) && cb.isChecked())
+            if (!cb.equals(v) && cb.isChecked())
                 cb.toggle();
         }
     }

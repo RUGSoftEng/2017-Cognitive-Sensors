@@ -22,8 +22,8 @@ public class GameSession{
 
     private Long time;
     private String gameType;
-    private ArrayList<NumberGuess> numberGuesses = new ArrayList<NumberGuess>();
-    private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<QuestionAnswer>();
+    private ArrayList<NumberGuess> numberGuesses = new ArrayList<>();
+    private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<>();
     private int gameSessionId;
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";

@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,8 +27,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -161,7 +160,7 @@ public class Options extends AppCompatActivity {
      *  Sets custom typefaces for all text.
      */
     private void setTypefaces() {
-        text = new ArrayList<TextView>();
+        text = new ArrayList<>();
         text.add((TextView) findViewById(R.id.OptionsTitle));
         text.add((TextView) findViewById(R.id.NotifFreqHead));
         text.add((TextView) findViewById(R.id.Never));
@@ -204,7 +203,7 @@ public class Options extends AppCompatActivity {
         editor.putBoolean("Consent?", false);
         editor.commit();
         consentButton.setText(R.string.ConsentRevoked);
-        consentButton.setTextColor(getResources().getColor(R.color.positiveResult));
+        consentButton.setTextColor(ContextCompat.getColor(this, R.color.positiveResult));
         consentButton.setClickable(false);
     }
 
@@ -250,12 +249,12 @@ public class Options extends AppCompatActivity {
 
         editor.commit();
         save.setText(R.string.SAVED);
-        save.setTextColor(getResources().getColor(R.color.positiveResult));
+        save.setTextColor(ContextCompat.getColor(this, R.color.positiveResult));
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
                 save.setText(R.string.SAVE);
-                save.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                save.setTextColor(ContextCompat.getColor(Options.this, R.color.colorPrimaryDark));
             }
         }, 1500);
     }

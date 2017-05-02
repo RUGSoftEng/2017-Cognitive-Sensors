@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
-import android.widget.Toast;
 
 import com.teamwan.wander.db.DBUpload;
 import com.teamwan.wander.db.DBpars;
@@ -63,7 +63,7 @@ public class NumberGame extends AppCompatActivity {
     private final Handler handle = new Handler();
 
     public enum GameState {
-        SUCCESS, NEUTRAL;
+        SUCCESS, NEUTRAL
     }
 
     /**
@@ -118,12 +118,12 @@ public class NumberGame extends AppCompatActivity {
         successCounter = 0;
         failCounter = 0;
 
-        questionSet = new ArrayList< Integer >();
+        questionSet = new ArrayList<>();
             questionSet.add(0);
             questionSet.add(0);
             questionSet.add(1);
 
-        questionIntervals = new ArrayList< Integer >();
+        questionIntervals = new ArrayList<>();
             questionIntervals.add(10);
             questionIntervals.add(20);
             questionIntervals.add(30);
@@ -262,7 +262,7 @@ public class NumberGame extends AppCompatActivity {
             currentNum = abs(rn.nextInt() % 10);
 
         numberDisplay.setText(Integer.toString(currentNum));
-        numberDisplay.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         gameState = GameState.NEUTRAL;
         timeNumberDisplayed = System.currentTimeMillis();
     }
