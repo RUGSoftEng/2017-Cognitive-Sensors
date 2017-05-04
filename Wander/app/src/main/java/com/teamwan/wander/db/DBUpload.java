@@ -60,7 +60,7 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(API_URL);
 
-        List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+        List<NameValuePair> nvp = new ArrayList<>(1);
         nvp.add(new BasicNameValuePair(API_PARAM,json));
 
         try {

@@ -64,7 +64,7 @@ public class DBDownload extends AsyncTask<DBpars, Void, Void> {
         }
 
         StringBuilder builder = new StringBuilder();
-        String temp = "";
+        String temp;
         try {
             while((temp = in.readLine())!= null){
                 builder.append(temp);
