@@ -2,9 +2,7 @@ package com.teamwan.wander;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

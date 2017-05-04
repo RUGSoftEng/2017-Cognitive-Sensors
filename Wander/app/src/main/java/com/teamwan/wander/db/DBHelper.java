@@ -130,7 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(Q_COLUMN_QUESTION, q.getQuestion());
             contentValues.put(Q_COLUMN_START, q.isStart());
             contentValues.put(Q_COLUMN_TYPE, q.getType());
-            if(q.getType() == "MC"){
+            if(q.getType().equals("MC")) {
                 Gson gson = new Gson();
                 String answers = gson.toJson(q.getMcAnswers());
                 contentValues.put(Q_COLUMN_MCOPTIONS, answers);
@@ -148,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res = db.rawQuery("select * from "+ Q_TABLE_NAME, null);
-        ArrayList<Question> questions = new ArrayList<Question>();
+        ArrayList<Question> questions = new ArrayList<>();
 
         if(res.moveToFirst()) {
             do {
@@ -156,7 +156,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         (res.getInt(res.getColumnIndex(Q_COLUMN_START)) != 0),
                         res.getString(res.getColumnIndex(Q_COLUMN_TYPE)),
                         res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)));
-                if (q.getType() == "MC") {
+                if (q.getType().equals("MC")) {
                     Gson gson = new Gson();
                     String json = res.getString(res.getColumnIndex(Q_COLUMN_MCOPTIONS));
                     Type listType = new TypeToken<ArrayList<String>>(){}.getType();
@@ -167,6 +167,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 questions.add(q);
             } while (res.moveToNext());
         }
+        res.close();
         return questions;
     }
 
@@ -180,7 +181,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
-        contentValues.put(GS_COLUMN_PLAYERID, gs.getUniqueID(context));
+        contentValues.put(GS_COLUMN_PLAYERID, GameSession.getUniqueID(context));
         //Cast without checks, will throw exception when more than MAX_INT gameSessions are played.
         int gameSessionID = (int) db.insert(GS_TABLE_NAME, null, contentValues);
         db.close();
@@ -237,7 +238,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);
-        ArrayList<GameSession> gameSessions = new ArrayList<GameSession>();
+        ArrayList<GameSession> gameSessions = new ArrayList<>();
 
         if(res.moveToFirst()){
             do{
@@ -262,6 +263,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         gs.addNumberGuess(ng);
                     }while (ngs.moveToNext());
                 }
+                ngs.close();
 
                 Cursor qac = db.rawQuery("select * from "+ QA_TABLE_NAME +" where " + QA_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
                 if(qac.moveToFirst()){
@@ -274,14 +276,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     }while (qac.moveToNext());
                 }
+                qac.close();
                 gameSessions.add(gs);
             }while (res.moveToNext());
         }
+        res.close();
         db.close();
         if(gameSessions.size() == 0){
             return null;
         }
-        UploadObject uploadObject = new UploadObject(gameSessions.get(0).getUniqueID(context).hashCode(), gameSessions);
+        UploadObject uploadObject = new UploadObject(GameSession.getUniqueID(context).hashCode(), gameSessions);
         return uploadObject;
     }
 }
