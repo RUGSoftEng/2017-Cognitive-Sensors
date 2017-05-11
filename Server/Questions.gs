@@ -25,5 +25,6 @@ function doGet(e) {
     }
     questions.push(object);
   }
-  return HtmlService.createHtmlOutput(JSON.stringify(questions));
+  return ContentService.createTextOutput(JSON.stringify(questions))
+    .setMimeType(ContentService.MimeType.JSON);
 }
