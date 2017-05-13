@@ -6,18 +6,17 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/FragTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:layout_marginTop="25dp"
         android:text="@string/ThisSession"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="36sp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/FragAvg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
@@ -27,7 +26,7 @@
         android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/FragAvgVal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
@@ -37,21 +36,33 @@
         android:textSize="40sp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/FragPerc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="@string/NoIncorrectTaps"
+        android:text="@string/CorrectTapPercentage"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/FragPercVal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0/0"
+        android:layout_marginBottom="20dp"
+        android:text="0%"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/FragTextNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="15dp"
+        android:text="Complete 5 more games to unlock next performance chart."
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp" />
 </LinearLayout>

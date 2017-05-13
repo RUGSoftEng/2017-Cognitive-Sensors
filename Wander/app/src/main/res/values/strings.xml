@@ -75,6 +75,7 @@
     <string name="AverageResponseTime">Average Response Time:</string>
     <string name="ThisSession">This Session:</string>
     <string name="NoIncorrectTaps">No. Incorrect Taps</string>
+    <string name="CorrectTapPercentage">Correct Tap Percentage</string>
 
 
 </resources>

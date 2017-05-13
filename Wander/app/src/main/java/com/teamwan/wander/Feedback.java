@@ -1,18 +1,14 @@
 package com.teamwan.wander;
 
-import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,8 +20,13 @@ import java.util.ArrayList;
 public class Feedback extends AppCompatActivity {
 
     private ArrayList<TextView> text;
+    int chartsUnlocked = 5;
 
-
+    FeedbackFragmentText page1;
+    FeedbackFragmentChart page2;
+    FeedbackFragmentChart page3;
+    FeedbackFragmentChart page4;
+    FeedbackFragmentChart page5;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -50,6 +51,8 @@ public class Feedback extends AppCompatActivity {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
+        initialiseFragments();
+        getData();
     }
 
     @Override
@@ -57,10 +60,19 @@ public class Feedback extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
     }
 
-
+    /**
+     * Initialises feedback data for the 5 fragments in the view pager.
+     */
+    private void initialiseFragments(){
+        page1 = new FeedbackFragmentText();
+        page2 = new FeedbackFragmentChart();
+        page3 = new FeedbackFragmentChart();
+        page4 = new FeedbackFragmentChart();
+        page5 = new FeedbackFragmentChart();
+    }
 
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * A simple pager adapter that returns 5 ScreenSlidePageFragment objects, in
      * sequence. Created from Google documentation example code.
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -70,12 +82,24 @@ public class Feedback extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new FeedbackFragment();
+            switch (position) {
+                case 0:
+                    return page1;
+                case 1:
+                    return page2;
+                case 2:
+                    return page3;
+                case 3:
+                    return page4;
+                case 4:
+                    return page5;
+            }
+            return new FeedbackFragmentText();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return chartsUnlocked;
         }
     }
 
@@ -94,4 +118,29 @@ public class Feedback extends AppCompatActivity {
        }
    }
 
+
+    /**
+     * todo: Creates line chart from data and returns bitmap.
+     */
+//    public Bitmap createLineChart(){
+//
+//    }
+
+    /**
+     * todo: Creates bar chart from data and returns bitmap.
+     */
+//    public Bitmap createBarChart(){
+//
+//    }
+
+    /**
+     * todo: Fetches required data. Must set chartsUnlocked to at least one.
+     * If the corresponding charts are unlocked, these relevant charts should
+     * be created with the above methods.
+     */
+    public void getData(){
+
+        //use setVals to set feedback for each page <= chartsUnlocked
+        //eg: page1.setVals(0.50,90,5);
+    }
 }
