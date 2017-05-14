@@ -1,6 +1,7 @@
 package com.teamwan.wander;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -127,18 +138,24 @@ public class Feedback extends AppCompatActivity {
      * todo: Creates line chart from data and returns bitmap.
      * @param type 0 if accuracy plot, 1 if response time plot
      */
-    public Bitmap createLineChart(int type){
-        Bitmap chart = null;
-        return chart;
+    public LineData createLineChart(int type){
+        List<Entry> entries = new ArrayList<Entry>();
+
+        // turn data into Entry objects
+
+        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+        dataSet.setColor(Color.RED);
+        LineData lineData = new LineData();
+        lineData.addDataSet(dataSet);
+        return lineData;
     }
 
     /**
      * todo: Creates bar chart from data and returns bitmap.
      * @param type 1 if accuracy plot, 0 if response time plot
      */
-    public Bitmap createBarChart(int type){
-        Bitmap chart = null;
-        return chart;
+    public BarData createBarChart(int type){
+        return new BarData();
     }
 
     /**

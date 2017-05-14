@@ -29,6 +29,5 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/xchart-3.3.0.jar')
     compile files('libs/mpandroidchartlibrary-2-2-4.jar')
 }

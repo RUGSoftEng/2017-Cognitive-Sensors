@@ -1,5 +1,6 @@
 package com.teamwan.wander;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,14 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 public class FeedbackFragmentChart extends Fragment {
 
     private TextView title;
     private TextView next;
-    private ImageView chart;
+    private Chart chart;
 
     private String titleString;
-    private Bitmap chartBitmap;
+    private ChartData chartData;
     private int nextChart;
 
     /**
@@ -37,7 +46,7 @@ public class FeedbackFragmentChart extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.FragChartTitle);
         next = (TextView) view.findViewById(R.id.FragChartNext);
-        chart = (ImageView) view.findViewById(R.id.FragChart);
+        chart = (Chart) view.findViewById(R.id.FragChart);
         initialiseFragment();
     }
 
@@ -50,9 +59,9 @@ public class FeedbackFragmentChart extends Fragment {
         next.setTypeface(tf);;
     }
 
-    public void setVals(String s, Bitmap bm, int n){
+    public void setVals(String s, ChartData c, int n){
         titleString = s;
-        chartBitmap = bm;
+        chartData = c;
         nextChart = n;
     }
 
@@ -61,7 +70,12 @@ public class FeedbackFragmentChart extends Fragment {
         if (titleString.length()>20) {
             title.setTextSize(26);
         }
-        if (chartBitmap!=null) { chart.setImageBitmap(chartBitmap); }
+        if (chartData instanceof LineData) {
+            chart.setData((LineData) chartData);
+            chart.invalidate();
+        } else {
+            chart.setData((BarData) chartData);
+        }
         if (nextChart<1) {
             next.setText("Next performance chart unlocked!  >");
             next.setTextColor(getResources().getColor(R.color.positiveResult));

@@ -17,10 +17,10 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="36sp" />
 
-    <ImageView
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/FragChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginBottom="25dp"
         android:layout_marginTop="10dp" />
 
