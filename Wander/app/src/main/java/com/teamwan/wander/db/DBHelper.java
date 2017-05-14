@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class that represents the SQLite database, and contains methods to store and retrieve objects from the database.
@@ -119,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Inserts the questions downloaded from the sheets into the server.
+     * Inserts the questions into the local database.
      * @param questions
      */
     public void insertQuestions(ArrayList<Question> questions){
@@ -129,10 +130,10 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(Q_COLUMN_QID, q.getQuestionId());
             contentValues.put(Q_COLUMN_QUESTION, q.getQuestion());
             contentValues.put(Q_COLUMN_START, q.isStart());
-            contentValues.put(Q_COLUMN_TYPE, q.getType());
-            if(q.getType().equals("MC")) {
+            contentValues.put(Q_COLUMN_TYPE, q.getQuestionType());
+            if(Objects.equals("MC", q.getQuestionType())) {
                 Gson gson = new Gson();
-                String answers = gson.toJson(q.getMcAnswers());
+                String answers = gson.toJson(q.getAnswers());
                 contentValues.put(Q_COLUMN_MCOPTIONS, answers);
             }
             db.insert(Q_TABLE_NAME, null, contentValues);
@@ -141,7 +142,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns all the questions from the database, including their multiple choice options if applicable.
+     * Empties the questions table and inserts the questions into the local database.
+     * @param questions
+     */
+    public void overwriteQuestions(ArrayList<Question> questions){
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Drop and recreate to reset possible auto-increments
+        db.execSQL("DROP TABLE IF EXISTS " + Q_TABLE_NAME);
+        db.execSQL(CREATE_TABLE_Q);
+        db.close();
+        insertQuestions(questions);
+    }
+
+    /**
+     * Returns all questions from the database, including their multiple choice options if applicable.
      * @return
      */
     public ArrayList<Question> getQuestions(){
@@ -156,13 +170,13 @@ public class DBHelper extends SQLiteOpenHelper {
                         (res.getInt(res.getColumnIndex(Q_COLUMN_START)) != 0),
                         res.getString(res.getColumnIndex(Q_COLUMN_TYPE)),
                         res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)));
-                if (q.getType().equals("MC")) {
+                if (Objects.equals("MC", q.getQuestionType())) {
                     Gson gson = new Gson();
                     String json = res.getString(res.getColumnIndex(Q_COLUMN_MCOPTIONS));
                     Type listType = new TypeToken<ArrayList<String>>(){}.getType();
                     ArrayList<String> answers = gson.fromJson(json, listType);
 
-                    q.setMcAnswers(answers);
+                    q.setAnswers(answers);
                 }
                 questions.add(q);
             } while (res.moveToNext());
