@@ -21,6 +21,10 @@ public class FeedbackFragmentText extends Fragment {
     private TextView percVal;
     private TextView next;
 
+    private int nextChart;
+    private int accuracy;
+    private double response;
+
     /**
      * Sets the view for the fragment when created. Taken from Google/Android documentation
      * example code.
@@ -42,6 +46,18 @@ public class FeedbackFragmentText extends Fragment {
         perc = (TextView) view.findViewById(R.id.FragPerc);
         percVal = (TextView) view.findViewById(R.id.FragPercVal);
         next = (TextView) view.findViewById(R.id.FragTextNext);
+        initialiseFragment();
+    }
+
+    private void initialiseFragment(){
+        percVal.setText(accuracy + "%");
+        avgVal.setText(Double.toString(response) + "s");
+        if (nextChart<1) {
+            next.setText("Next performance chart unlocked!  >");
+            next.setTextColor(getResources().getColor(R.color.positiveResult));
+        } else {
+            next.setText("Complete " + nextChart + " more games to unlock the next performance chart.");
+        }
         setTypefaces();
     }
 
@@ -64,14 +80,9 @@ public class FeedbackFragmentText extends Fragment {
      * @param perc An int representing correct tap percentage.
      * @param n An int representing the number of games required to unlock the next chart.
      */
-    public void setVals(float avg, int perc, int n){
-        avgVal.setText(Float.toString(avg) + "s");
-        percVal.setText(perc + "%");
-        if (n<1) {
-            next.setText("Next performance chart unlocked!  >");
-            next.setTextColor(getResources().getColor(R.color.positiveResult));
-        } else {
-            next.setText("Complete " + n + " more games to unlock the next performance chart.");
-        }
+    public void setVals(double avg, int perc, int n){
+        response = avg;
+        accuracy = perc;
+        nextChart = n;
     }
 }

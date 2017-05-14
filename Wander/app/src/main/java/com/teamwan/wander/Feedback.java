@@ -46,13 +46,12 @@ public class Feedback extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
 
         setTypefaces();
-
+        chartsUnlocked = Math.min(1 + fetchSessions()/6, 5);
         mPager = (ViewPager) findViewById(R.id.FeedbackContent);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
         initialiseFragments();
-        getData();
     }
 
     @Override
@@ -69,6 +68,11 @@ public class Feedback extends AppCompatActivity {
         page3 = new FeedbackFragmentChart();
         page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
+        page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
+        page2.setVals("Last 6 Sessions", createLineChart(0), 12-fetchSessions());
+        page3.setVals("Last 12 Sessions", createLineChart(1), 18-fetchSessions());
+        page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0), 24-fetchSessions());
+        page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1), Integer.MAX_VALUE);
     }
 
     /**
@@ -121,26 +125,40 @@ public class Feedback extends AppCompatActivity {
 
     /**
      * todo: Creates line chart from data and returns bitmap.
+     * @param type 0 if accuracy plot, 1 if response time plot
      */
-//    public Bitmap createLineChart(){
-//
-//    }
+    public Bitmap createLineChart(int type){
+        Bitmap chart = null;
+        return chart;
+    }
 
     /**
      * todo: Creates bar chart from data and returns bitmap.
+     * @param type 1 if accuracy plot, 0 if response time plot
      */
-//    public Bitmap createBarChart(){
-//
-//    }
+    public Bitmap createBarChart(int type){
+        Bitmap chart = null;
+        return chart;
+    }
 
     /**
-     * todo: Fetches required data. Must set chartsUnlocked to at least one.
-     * If the corresponding charts are unlocked, these relevant charts should
-     * be created with the above methods.
+     * todo: Fetches number of sessions that the player has completed
      */
-    public void getData(){
+    public int fetchSessions(){
+        int sessions = 24;
+        //get total number of sessions here
+        return sessions;
+    }
 
-        //use setVals to set feedback for each page <= chartsUnlocked
-        //eg: page1.setVals(0.50,90,5);
+    public double fetchResponse(){
+        double response = 1.25;
+        //get avg. response time for the session here
+        return response;
+    }
+
+    public int fetchAccuracy(){
+        int accuracy = 95;
+        //get tap accuracy here
+        return accuracy;
     }
 }
