@@ -10,20 +10,21 @@ function doGet(e) {
   // Add the questions one by one
   for (var y = 1; y < questionData.length; y++) {
     var object = {};
-    object["Start"] = questionData[y][1];
-    object["NextQuestion"] = questionData[y][2];
-    object['Question'] = questionData[y][3];
-    object['QuestionType'] = questionData[y][4];
-    if (object['QuestionType'] === 'MC') {
-      object['Answers'] = [];
+    object["start"] = questionData[y][1];
+    object["nextQuestion"] = questionData[y][2];
+    object['question'] = questionData[y][3];
+    object['questionType'] = questionData[y][4];
+    if (object['questionType'] === 'MC') {
+      object['answers'] = [];
       // Add the multiple choices
       var x = 5;
       while (questionData[y][x] !== undefined && questionData[y][x] !== '') {
-        object['Answers'].push(questionData[y][x]);
+        object['answers'].push(questionData[y][x]);
         x++;
       }
     }
     questions.push(object);
   }
-  return HtmlService.createHtmlOutput(JSON.stringify(questions));
+  return ContentService.createTextOutput(JSON.stringify(questions))
+    .setMimeType(ContentService.MimeType.JSON);
 }
