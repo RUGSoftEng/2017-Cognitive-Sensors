@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MCQA_COLUMN_ANSWER = "Answer";
 
 
-    public Context context;
+    private Context context;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -243,11 +243,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Fetches an uploadObject which contains all gameSessions after the passed @param lastTime from the local database. The playerID is passed on as well, so that the uploadObject contains every field needed to send to the server.
+     * Returns an ArrayList<GameSession> which contains all gameSessions after a certain timestamp.
      * @param lastTime
      * @return
      */
-    public UploadObject getUploadObjectAfter(Long lastTime){
+    public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
+
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -257,19 +258,15 @@ public class DBHelper extends SQLiteOpenHelper {
         if(res.moveToFirst()){
             do{
                 GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),
-                                                 res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
+                        res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
 
                 Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
-//                Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME, null);
-                //DEBUG SQLiteQuery: select * from NumberGuesses where GameSessionId = 15
-                //DEBUG Above SQL statement returns an empty result, whereas the sql statement without the "+'where " + NG_COLUMN_GSID +" = " + gs.getGameSessionId() + """ succesfully returns every numberguess.
-                //DEBUG ngs.moveToFirst() is false
                 if(ngs.moveToFirst()){
                     do {
                         NumberGuess ng = new NumberGuess(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_NUMBER)),
-                                                                    ngs.getInt(ngs.getColumnIndex(NG_COLUMN_ISGO))!=0,
-                                                                    ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
+                                ngs.getInt(ngs.getColumnIndex(NG_COLUMN_ISGO))!=0,
+                                ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
                         ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
                         Log.d("GAMESESSIONID", ""+ngs.getInt(ngs.getColumnIndex(NG_COLUMN_GSID)));
@@ -283,8 +280,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(qac.moveToFirst()){
                     do{
                         QuestionAnswer qa = new QuestionAnswer(qac.getLong(qac.getColumnIndex(QA_COLUMN_TIME)),
-                                                               qac.getInt(qac.getColumnIndex(QA_COLUMN_QID)),
-                                                               qac.getInt(qac.getColumnIndex(QA_COLUMN_ANSWER)));
+                                qac.getInt(qac.getColumnIndex(QA_COLUMN_QID)),
+                                qac.getInt(qac.getColumnIndex(QA_COLUMN_ANSWER)));
 
                         gs.addQuestionAnswer(qa);
 
@@ -299,7 +296,21 @@ public class DBHelper extends SQLiteOpenHelper {
         if(gameSessions.size() == 0){
             return null;
         }
-        UploadObject uploadObject = new UploadObject(GameSession.getUniqueID(context).hashCode(), gameSessions);
-        return uploadObject;
+        return gameSessions;
+    }
+
+    /**
+     * Fetches an uploadObject which contains all gameSessions after the passed @param lastTime from the local database. The playerID is passed on as well, so that the uploadObject contains every field needed to send to the server.
+     * @param lastTime
+     * @return
+     */
+    public UploadObject getUploadObjectAfter(Long lastTime){
+        ArrayList<GameSession> gameSessions = getGameSessionsAfter(lastTime);
+        if(gameSessions.size() == 0) {
+            return null;
+        } else {
+            UploadObject uploadObject = new UploadObject(GameSession.getUniqueID(context).hashCode(), gameSessions);
+            return uploadObject;
+        }
     }
 }
