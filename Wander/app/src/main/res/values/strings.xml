@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Wander</string>
+    <string name="API_URL">https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec</string>
     <string name="DigitsDescription">You will see digits on the screen, and your task is to click each
         digit as soon as it appears, but to withhold your response when the digit is the number 3. We
         know that people daydream. Every now and then, you will be asked about your thoughts just prior
@@ -64,8 +65,18 @@
     </string-array>
 
     <string name="title_activity_info">InfoActivity</string>
-    <string name="SAVE" >SAVE</string>
+    <string name="SAVE">SAVE</string>
     <string name="SAVED">SAVED</string>
+
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="YourFeedback">Your Feedback</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="AverageResponseTime">Average Response Time:</string>
+    <string name="ThisSession">This Session:</string>
+    <string name="NoIncorrectTaps">No. Incorrect Taps</string>
+    <string name="CorrectTapPercentage">Correct Tap Percentage</string>
 
 
 </resources>
