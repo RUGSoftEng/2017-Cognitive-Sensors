@@ -1,9 +1,10 @@
-/*
-Ashton Spina
-20/03/2017
-
-This class is a class for questions to be asked and
-will be popped up to ask questions
+/**
+ *  This class is a class for questions to be asked and
+ *  will be popped up to ask questions
+ *
+ * @author  Ashton Spina
+ * @version 1.1
+ * @since   2017-05-15
  */
 package com.teamwan.wander;
 
@@ -15,6 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.teamwan.wander.db.DBHelper;
+import com.teamwan.wander.db.Question;
+
+import java.util.ArrayList;
 
 /**
  * Created by Ashton Spina on 20-Mar-17.
@@ -35,8 +41,8 @@ public class InGameSliderQuestion extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             questionID = extras.getInt("questionID");
-            String[] questions = getResources().getStringArray(R.array.Questions);
-            questionDisplay.setText(questions[questionID]);
+            ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+            questionDisplay.setText(questionList.get(questionID).getQuestion());
         }
         else{
             questionDisplay.setText("No Question to Display");
@@ -73,7 +79,9 @@ public class InGameSliderQuestion extends AppCompatActivity {
         finish();
     }
 
-    //sends user back to main menu when quit button is clicked
+    /**
+     * Sends user back to main menu when quit button is clicked
+     */
     public void onClickQuit(View v){
         setResult(Activity.RESULT_OK, new Intent().putExtra("choice", -1));
         finish();
