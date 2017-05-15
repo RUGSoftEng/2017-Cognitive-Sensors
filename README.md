@@ -9,11 +9,13 @@ The Android application files are located in 2017-Cognitive-Sensors/Wander. The 
 If you've never used Android Studio before there are a few things to note.  Access files from the project on the far left set of tabs under "Project" and then all the code is available, and the Java code specifically under the package that is NOT labelled (androidTest) or (test).  In order to test code you should configure a virtual phone and run it on there.  You can also put your personal android phone in developer mode and test code on there which is a lot quicker to setup.
 
 [You can find documentation on the emulator here](https://developer.android.com/studio/run/emulator.html)
+
 [You can find documentation on developer mode here](https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/)
 
 Something to note: If you're not completely up to date with your Android Studio, particularly Gradle, your builds might encounter issues.  To avoid this please just update everything before you even clone the repository (if you've just downloaded the software suite you're fine).  Also, you must wait for the Gradle build to finish before you can run the app, this can take a few minutes the first time you open it.
 
 [You can find documentation on updating Android Studio here](https://developer.android.com/studio/intro/update.html)
+
 [You can find documentation on Gradle here](https://developer.android.com/studio/releases/gradle-plugin.html)
 
 ## Server
