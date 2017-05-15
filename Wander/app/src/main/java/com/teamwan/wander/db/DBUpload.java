@@ -56,6 +56,7 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
         Gson gson = new Gson();
         String json = gson.toJson(uploadObject);
+        Log.i("DBUpload", json);
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(API_URL);
