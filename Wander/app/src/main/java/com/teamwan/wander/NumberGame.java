@@ -25,10 +25,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.DBUpload;
 import com.teamwan.wander.db.DBpars;
 import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.NumberGuess;
+import com.teamwan.wander.db.Question;
 import com.teamwan.wander.db.QuestionAnswer;
 
 import static java.lang.Math.abs;
@@ -81,19 +83,21 @@ public class NumberGame extends AppCompatActivity {
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
 
+        //testing getting questions from DB
+        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+        System.out.println("Question and Answers Should follow");
+        for(Question q : questionList)
+        {
+            System.out.println(q.getQuestion());
+            ArrayList<String> ans = q.getAnswers();
+            for(String s : ans)
+            {
+                System.out.println(s);
+            }
+        }
+
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
         runGame();
-
-        final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
-        final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
-
-        handle.postDelayed(new Runnable(){
-            public void run(){
-                    System.out.println("this method is checking Success");
-                    checkSuccess();
-                handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
-            }
-        }, delay);
     }
 
     @Override

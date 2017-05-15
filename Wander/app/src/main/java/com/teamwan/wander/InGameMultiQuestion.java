@@ -9,6 +9,9 @@
 
 package com.teamwan.wander;
 
+import com.teamwan.wander.db.DBHelper;
+import com.teamwan.wander.db.Question;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -30,6 +33,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiple_choice_question_layout);
         TextView questionDisplay = (TextView)findViewById(R.id.textViewForQuestion);
+
         questionID = -1;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -38,7 +42,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
             questionDisplay.setText(questions[questionID]);
         }
         else{
-            questionDisplay.setText("No Question to Display");
+            questionDisplay.setText("No Question to Display, please report error");
         }
         populateCheckBoxes();
         initialiseTypefaces();
@@ -67,12 +71,14 @@ public class InGameMultiQuestion extends AppCompatActivity {
     public void populateCheckBoxes() {
 
         checkBoxes = new ArrayList<>();
-
+        //ArrayList<String> answers = ...getAnswers();
+        //int numberOfQuestions = answers.size();
         int numberOfQuestions = 5;
 
         if (questionID == 0) {
             numberOfQuestions = 6;
         }
+
         String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID + 1) + "Answers", "array", getPackageName()));
         for(int i = 1; i <= numberOfQuestions; i++)
         {

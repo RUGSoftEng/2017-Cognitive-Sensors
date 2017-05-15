@@ -10,6 +10,8 @@
 
 package com.teamwan.wander;
 
+
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -24,6 +26,9 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.teamwan.wander.db.DBDownload;
+import com.teamwan.wander.db.DBpars;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,6 +52,8 @@ public class MainMenu extends AppCompatActivity {
 
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
+
+        new DBDownload().execute(new DBpars(this)); //download questions from server
 
         mlc = new MenuLayoutComponents();
         initialiseMLC();
