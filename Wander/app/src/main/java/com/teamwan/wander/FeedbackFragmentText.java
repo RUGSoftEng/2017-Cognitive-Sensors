@@ -14,15 +14,8 @@ import android.widget.TextView;
  */
 public class FeedbackFragmentText extends Fragment {
 
-    private TextView title;
-    private TextView avg;
-    private TextView avgVal;
-    private TextView perc;
-    private TextView percVal;
-    private TextView next;
-
-    private int nextChart;
-    private int accuracy;
+    private TextView title, avg, avgVal, perc, percVal, next;
+    private int nextChart, accuracy;
     private double response;
 
     /**

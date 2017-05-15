@@ -21,8 +21,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 public class FeedbackFragmentChart extends Fragment {
 
-    private TextView title;
-    private TextView next;
+    private TextView title, next;
     private Chart chart;
 
     private String titleString;
@@ -76,7 +75,7 @@ public class FeedbackFragmentChart extends Fragment {
         } else {
             chart.setData((BarData) chartData);
         }
-        if (nextChart<1) {
+        if (nextChart < 1) {
             next.setText("Next performance chart unlocked!  >");
             next.setTextColor(getResources().getColor(R.color.positiveResult));
         } else {

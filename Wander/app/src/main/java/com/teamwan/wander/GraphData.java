@@ -16,13 +16,15 @@ import com.teamwan.wander.db.GameSession;
 public class GraphData extends Application {
     private ArrayList<Float> CTPAllSessions;
     private ArrayList<Float> ARTAllSessions;
+    private int totalSessions;
 
     public GraphData() {
-        DBHelper db = new DBHelper(getApplicationContext());
+        DBHelper db = new DBHelper(this);
 
         ArrayList<GameSession> gameSessions = db.getGameSessionsAfter((long)0);
+        totalSessions = gameSessions.size();
 
-        for(GameSession g:gameSessions) {
+        for(GameSession g : gameSessions) {
             float CTP = 0;
             float ART = 0;
             ArrayList<NumberGuess> ngs = g.getNumberGuesses();
@@ -49,5 +51,9 @@ public class GraphData extends Application {
 
     public float getLatestART() {
         return this.CTPAllSessions.get(CTPAllSessions.size());
+    }
+
+    public int getTotalGames(){
+        return totalSessions;
     }
 }

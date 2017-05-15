@@ -33,6 +33,8 @@ public class Feedback extends AppCompatActivity {
     private ArrayList<TextView> text;
     int chartsUnlocked = 5;
 
+    private GraphData data;
+
     FeedbackFragmentText page1;
     FeedbackFragmentChart page2;
     FeedbackFragmentChart page3;
@@ -56,8 +58,10 @@ public class Feedback extends AppCompatActivity {
 
         setContentView(R.layout.activity_feedback);
 
+        data = new GraphData();
+
         setTypefaces();
-        chartsUnlocked = Math.min(1 + fetchSessions()/6, 5);
+        chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);
         mPager = (ViewPager) findViewById(R.id.FeedbackContent);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -133,7 +137,6 @@ public class Feedback extends AppCompatActivity {
        }
    }
 
-
     /**
      * todo: Creates line chart from data and returns bitmap.
      * @param type 0 if accuracy plot, 1 if response time plot
@@ -162,19 +165,20 @@ public class Feedback extends AppCompatActivity {
      * todo: Fetches number of sessions that the player has completed
      */
     public int fetchSessions(){
-        int sessions = 24;
+        int sessions = data.getTotalGames();
+        //int sessions = 24;
         //get total number of sessions here
         return sessions;
     }
 
     public double fetchResponse(){
-        double response = 1.25;
+        double response = data.getLatestART();
         //get avg. response time for the session here
         return response;
     }
 
     public int fetchAccuracy(){
-        int accuracy = 95;
+        int accuracy = (int)data.getLatestCTP();
         //get tap accuracy here
         return accuracy;
     }
