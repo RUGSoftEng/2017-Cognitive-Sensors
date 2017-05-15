@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 /*
@@ -24,7 +25,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // Connected to WIFI
-                Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
+                // Toast.makeText(context, "Connected to " + activeNetwork.getTypeName()+", uploading data", Toast.LENGTH_LONG).show();
+                Log.i("ConnectivityReceiver", "Connected to WIFI, transferring data.");
                 new DBDownload().execute(new DBpars(context)); //download questions from server
                 new DBUpload().execute(new DBpars(context)); //send the stored local data to server
             }

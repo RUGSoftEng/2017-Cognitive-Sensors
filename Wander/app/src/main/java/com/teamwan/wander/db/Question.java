@@ -60,13 +60,23 @@ public class Question {
         this.question = question;
     }
 
+    /**
+     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
+     * Based on http://stackoverflow.com/a/31560007/3684659
+     * @return
+     */
     public int getNextQuestion() {
         if(nextQuestion == null || nextQuestion.equals("")){
-            return 0;
+            return -1;
         }
         return Integer.valueOf(nextQuestion);
     }
 
+    /**
+     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
+     * Based on http://stackoverflow.com/a/31560007/3684659
+     * @return
+     */
     public void setNextQuestion(int nextQuestion) {this.nextQuestion = Integer.toString(nextQuestion); }
 
     public ArrayList<String> getAnswers() {

@@ -45,15 +45,15 @@
         android:layout_alignStart="@+id/button" />
 
     <Button
-        android:text="Test MultiChoice"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button2"
         android:layout_alignLeft="@+id/button2"
         android:layout_alignStart="@+id/button2"
-        android:onClick="onClickMultiChoice" />
+        android:layout_below="@+id/button2"
+        android:layout_marginTop="52dp"
+        android:onClick="onClickFeedback"
+        android:text="Test Feedback" />
 
     <Button
         android:text="Back"
