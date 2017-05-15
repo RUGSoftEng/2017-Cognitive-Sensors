@@ -249,7 +249,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
 
-
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);

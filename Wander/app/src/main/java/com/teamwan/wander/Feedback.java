@@ -57,8 +57,8 @@ public class Feedback extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feedback);
-
-        data = new GraphData();
+        //TODO:: make the graph data not crash
+        //data = new GraphData();
 
         setTypefaces();
         chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);
@@ -81,7 +81,7 @@ public class Feedback extends AppCompatActivity {
         page1 = new FeedbackFragmentText();
         page2 = new FeedbackFragmentChart();
         page3 = new FeedbackFragmentChart();
-        page4 = new FeedbackFragmentChart();
+        page4 = new FeedbackFragmentChart();//TODO:: make page 4 not crash
         page5 = new FeedbackFragmentChart();
         page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
         page2.setVals("Last 6 Sessions", createLineChart(0), 12-fetchSessions());
@@ -165,20 +165,22 @@ public class Feedback extends AppCompatActivity {
      * todo: Fetches number of sessions that the player has completed
      */
     public int fetchSessions(){
-        int sessions = data.getTotalGames();
-        //int sessions = 24;
+        //int sessions = data.getTotalGames();
+        int sessions = 24;
         //get total number of sessions here
         return sessions;
     }
 
     public double fetchResponse(){
-        double response = data.getLatestART();
+        //double response = data.getLatestART();
+        double response = 1.25;
         //get avg. response time for the session here
         return response;
     }
 
     public int fetchAccuracy(){
-        int accuracy = (int)data.getLatestCTP();
+        //int accuracy = (int)data.getLatestCTP();
+        int accuracy = 95;
         //get tap accuracy here
         return accuracy;
     }
