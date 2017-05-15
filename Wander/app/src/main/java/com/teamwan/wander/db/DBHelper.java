@@ -269,7 +269,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                 ngs.getLong(ngs.getColumnIndex(NG_COLUMN_TIME)));
                         ng.setResponseTime(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_RESPONSETIME)));
                         ng.setCorrect(ngs.getInt(ngs.getColumnIndex(NG_COLUMN_CORRECT))!=0);
-                        Log.d("GAMESESSIONID", ""+ngs.getInt(ngs.getColumnIndex(NG_COLUMN_GSID)));
 
                         gs.addNumberGuess(ng);
                     }while (ngs.moveToNext());
