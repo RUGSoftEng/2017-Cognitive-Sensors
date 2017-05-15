@@ -102,9 +102,10 @@ public class DBDownload extends AsyncTask<DBpars, Void, String> {
 
         Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
         ArrayList<Question> questions = gson.fromJson(result, listType);
-//        ArrayList<Question> questions = gson.fromJson(response, listType);
+//      ArrayList<Question> questions = gson.fromJson(response, listType);
         dbHelper.overwriteQuestions(questions);
         ArrayList<Question> q2=dbHelper.getQuestions();
+        System.out.println("Assert questions follows:");
         assert(questions == q2);
 
     }

@@ -3,12 +3,12 @@ package com.teamwan.wander.db;
 
 import java.util.ArrayList;
 
-/* Class that represents a question object
+/** Class that represents a question object
 *
 * A question is represented by its questionID, the question itself and its questionType.
 * Other parameters are needed to store in the database which are the next question to be asked and
 * the boolean start that represents the start of a sequence of questions.
-* */
+* **/
 public class Question {
 
     private int questionId;
