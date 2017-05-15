@@ -1,10 +1,8 @@
-package main.java.com.teamwan.wander;
+package com.teamwan.wander;
 
 import android.app.Application;
 
 import java.util.ArrayList;
-import java.lang.Object.android.content.Context;
-
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.NumberGuess;
 import com.teamwan.wander.db.GameSession;
