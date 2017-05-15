@@ -3,8 +3,8 @@
  *  will be popped up to ask questions
  *
  * @author  Ashton Spina
- * @version 1.0
- * @since   2017-03-20
+ * @version 1.1
+ * @since   2017-05-15
  */
 
 package com.teamwan.wander;
@@ -38,8 +38,8 @@ public class InGameMultiQuestion extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             questionID = extras.getInt("questionID");
-            String[] questions = getResources().getStringArray(R.array.Questions);
-            questionDisplay.setText(questions[questionID]);
+            ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+            questionDisplay.setText(questionList.get(questionID).getQuestion());
         }
         else{
             questionDisplay.setText("No Question to Display, please report error");
@@ -67,23 +67,18 @@ public class InGameMultiQuestion extends AppCompatActivity {
 
     /**
      * Adds all checkboxes to array and sets the answer texts
+     * The checkboxes are populated with questions and answers from the database.
      */
     public void populateCheckBoxes() {
 
         checkBoxes = new ArrayList<>();
-        //ArrayList<String> answers = ...getAnswers();
-        //int numberOfQuestions = answers.size();
-        int numberOfQuestions = 5;
+        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+        int numberOfQuestions = questionList.get(questionID).getAnswers().size();
 
-        if (questionID == 0) {
-            numberOfQuestions = 6;
-        }
-
-        String[] answers = getResources().getStringArray(getResources().getIdentifier("Q" + Integer.toString(questionID + 1) + "Answers", "array", getPackageName()));
-        for(int i = 1; i <= numberOfQuestions; i++)
+        for(int i = 1; i <= numberOfQuestions; ++i)
         {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
-            cb.setText(answers[i-1]);
+            cb.setText(questionList.get(questionID).getAnswers().get(i - 1));
             checkBoxes.add(cb);
         }
 
@@ -91,7 +86,6 @@ public class InGameMultiQuestion extends AppCompatActivity {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
             cb.setVisibility(View.INVISIBLE);
         }
-
     }
 
     /**

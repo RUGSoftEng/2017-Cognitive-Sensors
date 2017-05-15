@@ -83,19 +83,6 @@ public class NumberGame extends AppCompatActivity {
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
 
-        //testing getting questions from DB
-        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
-        System.out.println("Question and Answers Should follow");
-        for(Question q : questionList)
-        {
-            System.out.println(q.getQuestion());
-            ArrayList<String> ans = q.getAnswers();
-            for(String s : ans)
-            {
-                System.out.println(s);
-            }
-        }
-
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
         runGame();
     }
@@ -110,6 +97,8 @@ public class NumberGame extends AppCompatActivity {
      * This method initializes values pertaining to the
      * game such that the game can run.
      * The purpose of this is simply organizational
+     * NOTE: Question Types can only be "MC" and anything else with the current iteration
+     * TODO:: represent question types as values not strings
      */
     protected void runGame(){
         rl = (RelativeLayout)findViewById(R.id.gameUI);
@@ -123,14 +112,19 @@ public class NumberGame extends AppCompatActivity {
         failCounter = 0;
 
         questionSet = new ArrayList<>();
-            questionSet.add(0);
-            questionSet.add(0);
-            questionSet.add(1);
-
         questionIntervals = new ArrayList<>();
-            questionIntervals.add(10);
-            questionIntervals.add(20);
-            questionIntervals.add(30);
+
+        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+        int intervalCounter = 1;
+        for(Question q : questionList)
+        {
+            if(q.getQuestionType().equals("MC"))
+                questionSet.add(0);
+            else
+                questionSet.add(1);
+            questionIntervals.add(10 * intervalCounter);
+            ++intervalCounter;
+        }
 
         numberDisplay = (TextView) findViewById(R.id.numberDisplay);
         rn = new Random(System.nanoTime());

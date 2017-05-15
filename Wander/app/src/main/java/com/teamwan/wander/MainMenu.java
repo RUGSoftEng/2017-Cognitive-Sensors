@@ -44,6 +44,8 @@ public class MainMenu extends AppCompatActivity {
      * and that the alarm has been created to send notifications.
      * It also has a countClicks variable to enable deBug.  Appearances
      * are set here.
+     *
+     * The DBDownload ensures the questions are updated if possible when the game is started
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
 
-        new DBDownload().execute(new DBpars(this)); //download questions from server
+        new DBDownload().execute(new DBpars(this));
 
         mlc = new MenuLayoutComponents();
         initialiseMLC();
