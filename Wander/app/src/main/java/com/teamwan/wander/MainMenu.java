@@ -10,6 +10,8 @@
 
 package com.teamwan.wander;
 
+
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,6 +27,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.teamwan.wander.db.DBDownload;
+import com.teamwan.wander.db.DBpars;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -39,6 +44,8 @@ public class MainMenu extends AppCompatActivity {
      * and that the alarm has been created to send notifications.
      * It also has a countClicks variable to enable deBug.  Appearances
      * are set here.
+     *
+     * The DBDownload ensures the questions are updated if possible when the game is started
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class MainMenu extends AppCompatActivity {
 
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
+
+        new DBDownload().execute(new DBpars(this));
 
         mlc = new MenuLayoutComponents();
         initialiseMLC();
