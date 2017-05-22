@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.teamwan.wander.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -28,7 +29,6 @@ import java.util.List;
 
 public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
-    private static final String API_URL = "https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec";
     private static final String API_PARAM = "data";
     private static final String LAST_UPLOAD = "last upload";
     Context context;
@@ -56,11 +56,12 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
         Gson gson = new Gson();
         String json = gson.toJson(uploadObject);
+        Log.i("DBUpload", json);
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(API_URL);
+        HttpPost post = new HttpPost(context.getResources().getString(R.string.API_URL));
 
-        List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+        List<NameValuePair> nvp = new ArrayList<>(1);
         nvp.add(new BasicNameValuePair(API_PARAM,json));
 
         try {

@@ -10,6 +10,8 @@
 
 package com.teamwan.wander;
 
+
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,13 +20,15 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.teamwan.wander.db.DBDownload;
+import com.teamwan.wander.db.DBpars;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +44,8 @@ public class MainMenu extends AppCompatActivity {
      * and that the alarm has been created to send notifications.
      * It also has a countClicks variable to enable deBug.  Appearances
      * are set here.
+     *
+     * The DBDownload ensures the questions are updated if possible when the game is started
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,8 @@ public class MainMenu extends AppCompatActivity {
 
         setContentView(R.layout.activity_main_menu);
         countClicks = 0;
+
+        new DBDownload().execute(new DBpars(this));
 
         mlc = new MenuLayoutComponents();
         initialiseMLC();
@@ -151,7 +159,7 @@ public class MainMenu extends AppCompatActivity {
         mlc.futura = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         mlc.params = (LinearLayout.LayoutParams) mlc.body.getLayoutParams();
         mlc.body.setMovementMethod(new ScrollingMovementMethod());
-        mlc.text = new ArrayList<TextView>();
+        mlc.text = new ArrayList<>();
         mlc.text.add(mlc.title);
         mlc.text.add(mlc.body);
         mlc.text.add(mlc.accept);

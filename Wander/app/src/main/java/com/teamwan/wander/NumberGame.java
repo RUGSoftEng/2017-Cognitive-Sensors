@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,12 +24,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
-import android.widget.Toast;
 
+import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.DBUpload;
 import com.teamwan.wander.db.DBpars;
 import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.NumberGuess;
+import com.teamwan.wander.db.Question;
 import com.teamwan.wander.db.QuestionAnswer;
 
 import static java.lang.Math.abs;
@@ -63,7 +65,7 @@ public class NumberGame extends AppCompatActivity {
     private final Handler handle = new Handler();
 
     public enum GameState {
-        SUCCESS, NEUTRAL;
+        SUCCESS, NEUTRAL
     }
 
     /**
@@ -83,17 +85,6 @@ public class NumberGame extends AppCompatActivity {
 
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
         runGame();
-
-        final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
-        final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
-
-        handle.postDelayed(new Runnable(){
-            public void run(){
-                    System.out.println("this method is checking Success");
-                    checkSuccess();
-                handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
-            }
-        }, delay);
     }
 
     @Override
@@ -106,6 +97,8 @@ public class NumberGame extends AppCompatActivity {
      * This method initializes values pertaining to the
      * game such that the game can run.
      * The purpose of this is simply organizational
+     * NOTE: Question Types can only be "MC" and anything else with the current iteration
+     * TODO:: represent question types as values not strings
      */
     protected void runGame(){
         rl = (RelativeLayout)findViewById(R.id.gameUI);
@@ -118,15 +111,20 @@ public class NumberGame extends AppCompatActivity {
         successCounter = 0;
         failCounter = 0;
 
-        questionSet = new ArrayList< Integer >();
-            questionSet.add(0);
-            questionSet.add(0);
-            questionSet.add(1);
+        questionSet = new ArrayList<>();
+        questionIntervals = new ArrayList<>();
 
-        questionIntervals = new ArrayList< Integer >();
-            questionIntervals.add(10);
-            questionIntervals.add(20);
-            questionIntervals.add(30);
+        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
+        int intervalCounter = 1;
+        for(Question q : questionList)
+        {
+            if(q.getQuestionType().equals("MC"))
+                questionSet.add(0);
+            else
+                questionSet.add(1);
+            questionIntervals.add(10 * intervalCounter);
+            ++intervalCounter;
+        }
 
         numberDisplay = (TextView) findViewById(R.id.numberDisplay);
         rn = new Random(System.nanoTime());
@@ -262,7 +260,7 @@ public class NumberGame extends AppCompatActivity {
             currentNum = abs(rn.nextInt() % 10);
 
         numberDisplay.setText(Integer.toString(currentNum));
-        numberDisplay.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         gameState = GameState.NEUTRAL;
         timeNumberDisplayed = System.currentTimeMillis();
     }

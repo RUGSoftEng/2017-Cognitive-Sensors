@@ -3,28 +3,30 @@ package com.teamwan.wander.db;
 
 import java.util.ArrayList;
 
-/* Class that represents a question object
+/** Class that represents a question object
 *
-* A question is represented by its questionID, the question itself and its type.
+* A question is represented by its questionID, the question itself and its questionType.
 * Other parameters are needed to store in the database which are the next question to be asked and
 * the boolean start that represents the start of a sequence of questions.
-* */
+* **/
 public class Question {
 
     private int questionId;
     private boolean start;
-    private String type;
+    private String questionType;
     private String question;
-    private int nextQuestion;
-    private ArrayList<String> mcAnswers;
+    private String nextQuestion;
+    private ArrayList<String> answers;
 
     public Question(int questionId, boolean start, String type, String question) {
         this.questionId = questionId;
         this.start = start;
-        this.type = type;
+        this.questionType = type;
         this.question = question;
-        this.nextQuestion = 0;
+        this.nextQuestion = Integer.toString(0);
     }
+
+    public Question(){}
 
     public int getQuestionId() {
         return questionId;
@@ -42,12 +44,12 @@ public class Question {
         this.start = start;
     }
 
-    public String getType() {
-        return type;
+    public String getQuestionType() {
+        return questionType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 
     public String getQuestion() {
@@ -58,15 +60,30 @@ public class Question {
         this.question = question;
     }
 
-    public int getNextQuestion() {return nextQuestion; }
-
-    public void setNextQuestion(int nextQuestion) {this.nextQuestion = nextQuestion; }
-
-    public ArrayList<String> getMcAnswers() {
-        return mcAnswers;
+    /**
+     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
+     * Based on http://stackoverflow.com/a/31560007/3684659
+     * @return
+     */
+    public int getNextQuestion() {
+        if(nextQuestion == null || nextQuestion.equals("")){
+            return -1;
+        }
+        return Integer.valueOf(nextQuestion);
     }
 
-    public void setMcAnswers(ArrayList<String> mcAnswers) {
-        this.mcAnswers = mcAnswers;
+    /**
+     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
+     * Based on http://stackoverflow.com/a/31560007/3684659
+     * @return
+     */
+    public void setNextQuestion(int nextQuestion) {this.nextQuestion = Integer.toString(nextQuestion); }
+
+    public ArrayList<String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(ArrayList<String> answers) {
+        this.answers = answers;
     }
 }
