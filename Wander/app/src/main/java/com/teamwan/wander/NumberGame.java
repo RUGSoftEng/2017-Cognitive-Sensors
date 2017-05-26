@@ -84,6 +84,7 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setTypeface(tf);
 
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
+        startTime = System.currentTimeMillis();
         runGame();
     }
 
@@ -342,6 +343,7 @@ public class NumberGame extends AppCompatActivity {
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     public void saveGameSession(){
+        gs.setPercentage(successCounter / (successCounter + failCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }

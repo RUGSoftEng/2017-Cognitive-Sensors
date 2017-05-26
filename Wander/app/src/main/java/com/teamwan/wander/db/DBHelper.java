@@ -33,6 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String GS_COLUMN_PLAYERID = "PlayerId";
     public static final String GS_COLUMN_TIME = "Time";
     public static final String GS_COLUMN_GAMETYPE = "GameType";
+    public static final String GS_COLUMN_AVGRESP = "AverageResponse";
+    public static final String GS_COLUMN_PR = "Percentage";
 
     public static final String NG_COLUMN_NGID = "NumberGuessId";
     public static final String NG_COLUMN_GSID = "GameSessionId";
@@ -49,6 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String Q_COLUMN_MCOPTIONS = "MCOptions";
 
     public static final String QA_COLUMN_GSID = "GameSessionId";
+    public static final String QA_COLUMN_QAID = "QuestionAswerId";
     public static final String QA_COLUMN_TIME = "Time";
     public static final String QA_COLUMN_ANSWER = "Answer";
     public static final String QA_COLUMN_QID = "QuestionId";
@@ -69,6 +72,8 @@ public class DBHelper extends SQLiteOpenHelper {
             GS_COLUMN_GSID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             GS_COLUMN_PLAYERID + " INTEGER," +
             GS_COLUMN_TIME + " INTEGER," +
+            GS_COLUMN_AVGRESP + " INTEGER," +
+            GS_COLUMN_PR + " FLOAT," +
             GS_COLUMN_GAMETYPE + " TEXT" + ")";
 
     private static final String CREATE_TABLE_NG = "CREATE TABLE " + NG_TABLE_NAME + "(" +
@@ -91,6 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
             QA_COLUMN_GSID + " INTEGER," +
             QA_COLUMN_TIME + " INTEGER," +
             QA_COLUMN_ANSWER + " INTEGER," +
+            QA_COLUMN_QAID + " INTEGER," +
             QA_COLUMN_QID + " INTEGER" + ")";
 
     private static final String CREATE_TABLE_MCQA = "CREATE TABLE " + MCQA_TABLE_NAME + "(" +
@@ -194,6 +200,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
+        contentValues.put(GS_COLUMN_AVGRESP, gs.getAvg());
+        contentValues.put(GS_COLUMN_PR, gs.getPercentage());
         contentValues.put(GS_COLUMN_GAMETYPE, gs.getGameType());
         contentValues.put(GS_COLUMN_PLAYERID, GameSession.getUniqueID(context));
         //Cast without checks, will throw exception when more than MAX_INT gameSessions are played.
@@ -259,7 +267,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 GameSession gs = new GameSession(res.getLong(res.getColumnIndex(GS_COLUMN_TIME)),
                         res.getString(res.getColumnIndex(GS_COLUMN_GAMETYPE)));
                 gs.setGameSessionId(res.getInt(res.getColumnIndex(GS_COLUMN_GSID)));
-
+                gs.setPercentage(res.getFloat(res.getColumnIndex(GS_COLUMN_PR)));
                 Cursor ngs = db.rawQuery("select * from "+ NG_TABLE_NAME +" where " + NG_COLUMN_GSID +" = " + Integer.toString(gs.getGameSessionId()), null);
                 if(ngs.moveToFirst()){
                     do {
