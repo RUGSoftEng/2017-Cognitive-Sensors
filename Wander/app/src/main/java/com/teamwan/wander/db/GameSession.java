@@ -24,9 +24,6 @@ public class GameSession{
     private Long time;
     private String gameType;
 
-    public void setPercentage(float percentage) {
-        this.percentage = percentage;
-    }
 
     private float percentage;
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<>();
@@ -62,6 +59,10 @@ public class GameSession{
 
     public void setGameType(String gameType) {
         this.gameType = gameType;
+    }
+
+    public void setPercentage(float percentage) {
+        this.percentage = percentage;
     }
 
     public ArrayList<NumberGuess> getNumberGuesses() {

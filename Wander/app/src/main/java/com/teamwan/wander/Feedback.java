@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.teamwan.wander.db.DBHelper;
+import com.teamwan.wander.db.GameSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class Feedback extends AppCompatActivity {
 
         setContentView(R.layout.activity_feedback);
         //TODO:: make the graph data not crash
-        //data = new GraphData();
+        data = new GraphData(this);
 
         setTypefaces();
         chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);

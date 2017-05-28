@@ -1,12 +1,9 @@
 package com.teamwan.wander;
 
-import android.app.Application;
 import android.content.Context;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.teamwan.wander.db.DBHelper;
-import com.teamwan.wander.db.NumberGuess;
 import com.teamwan.wander.db.GameSession;
 import com.teamwan.wander.db.QuestionAnswer;
 
@@ -14,14 +11,12 @@ import static java.lang.StrictMath.max;
 
 /**
  * Class that processes data from the database, ready to be inserted into a graph.
- * CTP stands for correct tap percentage
- * ART stands for average response time
  */
 
 public class GraphData {
-    private ArrayList<Float> CTPAllSessions;
-    private ArrayList<Integer> ARTAllSessions;
-    private ArrayList<GameSession> gameSessions;
+    private ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
+    private ArrayList<Integer> averageResponseAllSessions = new ArrayList<>();
+    private ArrayList<GameSession> gameSessions = new ArrayList<>();
 
     private ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
     private ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
@@ -34,15 +29,39 @@ public class GraphData {
         DBHelper db = new DBHelper(c);
 
         gameSessions = db.getGameSessionsAfter((long)0);
-
         for(GameSession g : gameSessions) {
-            this.CTPAllSessions.add(g.getPercentage());
-            this.ARTAllSessions.add(g.getAvg());
+            this.taskCorrectnessAllSessions.add(g.getPercentage());
+            this.averageResponseAllSessions.add(g.getAvg());
         }
+        
     }
 
     public ArrayList<GameSession> getGameSessions() {
         return gameSessions;
+    }
+
+    public ArrayList<Float> getOnTaskCorrectnesses() {
+        return onTaskCorrectnesses;
+    }
+
+    public ArrayList<Float> getOffTaskCorrectnesses() {
+        return offTaskCorrectnesses;
+    }
+
+    public ArrayList<Integer> getOnTaskResponses() {
+        return onTaskResponses;
+    }
+
+    public ArrayList<Integer> getOffTaskResponses() {
+        return offTaskResponses;
+    }
+
+    public ArrayList<Float> gettaskCorrectnessAllSessions() { return this.taskCorrectnessAllSessions; }
+
+    public ArrayList<Integer> getAverageResponseAllSessions() { return this.averageResponseAllSessions; }
+
+    public int getTotalGames(){
+        return totalSessions;
     }
 
     public ArrayList<GameSession> getLastNGameSessions(int n){
@@ -50,32 +69,21 @@ public class GraphData {
         return (ArrayList<GameSession>)gameSessions.subList(index, gameSessions.size());
     }
 
-    public void setGameSessions(ArrayList<GameSession> gameSessions) {
-        this.gameSessions = gameSessions;
+    public ArrayList<Float> getLatestNTaskCorrectness(int n) {
+        int index = max(taskCorrectnessAllSessions.size() - n, 0);
+        return (ArrayList<Float>) this.taskCorrectnessAllSessions.subList(index, taskCorrectnessAllSessions.size());
     }
 
-    public ArrayList<Float> getCTPAllSessions() {
-        return this.CTPAllSessions;
+    public ArrayList<Integer> getLatestNAverageResponses(int n) {
+        int index = max(averageResponseAllSessions.size() - n, 0);
+        return (ArrayList<Integer>) this.averageResponseAllSessions.subList(index, taskCorrectnessAllSessions.size());
     }
 
-    public ArrayList<Integer> getARTAllSessions() {
-        return this.ARTAllSessions;
-    }
 
-    public ArrayList<Float> getLatestNCTP(int n) {
-        int index = max(CTPAllSessions.size() - n, 0);
-        return (ArrayList<Float>) this.CTPAllSessions.subList(index, CTPAllSessions.size());
-    }
-
-    public ArrayList<Integer> getLatestART(int n) {
-        int index = max(ARTAllSessions.size() - n, 0);
-        return (ArrayList<Integer>) this.ARTAllSessions.subList(index, CTPAllSessions.size());
-    }
-
-    public int getTotalGames(){
-        return totalSessions;
-    }
-
+/**
+ * Method seperates data into on task and off-task. A numberguess is considered on task if it precedes an answer to question with
+ * questionID == 0 and the answer < 2 and the numberguess is considered off task if the answer > 1.
+ */
     public void calculateGraphData(int n){
         for(GameSession g : getLastNGameSessions(n)){
             int i = 0;
@@ -116,21 +124,4 @@ public class GraphData {
         }
     }
 
-
-
-    public ArrayList<Float> getOnTaskCorrectnesses() {
-        return onTaskCorrectnesses;
-    }
-
-    public ArrayList<Float> getOffTaskCorrectnesses() {
-        return offTaskCorrectnesses;
-    }
-
-    public ArrayList<Integer> getOnTaskResponses() {
-        return onTaskResponses;
-    }
-
-    public ArrayList<Integer> getOffTaskResponses() {
-        return offTaskResponses;
-    }
 }
