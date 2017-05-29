@@ -199,7 +199,6 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
-        totalCounter++;
 
         if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
             ++successCounter;
@@ -255,6 +254,7 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
+        totalCounter++;
 
         if(gs!= null) {
             saveLastNumberData();
