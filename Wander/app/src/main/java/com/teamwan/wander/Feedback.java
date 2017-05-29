@@ -66,7 +66,7 @@ public class Feedback extends AppCompatActivity {
         data.getLastNGameSessions(4);
         data.getLatestNAverageResponses(4);
         setTypefaces();
-        chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);
+        chartsUnlocked = Math.min(1 + data.getNumberOfSessions() / 6, 5);
         mPager = (ViewPager) findViewById(R.id.FeedbackContent);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);

@@ -55,6 +55,7 @@ public class NumberGame extends AppCompatActivity {
     private int questionNumber;
     private int successCounter;
     private int failCounter;
+    private int totalCounter;
     private long timeLastClicked;
     private long timeNumberDisplayed;
     private RelativeLayout rl;
@@ -112,6 +113,7 @@ public class NumberGame extends AppCompatActivity {
 
         successCounter = 0;
         failCounter = 0;
+        totalCounter = 0;
 
         questionSet = new ArrayList<>();
         questionIntervals = new ArrayList<>();
@@ -195,6 +197,7 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
+        totalCounter++;
 
         if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
             ++successCounter;
@@ -339,7 +342,7 @@ public class NumberGame extends AppCompatActivity {
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     public void saveGameSession(){
-        gs.setPercentage(successCounter / (successCounter + failCounter));
+        gs.setPercentage( 100 * (float)successCounter / (float)(totalCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }

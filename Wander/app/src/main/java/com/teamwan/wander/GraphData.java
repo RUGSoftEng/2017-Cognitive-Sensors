@@ -62,6 +62,8 @@ public class GraphData {
 
     public ArrayList<Float> getAverageResponseAllSessions() { return this.averageResponseAllSessions; }
 
+    public int getNumberOfSessions(){ return gameSessions.size(); }
+
     public int getTotalGames(){
         return totalSessions;
     }
@@ -124,5 +126,7 @@ public class GraphData {
 
         }
     }
+
+
 
 }
