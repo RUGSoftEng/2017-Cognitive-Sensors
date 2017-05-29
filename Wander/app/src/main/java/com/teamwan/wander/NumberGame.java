@@ -48,15 +48,15 @@ public class NumberGame extends AppCompatActivity {
     private long gameLength;
     private final int unClickableNum = 3;
     private int currentNum;
-    private int questionID;
+    private int questionID = 0;
     private ArrayList< Integer > questionIntervals;
     private ArrayList< Integer > questionSet;
 
     private int questionNumber;
-    private int successCounter;
-    private int failCounter;
-    private int totalCounter;
-    private long timeLastClicked;
+    private int successCounter = 0;
+    private int failCounter = 0;
+    private int totalCounter = 0;
+    private long timeLastClicked = 0;
     private long timeNumberDisplayed;
     private RelativeLayout rl;
     private GameState gameState;
@@ -105,15 +105,16 @@ public class NumberGame extends AppCompatActivity {
      */
     protected void runGame(){
         rl = (RelativeLayout)findViewById(R.id.gameUI);
-        questionID = 0;
+//        questionID = 0;
         gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
 
         startTime = System.currentTimeMillis();
-        timeLastClicked = System.currentTimeMillis();
+        timeNumberDisplayed = System.currentTimeMillis();
+        //timeLastClicked = System.currentTimeMillis(); //???? What, game is only initialized, no click has even happened yet
 
-        successCounter = 0;
-        failCounter = 0;
-        totalCounter = 0;
+//        successCounter = 0;
+//        failCounter = 0;
+//        totalCounter = 0;
 
         questionSet = new ArrayList<>();
         questionIntervals = new ArrayList<>();
@@ -253,14 +254,13 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
-
-        if(gs!= null) {
+        if(gs!= null && timeLastClicked > 0) {
             saveLastNumberData();
         }
-
         long hold = currentNum;
-        while(hold == currentNum)
+        while(hold == currentNum) {
             currentNum = abs(rn.nextInt() % 10);
+        }
 
         numberDisplay.setText(Integer.toString(currentNum));
         numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
@@ -316,10 +316,11 @@ public class NumberGame extends AppCompatActivity {
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
             NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
-            if(timeLastClicked<timeNumberDisplayed)
-                ng.setResponseTime(0);
-            else
-                ng.setResponseTime(timeLastClicked-timeNumberDisplayed);
+//            if(timeLastClicked<timeNumberDisplayed) {
+//                ng.setResponseTime(0);
+//            } else {
+                ng.setResponseTime(timeLastClicked - timeNumberDisplayed);
+//            }
 
             ng.setCorrect(lastCorrect);
             gs.addNumberGuess(ng);
