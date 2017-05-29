@@ -15,8 +15,8 @@ import android.widget.TextView;
 public class FeedbackFragmentText extends Fragment {
 
     private TextView title, avg, avgVal, perc, percVal, next;
-    private int nextChart, accuracy;
-    private double response;
+    private int nextChart;
+    private float accuracy, response;
 
     /**
      * Sets the view for the fragment when created. Taken from Google/Android documentation
@@ -73,7 +73,7 @@ public class FeedbackFragmentText extends Fragment {
      * @param perc An int representing correct tap percentage.
      * @param n An int representing the number of games required to unlock the next chart.
      */
-    public void setVals(double avg, int perc, int n){
+    public void setVals(float avg, float perc, int n){
         response = avg;
         accuracy = perc;
         nextChart = n;

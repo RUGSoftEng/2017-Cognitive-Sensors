@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,14 +48,15 @@ public class NumberGame extends AppCompatActivity {
     private long gameLength;
     private final int unClickableNum = 3;
     private int currentNum;
-    private int questionID;
+    private int questionID = 0;
     private ArrayList< Integer > questionIntervals;
     private ArrayList< Integer > questionSet;
 
     private int questionNumber;
-    private int successCounter;
-    private int failCounter;
-    private long timeLastClicked;
+    private int successCounter = 0;
+    private int failCounter = 0;
+    private int totalCounter = 0;
+    private long timeLastClicked = 0;
     private long timeNumberDisplayed;
     private RelativeLayout rl;
     private GameState gameState;
@@ -84,6 +86,7 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setTypeface(tf);
 
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
+        startTime = System.currentTimeMillis();
         runGame();
     }
 
@@ -102,14 +105,16 @@ public class NumberGame extends AppCompatActivity {
      */
     protected void runGame(){
         rl = (RelativeLayout)findViewById(R.id.gameUI);
-        questionID = 0;
+//        questionID = 0;
         gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
 
         startTime = System.currentTimeMillis();
-        timeLastClicked = System.currentTimeMillis();
+        timeNumberDisplayed = System.currentTimeMillis();
+        //timeLastClicked = System.currentTimeMillis(); //???? What, game is only initialized, no click has even happened yet
 
-        successCounter = 0;
-        failCounter = 0;
+//        successCounter = 0;
+//        failCounter = 0;
+//        totalCounter = 0;
 
         questionSet = new ArrayList<>();
         questionIntervals = new ArrayList<>();
@@ -193,6 +198,7 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
+        totalCounter++;
 
         if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
             ++successCounter;
@@ -203,9 +209,7 @@ public class NumberGame extends AppCompatActivity {
             lastCorrect=false;
         }
 
-        if(questionID < questionIntervals.size() &&
-             (successCounter + failCounter + (rn.nextInt() % 3)) >=
-             questionIntervals.get(questionID)){
+        if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID)){
             questionNumber = 0;
             callNextQuestion();
             ++questionID;
@@ -250,14 +254,13 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
-
-        if(gs!= null) {
+        if(gs!= null && timeLastClicked > 0) {
             saveLastNumberData();
         }
-
         long hold = currentNum;
-        while(hold == currentNum)
+        while(hold == currentNum) {
             currentNum = abs(rn.nextInt() % 10);
+        }
 
         numberDisplay.setText(Integer.toString(currentNum));
         numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
@@ -278,7 +281,6 @@ public class NumberGame extends AppCompatActivity {
     protected void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        System.out.println("On pause Method called");
 
         handle.removeCallbacksAndMessages(null);
     }
@@ -291,10 +293,8 @@ public class NumberGame extends AppCompatActivity {
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
-        System.out.println("On resume Method called");
         handle.postDelayed(new Runnable(){
             public void run(){
-                System.out.println("this method is checking Success");
                 checkSuccess();
                 handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
             }
@@ -316,10 +316,11 @@ public class NumberGame extends AppCompatActivity {
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
             NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
-            if(timeLastClicked<timeNumberDisplayed)
-                ng.setResponseTime(0);
-            else
-                ng.setResponseTime(timeLastClicked-timeNumberDisplayed);
+//            if(timeLastClicked<timeNumberDisplayed) {
+//                ng.setResponseTime(0);
+//            } else {
+                ng.setResponseTime(timeLastClicked - timeNumberDisplayed);
+//            }
 
             ng.setCorrect(lastCorrect);
             gs.addNumberGuess(ng);
@@ -330,11 +331,11 @@ public class NumberGame extends AppCompatActivity {
      * to the previous numberData
      */
     private void saveLastNumberData(int questionResult, int questionID) {
-        System.out.println(questionResult + " " + questionID);
+        Log.i("saveLastNumberData", questionResult + " " + questionID);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
-            System.out.println(questionResult + " " + questionID);
-            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber + 3*(questionID-1)-1, questionResult));
+            Log.i("saveLastNumberData", "questionID:" + questionID);
+            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
         }
     }
 
@@ -342,6 +343,7 @@ public class NumberGame extends AppCompatActivity {
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     public void saveGameSession(){
+        gs.setPercentage( 100 * (float)successCounter / (float)(totalCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }

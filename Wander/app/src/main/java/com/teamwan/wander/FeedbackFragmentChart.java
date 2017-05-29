@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
@@ -19,14 +21,19 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.util.ArrayList;
+
 public class FeedbackFragmentChart extends Fragment {
 
     private TextView title, next;
-    private Chart chart;
-
+    private LineChart lineChart;
+    private BarChart barChart;
+    private boolean chartTypeLine;
     private String titleString;
     private ChartData chartData;
+    private LinearLayout layout;
     private int nextChart;
+    private ArrayList<String> lineLabels;
 
     /**
      * Sets the view for the fragment when created. Taken from Google/Android documentation
@@ -45,7 +52,9 @@ public class FeedbackFragmentChart extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.FragChartTitle);
         next = (TextView) view.findViewById(R.id.FragChartNext);
-        chart = (Chart) view.findViewById(R.id.FragChart);
+        barChart = (BarChart) view.findViewById(R.id.FragBarChart);
+        lineChart = (LineChart) view.findViewById(R.id.FragLineChart);
+        layout = (LinearLayout) view.findViewById(R.id.ChartLayout);
         initialiseFragment();
     }
 
@@ -58,8 +67,9 @@ public class FeedbackFragmentChart extends Fragment {
         next.setTypeface(tf);;
     }
 
-    public void setVals(String s, ChartData c, int n){
+    public void setVals(String s, ChartData c, int n, boolean line){
         titleString = s;
+        chartTypeLine = line;
         chartData = c;
         nextChart = n;
     }
@@ -69,11 +79,17 @@ public class FeedbackFragmentChart extends Fragment {
         if (titleString.length()>20) {
             title.setTextSize(26);
         }
-        if (chartData instanceof LineData) {
-            chart.setData((LineData) chartData);
-            chart.invalidate();
+        if (chartTypeLine) {
+            layout.removeView(barChart);
+        }else{
+            layout.removeView(lineChart);
+        }
+        if (chartTypeLine) {
+            lineChart.setData((LineData) chartData);
+            lineChart.invalidate();
         } else {
-            chart.setData((BarData) chartData);
+            barChart.setData((BarData) chartData);
+            barChart.invalidate();
         }
         if (nextChart < 1) {
             next.setText("Next performance chart unlocked!  >");

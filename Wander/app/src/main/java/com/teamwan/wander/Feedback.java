@@ -14,12 +14,15 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.teamwan.wander.db.DBHelper;
+import com.teamwan.wander.db.GameSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +60,13 @@ public class Feedback extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feedback);
-        //TODO:: make the graph data not crash
-        //data = new GraphData();
 
+        data = new GraphData(this, 4);
+        data.calculateGraphData(4);
+        data.getLastNGameSessions(4);
+        data.getLatestNAverageResponses(4);
         setTypefaces();
-        chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);
+        chartsUnlocked = Math.min(1 + data.getNumberOfSessions() / 6, 5);
         mPager = (ViewPager) findViewById(R.id.FeedbackContent);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -81,13 +86,15 @@ public class Feedback extends AppCompatActivity {
         page1 = new FeedbackFragmentText();
         page2 = new FeedbackFragmentChart();
         page3 = new FeedbackFragmentChart();
-        page4 = new FeedbackFragmentChart();//TODO:: make page 4 not crash
+        page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
         page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
-        page2.setVals("Last 6 Sessions", createLineChart(0), 12-fetchSessions());
-        page3.setVals("Last 12 Sessions", createLineChart(1), 18-fetchSessions());
-        page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0), 24-fetchSessions());
-        page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1), Integer.MAX_VALUE);
+        page2.setVals("Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), 12-fetchSessions(), true);
+        page3.setVals("Last 12 Sessions", createLineChart(1, fetchLineDataTime()), 18-fetchSessions(), true);
+        page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0, fetchBarDataTime(0),
+                fetchBarDataTime(1)), 24-fetchSessions(), false);
+        page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1, fetchBarDataAcc(0),
+                fetchBarDataAcc(1)), Integer.MAX_VALUE, false);
     }
 
     /**
@@ -138,50 +145,99 @@ public class Feedback extends AppCompatActivity {
    }
 
     /**
-     * todo: Creates line chart from data and returns bitmap.
+     * Creates line chart from data and returns LineData object.
      * @param type 0 if accuracy plot, 1 if response time plot
      */
-    public LineData createLineChart(int type){
+    public LineData createLineChart(int type, List<Float> data){
+
         List<Entry> entries = new ArrayList<Entry>();
-
-        // turn data into Entry objects
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+        ArrayList<String> labels = new ArrayList<String>();
+        for (int i=0; i<data.size(); i++) {
+            entries.add(new Entry(data.get(i), i));
+            labels.add(Integer.toString(i));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(Color.RED);
-        LineData lineData = new LineData();
-        lineData.addDataSet(dataSet);
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        LineData lineData = new LineData(labels, dataSet);
         return lineData;
     }
 
     /**
-     * todo: Creates bar chart from data and returns bitmap.
+     * Creates bar chart from data and returns BarData object.
      * @param type 1 if accuracy plot, 0 if response time plot
      */
-    public BarData createBarChart(int type){
-        return new BarData();
+    public BarData createBarChart(int type, float dataOn, float dataOff){
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+        entries.add(new BarEntry(dataOff, 0));
+        entries.add(new BarEntry(dataOn, 1));
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Off Task");
+        labels.add("On Task");
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        dataSet.setColor(Color.RED);
+        BarData barData = new BarData(labels, dataSet);
+        return barData;
     }
 
     /**
-     * todo: Fetches number of sessions that the player has completed
+     * Fetches number of sessions that the player has completed
      */
     public int fetchSessions(){
-        //int sessions = data.getTotalGames();
-        int sessions = 24;
-        //get total number of sessions here
-        return sessions;
+       return data.getTotalGames();
     }
 
-    public double fetchResponse(){
-        //double response = data.getLatestART();
-        double response = 1.25;
-        //get avg. response time for the session here
+    public float fetchResponse(){
+        float response = data.getLatestNAverageResponses(1).get(0);
         return response;
     }
 
-    public int fetchAccuracy(){
-        //int accuracy = (int)data.getLatestCTP();
-        int accuracy = 95;
-        //get tap accuracy here
+    public float fetchAccuracy(){
+        float accuracy = data.getLatestNTaskCorrectness(1).get(0);
         return accuracy;
+    }
+
+    public List<Float> fetchLineDataAcc(){
+        return data.getLatestNTaskCorrectness(6);
+    }
+
+    public List<Float> fetchLineDataTime(){
+        return data.getLatestNAverageResponses(6);
+    }
+
+    public float fetchBarDataTime(int task){
+        ArrayList<Float> values;
+        float avg = 0;
+        if (task==0){
+            values = data.getOnTaskCorrectnesses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
+        } else {
+            values = data.getOffTaskCorrectnesses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
+        }
+    }
+
+    public float fetchBarDataAcc(int task){
+        ArrayList<Float> values;
+        float avg = 0;
+        if (task==0){
+            values = data.getOnTaskResponses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
+        } else {
+            values = data.getOffTaskResponses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
+        }
     }
 }

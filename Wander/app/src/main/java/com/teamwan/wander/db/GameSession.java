@@ -3,6 +3,7 @@ package com.teamwan.wander.db;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.teamwan.wander.NumberGame;
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.NumberGuess;
 import com.teamwan.wander.db.QuestionAnswer;
@@ -22,6 +23,9 @@ public class GameSession{
 
     private Long time;
     private String gameType;
+
+
+    private float percentage;
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<>();
     private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<>();
     private int gameSessionId;
@@ -57,6 +61,10 @@ public class GameSession{
         this.gameType = gameType;
     }
 
+    public void setPercentage(float percentage) {
+        this.percentage = percentage;
+    }
+
     public ArrayList<NumberGuess> getNumberGuesses() {
         return numberGuesses;
     }
@@ -77,6 +85,26 @@ public class GameSession{
         this.questionAnswers = questionAnswers;
     }
 
+    public int getAvg(){
+        int average = 0;
+        int counter = 0;
+
+        for(NumberGuess n: numberGuesses){
+
+            if(n.getResponseTime() != 0) {
+                average += n.getResponseTime();
+                counter++;
+            }
+
+        }
+        average/= counter;
+
+        return average;
+    }
+
+    public float getPercentage(){
+        return percentage;
+    }
     public void addQuestionAnswer(QuestionAnswer qa){
         this.questionAnswers.add(qa);
     }
