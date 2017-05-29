@@ -60,7 +60,8 @@ public class Feedback extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feedback);
-        data = new GraphData(this);
+
+        data = new GraphData(this, 4);
         data.calculateGraphData(4);
         data.getLastNGameSessions(4);
         data.getLatestNAverageResponses(4);
