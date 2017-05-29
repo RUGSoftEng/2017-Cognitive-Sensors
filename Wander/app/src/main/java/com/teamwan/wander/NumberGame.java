@@ -93,6 +93,9 @@ public class NumberGame extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         saveGameSession();
+        long time = System.currentTimeMillis();
+        while ((System.currentTimeMillis()-time)<1000*2) { }
+        openFeedback();
         super.onDestroy();
     }
 
@@ -198,7 +201,6 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
-        totalCounter++;
 
         if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
             ++successCounter;
@@ -254,7 +256,10 @@ public class NumberGame extends AppCompatActivity {
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
     public void genNewNumber(){
+
+        totalCounter++;
         if(gs!= null && timeLastClicked > 0) {
+
             saveLastNumberData();
         }
         long hold = currentNum;
@@ -347,4 +352,14 @@ public class NumberGame extends AppCompatActivity {
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }
+
+    public void openFeedback() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(sharedPref.getBoolean("Consent?", false)) {
+            Intent intent = new Intent(NumberGame.this, Feedback.class);
+            NumberGame.this.startActivity(intent);
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        }
+    }
+
 }

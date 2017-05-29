@@ -10,6 +10,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -88,11 +89,11 @@ public class Feedback extends AppCompatActivity {
         page3 = new FeedbackFragmentChart();
         page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
-        page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
-        page2.setVals("Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), 12-fetchSessions(), true);
-        page3.setVals("Last 12 Sessions", createLineChart(1, fetchLineDataTime()), 18-fetchSessions(), true);
+        page1.setVals(fetchResponse(), fetchAccuracy(), (6-fetchSessions()));
+        page2.setVals("Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), (12-fetchSessions()), true);
+        page3.setVals("Last 6 Sessions", createLineChart(1, fetchLineDataTime()), (18-fetchSessions()), true);
         page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0, fetchBarDataTime(0),
-                fetchBarDataTime(1)), 24-fetchSessions(), false);
+                fetchBarDataTime(1)), (24-fetchSessions()), false);
         page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1, fetchBarDataAcc(0),
                 fetchBarDataAcc(1)), Integer.MAX_VALUE, false);
     }
@@ -184,7 +185,7 @@ public class Feedback extends AppCompatActivity {
      * Fetches number of sessions that the player has completed
      */
     public int fetchSessions(){
-       return data.getTotalGames();
+       return data.getNumberOfSessions();
     }
 
     public float fetchResponse(){
@@ -193,7 +194,7 @@ public class Feedback extends AppCompatActivity {
     }
 
     public float fetchAccuracy(){
-        float accuracy = data.getLatestNTaskCorrectness(1).get(0);
+        float accuracy = data.getLastNGameSessions(1).get(0).getPercentage();
         return accuracy;
     }
 
@@ -239,5 +240,9 @@ public class Feedback extends AppCompatActivity {
             }
             return avg/values.size();
         }
+    }
+
+    public void onClickQuit(View v){
+        finish();
     }
 }

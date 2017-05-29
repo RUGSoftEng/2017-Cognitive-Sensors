@@ -26,6 +26,18 @@
         android:layout_marginTop="10dp"
         android:visibility="visible" />
 
+    <TextView
+        android:id="@+id/FragChartNext"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="15dp"
+        android:text="Complete 5 more games to unlock next performance chart."
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/FragBarChart"
         android:layout_width="match_parent"
@@ -33,14 +45,4 @@
         android:layout_marginBottom="25dp"
         android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/FragChartNext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="15dp"
-        android:text="Complete 5 more games to unlock next performance chart."
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp" />
 </LinearLayout>

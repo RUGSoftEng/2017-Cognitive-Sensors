@@ -87,9 +87,11 @@ public class FeedbackFragmentChart extends Fragment {
         if (chartTypeLine) {
             lineChart.setData((LineData) chartData);
             lineChart.invalidate();
+            lineChart.setDescriptionTextSize(0);
         } else {
             barChart.setData((BarData) chartData);
             barChart.invalidate();
+            lineChart.setDescriptionTextSize(0);
         }
         if (nextChart < 1) {
             next.setText("Next performance chart unlocked!  >");
