@@ -164,6 +164,7 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setText("");
 
         if(System.currentTimeMillis() - startTime > gameLength) {
+            openFeedback();
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         }
@@ -183,6 +184,7 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setText("");
 
         if(System.currentTimeMillis() - startTime > gameLength) {
+            openFeedback();
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         }
@@ -346,4 +348,14 @@ public class NumberGame extends AppCompatActivity {
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }
+
+    public void openFeedback() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(sharedPref.getBoolean("Consent?", false)) {
+            Intent intent = new Intent(NumberGame.this, Feedback.class);
+            NumberGame.this.startActivity(intent);
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+        }
+    }
+
 }
