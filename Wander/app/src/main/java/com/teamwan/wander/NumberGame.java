@@ -106,7 +106,7 @@ public class NumberGame extends AppCompatActivity {
     protected void runGame(){
         rl = (RelativeLayout)findViewById(R.id.gameUI);
         questionID = 0;
-        gameLength = (10) * 1000; //getResources().getInteger(R.integer.game_length
+        gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
 
         startTime = System.currentTimeMillis();
         timeLastClicked = System.currentTimeMillis();
