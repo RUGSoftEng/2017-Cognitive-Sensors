@@ -17,13 +17,13 @@ import static java.lang.StrictMath.max;
 
 public class GraphData {
     private ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
-    private ArrayList<Integer> averageResponseAllSessions = new ArrayList<>();
+    private ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
     private ArrayList<GameSession> gameSessions = new ArrayList<>();
 
     private ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
     private ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
-    private ArrayList<Integer> onTaskResponses = new ArrayList<>();
-    private ArrayList<Integer> offTaskResponses = new ArrayList<>();
+    private ArrayList<Float> onTaskResponses = new ArrayList<>();
+    private ArrayList<Float> offTaskResponses = new ArrayList<>();
 
     private int totalSessions;
 
@@ -33,7 +33,7 @@ public class GraphData {
         gameSessions = db.getGameSessionsAfter((long)0);
         for(GameSession g : gameSessions) {
             this.taskCorrectnessAllSessions.add(g.getPercentage());
-            this.averageResponseAllSessions.add(g.getAvg());
+            this.averageResponseAllSessions.add(((float) g.getAvg())/1000);
         }
 
     }
@@ -50,17 +50,17 @@ public class GraphData {
         return offTaskCorrectnesses;
     }
 
-    public ArrayList<Integer> getOnTaskResponses() {
+    public ArrayList<Float> getOnTaskResponses() {
         return onTaskResponses;
     }
 
-    public ArrayList<Integer> getOffTaskResponses() {
+    public ArrayList<Float> getOffTaskResponses() {
         return offTaskResponses;
     }
 
-    public ArrayList<Float> gettaskCorrectnessAllSessions() { return this.taskCorrectnessAllSessions; }
+    public ArrayList<Float> getTaskCorrectnessAllSessions() { return this.taskCorrectnessAllSessions; }
 
-    public ArrayList<Integer> getAverageResponseAllSessions() { return this.averageResponseAllSessions; }
+    public ArrayList<Float> getAverageResponseAllSessions() { return this.averageResponseAllSessions; }
 
     public int getTotalGames(){
         return totalSessions;
@@ -76,7 +76,7 @@ public class GraphData {
         return this.taskCorrectnessAllSessions.subList(index, taskCorrectnessAllSessions.size());
     }
 
-    public List<Integer> getLatestNAverageResponses(int n) {
+    public List<Float> getLatestNAverageResponses(int n) {
         int index = max(averageResponseAllSessions.size() - n, 0);
         return this.averageResponseAllSessions.subList(index, taskCorrectnessAllSessions.size());
     }
@@ -119,8 +119,8 @@ public class GraphData {
             }
             onTaskCorrectnesses.add(onTask == 0 ? 0 : (float)onTaskCorrect/(float)onTask);
             offTaskCorrectnesses.add(offTask == 0 ? 0 : (float)offTaskCorrect/(float)offTask);
-            onTaskResponses.add(onTask == 0 ? 0 : onTaskTime/onTask);
-            offTaskResponses.add(offTask == 0 ? 0 : offTaskTime/offTask);
+            onTaskResponses.add(onTask == 0 ? 0 : (float)onTaskTime/(float)onTask);
+            offTaskResponses.add(offTask == 0 ? 0 : (float)offTaskTime/(float)offTask);
 
         }
     }

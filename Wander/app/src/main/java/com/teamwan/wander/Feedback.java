@@ -60,7 +60,6 @@ public class Feedback extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feedback);
-        //TODO:: make the graph data not crash
         data = new GraphData(this);
         data.calculateGraphData(4);
         data.getLastNGameSessions(4);
@@ -86,7 +85,7 @@ public class Feedback extends AppCompatActivity {
         page1 = new FeedbackFragmentText();
         page2 = new FeedbackFragmentChart();
         page3 = new FeedbackFragmentChart();
-        page4 = new FeedbackFragmentChart();//TODO:: make page 4 not crash
+        page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
         page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
         page2.setVals("Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), 12-fetchSessions(), true);
@@ -148,20 +147,15 @@ public class Feedback extends AppCompatActivity {
      * Creates line chart from data and returns LineData object.
      * @param type 0 if accuracy plot, 1 if response time plot
      */
-    public LineData createLineChart(int type, float[] data){
+    public LineData createLineChart(int type, List<Float> data){
 
         List<Entry> entries = new ArrayList<Entry>();
-
-        for (int i=0; i<data.length; i++) {
-            entries.add(new Entry(data[i], i));
-        }
-
         ArrayList<String> labels = new ArrayList<String>();
-        for (int i=1; i<7; i++) {
+        for (int i=0; i<data.size(); i++) {
+            entries.add(new Entry(data.get(i), i));
             labels.add(Integer.toString(i));
         }
-
-        LineDataSet dataSet = new LineDataSet(entries, ""); // add entries to dataset
+        LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(Color.RED);
         dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         LineData lineData = new LineData(labels, dataSet);
@@ -179,57 +173,70 @@ public class Feedback extends AppCompatActivity {
         ArrayList<String> labels = new ArrayList<String>();
         labels.add("Off Task");
         labels.add("On Task");
-        BarDataSet dataSet = new BarDataSet(entries, ""); // add entries to dataset
+        BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(Color.RED);
         BarData barData = new BarData(labels, dataSet);
         return barData;
     }
 
     /**
-     * todo: Fetches number of sessions that the player has completed
+     * Fetches number of sessions that the player has completed
      */
     public int fetchSessions(){
-        //int sessions = data.getTotalGames();
-        int sessions = 24;
-        //get total number of sessions here
-        return sessions;
+       return data.getTotalGames();
     }
 
-    public double fetchResponse(){
-        //double response = data.getLatestART();
-        double response = 1.25;
-        //get avg. response time for the session here
+    public float fetchResponse(){
+        float response = data.getLatestNAverageResponses(1).get(0);
         return response;
     }
 
-    public int fetchAccuracy(){
-        //int accuracy = (int)data.getLatestCTP();
-        int accuracy = 95;
-        //get tap accuracy here
+    public float fetchAccuracy(){
+        float accuracy = data.getLatestNTaskCorrectness(1).get(0);
         return accuracy;
     }
 
-    public float[] fetchLineDataAcc(){
-        return new float[]{78,97,88,95,87,100};
+    public List<Float> fetchLineDataAcc(){
+        return data.getLatestNTaskCorrectness(6);
     }
 
-    public float[] fetchLineDataTime(){
-        return new float[]{1.54f,1.13f, 0.98f, 1.22f,0.89f,0.94f};
+    public List<Float> fetchLineDataTime(){
+        return data.getLatestNAverageResponses(6);
     }
 
     public float fetchBarDataTime(int task){
+        ArrayList<Float> values;
+        float avg = 0;
         if (task==0){
-            return 1.64f;
+            values = data.getOnTaskCorrectnesses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
         } else {
-            return 0.78f;
+            values = data.getOffTaskCorrectnesses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
         }
     }
 
     public float fetchBarDataAcc(int task){
+        ArrayList<Float> values;
+        float avg = 0;
         if (task==0){
-            return 74;
+            values = data.getOnTaskResponses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
         } else {
-            return 96;
+            values = data.getOffTaskResponses();
+            for (float v: values) {
+                avg += v;
+            }
+            return avg/values.size();
         }
     }
 }
