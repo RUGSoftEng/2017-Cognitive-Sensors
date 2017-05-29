@@ -27,7 +27,7 @@ public class GraphData {
 
     private int totalSessions;
 
-    public GraphData(Context c) {
+    public GraphData(Context c, int n) {
         DBHelper db = new DBHelper(c);
 
         gameSessions = db.getGameSessionsAfter((long)0);
@@ -35,7 +35,7 @@ public class GraphData {
             this.taskCorrectnessAllSessions.add(g.getPercentage());
             this.averageResponseAllSessions.add(g.getAvg());
         }
-
+        calculateGraphData(n);
     }
 
     public ArrayList<GameSession> getGameSessions() {

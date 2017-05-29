@@ -60,7 +60,7 @@ public class Feedback extends AppCompatActivity {
 
         setContentView(R.layout.activity_feedback);
         //TODO:: make the graph data not crash
-        data = new GraphData(this);
+        data = new GraphData(this, 4);
         data.calculateGraphData(4);
         data.getLastNGameSessions(4);
         data.getLatestNAverageResponses(4);
