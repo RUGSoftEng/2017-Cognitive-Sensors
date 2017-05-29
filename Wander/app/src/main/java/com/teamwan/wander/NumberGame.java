@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -204,9 +205,7 @@ public class NumberGame extends AppCompatActivity {
             lastCorrect=false;
         }
 
-        if(questionID < questionIntervals.size() &&
-             (successCounter + failCounter + (rn.nextInt() % 3)) >=
-             questionIntervals.get(questionID)){
+        if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID)){
             questionNumber = 0;
             callNextQuestion();
             ++questionID;
@@ -279,7 +278,6 @@ public class NumberGame extends AppCompatActivity {
     protected void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        System.out.println("On pause Method called");
 
         handle.removeCallbacksAndMessages(null);
     }
@@ -292,10 +290,8 @@ public class NumberGame extends AppCompatActivity {
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
         final long jitter = (getResources().getInteger(R.integer.jitter_range)) * 100;
 
-        System.out.println("On resume Method called");
         handle.postDelayed(new Runnable(){
             public void run(){
-                System.out.println("this method is checking Success");
                 checkSuccess();
                 handle.postDelayed(this, delay + ((rn.nextInt()) % jitter));
             }
@@ -331,11 +327,11 @@ public class NumberGame extends AppCompatActivity {
      * to the previous numberData
      */
     private void saveLastNumberData(int questionResult, int questionID) {
-        System.out.println(questionResult + " " + questionID);
+        Log.i("saveLastNumberData", questionResult + " " + questionID);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
-            System.out.println(questionResult + " " + questionID);
-            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionNumber + 3*(questionID-1)-1, questionResult));
+            Log.i("saveLastNumberData", "questionID:" + questionID);
+            gs.addQuestionAnswer(new QuestionAnswer(System.currentTimeMillis(), questionID, questionResult));
         }
     }
 
