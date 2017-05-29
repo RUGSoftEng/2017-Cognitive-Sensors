@@ -93,6 +93,9 @@ public class NumberGame extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         saveGameSession();
+        long time = System.currentTimeMillis();
+        while ((System.currentTimeMillis()-time)<1000*2) { }
+        openFeedback();
         super.onDestroy();
     }
 
@@ -164,7 +167,6 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setText("");
 
         if(System.currentTimeMillis() - startTime > gameLength) {
-            openFeedback();
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         }
@@ -184,7 +186,6 @@ public class NumberGame extends AppCompatActivity {
         numberDisplay.setText("");
 
         if(System.currentTimeMillis() - startTime > gameLength) {
-            openFeedback();
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         }

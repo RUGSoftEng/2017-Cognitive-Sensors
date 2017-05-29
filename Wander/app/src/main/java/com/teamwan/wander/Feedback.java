@@ -194,7 +194,7 @@ public class Feedback extends AppCompatActivity {
     }
 
     public float fetchAccuracy(){
-        float accuracy = data.getLatestNTaskCorrectness(1).get(0);
+        float accuracy = data.getLastNGameSessions(1).get(0).getPercentage();
         return accuracy;
     }
 
