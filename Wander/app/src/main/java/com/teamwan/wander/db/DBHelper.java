@@ -21,44 +21,45 @@ import java.util.Objects;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "WanderDB.db";
+    private static final String DATABASE_NAME = "WanderDB.db";
 
-    public static final String GS_TABLE_NAME = "GameSessions";
-    public static final String NG_TABLE_NAME = "NumberGuesses";
-    public static final String Q_TABLE_NAME = "Questions";
-    public static final String QA_TABLE_NAME = "QuestionAnswers";
-    public static final String MCQA_TABLE_NAME = "MCQuestionAnswers";
+    private static final String GS_TABLE_NAME = "GameSessions";
+    private static final String NG_TABLE_NAME = "NumberGuesses";
+    private static final String Q_TABLE_NAME = "Questions";
+    private static final String QA_TABLE_NAME = "QuestionAnswers";
+    private static final String MCQA_TABLE_NAME = "MCQuestionAnswers";
 
-    public static final String GS_COLUMN_GSID = "GameSessionId";
-    public static final String GS_COLUMN_PLAYERID = "PlayerId";
-    public static final String GS_COLUMN_TIME = "Time";
-    public static final String GS_COLUMN_GAMETYPE = "GameType";
-    public static final String GS_COLUMN_AVGRESP = "AverageResponse";
-    public static final String GS_COLUMN_PR = "Percentage";
+    private static final String GS_COLUMN_GSID = "GameSessionId";
+    private static final String GS_COLUMN_PLAYERID = "PlayerId";
+    private static final String GS_COLUMN_TIME = "Time";
+    private static final String GS_COLUMN_GAMETYPE = "GameType";
+    private static final String GS_COLUMN_AVGRESP = "AverageResponse";
+    private static final String GS_COLUMN_PR = "Percentage";
 
-    public static final String NG_COLUMN_NGID = "NumberGuessId";
-    public static final String NG_COLUMN_GSID = "GameSessionId";
-    public static final String NG_COLUMN_TIME = "Time";
-    public static final String NG_COLUMN_RESPONSETIME = "ResponseTime";
-    public static final String NG_COLUMN_ISGO = "IsGo";
-    public static final String NG_COLUMN_CORRECT = "Correct";
-    public static final String NG_COLUMN_NUMBER = "Number";
+    private static final String NG_COLUMN_NGID = "NumberGuessId";
+    private static final String NG_COLUMN_GSID = "GameSessionId";
+    private static final String NG_COLUMN_TIME = "Time";
+    private static final String NG_COLUMN_RESPONSETIME = "ResponseTime";
+    private static final String NG_COLUMN_ISGO = "IsGo";
+    private static final String NG_COLUMN_CORRECT = "Correct";
+    private static final String NG_COLUMN_NUMBER = "Number";
 
-    public static final String Q_COLUMN_QID = "QuestionId";
-    public static final String Q_COLUMN_QUESTION = "Question";
-    public static final String Q_COLUMN_START = "Start";
-    public static final String Q_COLUMN_TYPE = "QuestionType";
-    public static final String Q_COLUMN_MCOPTIONS = "MCOptions";
+    private static final String Q_COLUMN_QID = "QuestionId";
+    private static final String Q_COLUMN_QUESTION = "Question";
+    private static final String Q_COLUMN_START = "Start";
+    private static final String Q_COLUMN_TYPE = "QuestionType";
+    private static final String Q_COLUMN_MCOPTIONS = "MCOptions";
+    private static final String Q_COLUMN_NEXT_QUESTION = "NextQuestion";
 
-    public static final String QA_COLUMN_GSID = "GameSessionId";
-    public static final String QA_COLUMN_QAID = "QuestionAswerId";
-    public static final String QA_COLUMN_TIME = "Time";
-    public static final String QA_COLUMN_ANSWER = "Answer";
-    public static final String QA_COLUMN_QID = "QuestionId";
+    private static final String QA_COLUMN_GSID = "GameSessionId";
+    private static final String QA_COLUMN_QAID = "QuestionAswerId";
+    private static final String QA_COLUMN_TIME = "Time";
+    private static final String QA_COLUMN_ANSWER = "Answer";
+    private static final String QA_COLUMN_QID = "QuestionId";
 
-    public static final String MCQA_COLUMN_QID = "QuestionId";
-    public static final String MCQA_COLUMN_ANSWERNR = "AnswerNumber";
-    public static final String MCQA_COLUMN_ANSWER = "Answer";
+    private static final String MCQA_COLUMN_QID = "QuestionId";
+    private static final String MCQA_COLUMN_ANSWERNR = "AnswerNumber";
+    private static final String MCQA_COLUMN_ANSWER = "Answer";
 
 
     private Context context;
@@ -83,14 +84,15 @@ public class DBHelper extends SQLiteOpenHelper {
             NG_COLUMN_RESPONSETIME + " INTEGER," +
             NG_COLUMN_ISGO + " BOOLEAN,"+
             NG_COLUMN_CORRECT + " BOOLEAN,"+
-            NG_COLUMN_NUMBER + " INTEGER" +")";
+            NG_COLUMN_NUMBER + " INTEGER" + ")";
 
     private static final String CREATE_TABLE_Q = "CREATE TABLE " + Q_TABLE_NAME + "(" +
             Q_COLUMN_QID + " INTEGER," +
             Q_COLUMN_QUESTION + " TEXT," +
             Q_COLUMN_START + " BOOLEAN," +
             Q_COLUMN_TYPE + " TEXT," +
-            Q_COLUMN_MCOPTIONS + " TEXT" + ")";
+            Q_COLUMN_MCOPTIONS + " TEXT," +
+            Q_COLUMN_NEXT_QUESTION + " TEXT" + ")";
 
     private static final String CREATE_TABLE_QA = "CREATE TABLE " + QA_TABLE_NAME + "(" +
             QA_COLUMN_GSID + " INTEGER," +
@@ -127,18 +129,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Inserts the questions into the local database.
-     * @param questions
+     * @param questions - An ArrayList with the questions to add
      */
     public void insertQuestions(ArrayList<Question> questions){
         SQLiteDatabase db = this.getWritableDatabase();
+        Gson gson = new Gson();
+
         for(Question q : questions){
             ContentValues contentValues = new ContentValues();
             contentValues.put(Q_COLUMN_QID, q.getQuestionId());
             contentValues.put(Q_COLUMN_QUESTION, q.getQuestion());
             contentValues.put(Q_COLUMN_START, q.isStart());
             contentValues.put(Q_COLUMN_TYPE, q.getQuestionType());
+
+            String nextQuestionList = gson.toJson(q.getNextQuestion());
+            contentValues.put(Q_COLUMN_NEXT_QUESTION, nextQuestionList);
+
             if(Objects.equals("MC", q.getQuestionType())) {
-                Gson gson = new Gson();
                 String answers = gson.toJson(q.getAnswers());
                 contentValues.put(Q_COLUMN_MCOPTIONS, answers);
             }
@@ -170,18 +177,24 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from "+ Q_TABLE_NAME, null);
         ArrayList<Question> questions = new ArrayList<>();
 
+        Gson gson = new Gson();
+        Type intListType = new TypeToken<ArrayList<Integer>>(){}.getType();
+        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
+
         if(res.moveToFirst()) {
             do {
+
+                String nextQuestion = res.getString(res.getColumnIndex(Q_COLUMN_NEXT_QUESTION));
+                ArrayList<Integer> nextQuestionList = gson.fromJson(nextQuestion, intListType);
+
                 Question q = new Question(res.getInt(res.getColumnIndex(Q_COLUMN_QID)),
                         (res.getInt(res.getColumnIndex(Q_COLUMN_START)) != 0),
                         res.getString(res.getColumnIndex(Q_COLUMN_TYPE)),
-                        res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)));
+                        res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)),
+                        nextQuestionList);
                 if (Objects.equals("MC", q.getQuestionType())) {
-                    Gson gson = new Gson();
                     String json = res.getString(res.getColumnIndex(Q_COLUMN_MCOPTIONS));
-                    Type listType = new TypeToken<ArrayList<String>>(){}.getType();
-                    ArrayList<String> answers = gson.fromJson(json, listType);
-
+                    ArrayList<String> answers = gson.fromJson(json, stringListType);
                     q.setAnswers(answers);
                 }
                 questions.add(q);

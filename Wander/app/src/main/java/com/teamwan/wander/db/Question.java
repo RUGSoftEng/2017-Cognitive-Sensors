@@ -1,6 +1,5 @@
 package com.teamwan.wander.db;
 
-
 import java.util.ArrayList;
 
 /** Class that represents a question object
@@ -11,79 +10,48 @@ import java.util.ArrayList;
 * **/
 public class Question {
 
-    private int questionId;
-    private boolean start;
-    private String questionType;
-    private String question;
-    private String nextQuestion;
+    private final int questionId;
+    private final boolean start;
+    private final String questionType;
+    private final String question;
+    private final ArrayList<Integer> nextQuestion;
+    // The answers only apply to a multiple-choice question
     private ArrayList<String> answers;
 
-    public Question(int questionId, boolean start, String type, String question) {
+    Question(int questionId, boolean start, String type, String question,
+                    ArrayList<Integer> nextQuestion) {
         this.questionId = questionId;
         this.start = start;
         this.questionType = type;
         this.question = question;
-        this.nextQuestion = Integer.toString(0);
+        this.nextQuestion = nextQuestion;
     }
 
-    public Question(){}
-
-    public int getQuestionId() {
+    int getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
-    }
-
-    public boolean isStart() {
+    boolean isStart() {
         return start;
-    }
-
-    public void setStart(boolean start) {
-        this.start = start;
     }
 
     public String getQuestionType() {
         return questionType;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
     public String getQuestion() {
         return question;
     }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
-     * Based on http://stackoverflow.com/a/31560007/3684659
-     * @return
-     */
-    public int getNextQuestion() {
-        if(nextQuestion == null || nextQuestion.equals("")){
-            return -1;
-        }
-        return Integer.valueOf(nextQuestion);
-    }
-
-    /**
-     * nextQuestion is stored as a string, but used as an integer for JSON parsing purposes, to correctly parse empty strings.
-     * Based on http://stackoverflow.com/a/31560007/3684659
-     * @return
-     */
-    public void setNextQuestion(int nextQuestion) {this.nextQuestion = Integer.toString(nextQuestion); }
 
     public ArrayList<String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(ArrayList<String> answers) {
+    void setAnswers(ArrayList<String> answers) {
         this.answers = answers;
+    }
+
+    public ArrayList<Integer> getNextQuestion() {
+        return nextQuestion;
     }
 }
