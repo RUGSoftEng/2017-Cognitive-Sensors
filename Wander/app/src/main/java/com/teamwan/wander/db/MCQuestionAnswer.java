@@ -20,7 +20,6 @@ public class MCQuestionAnswer {
         this.answer = answer;
     }
 
-
     public int getQuestionI() {
         return questionI;
     }

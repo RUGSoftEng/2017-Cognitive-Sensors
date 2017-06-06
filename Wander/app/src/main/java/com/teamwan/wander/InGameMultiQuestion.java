@@ -21,12 +21,16 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import java.util.ArrayList;
+
 //TODO:: we need an abstract class for this and slider question
 public class InGameMultiQuestion extends AppCompatActivity {
 
-    private TextView questionDisplay;
-    private int questionID;
+    private Question question;
     private ArrayList<CheckBox> checkBoxes;
+
+    public static final String EXTRA_CHOICE = "choice";
+    public static final String EXTRA_NEXT_QUESTION = "nextQuestion";
+    public static final String EXTRA_QUESTION_ID = "questionID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,12 @@ public class InGameMultiQuestion extends AppCompatActivity {
         setContentView(R.layout.multiple_choice_question_layout);
         TextView questionDisplay = (TextView)findViewById(R.id.textViewForQuestion);
 
-        questionID = -1;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            questionID = extras.getInt("questionID");
+            int questionID = extras.getInt(EXTRA_QUESTION_ID);
             ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
-            questionDisplay.setText(questionList.get(questionID).getQuestion());
+            question = questionList.get(questionID);
+            questionDisplay.setText(question.getQuestion());
         }
         else{
             questionDisplay.setText("No Question to Display, please report error");
@@ -72,13 +76,12 @@ public class InGameMultiQuestion extends AppCompatActivity {
     public void populateCheckBoxes() {
 
         checkBoxes = new ArrayList<>();
-        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
-        int numberOfQuestions = questionList.get(questionID).getAnswers().size();
+        int numberOfQuestions = question.getAnswers().size();
 
         for(int i = 1; i <= numberOfQuestions; ++i)
         {
             CheckBox cb = (CheckBox) findViewById(getResources().getIdentifier(("checkBox" + Integer.toString(i)), "id", getPackageName()));
-            cb.setText(questionList.get(questionID).getAnswers().get(i - 1));
+            cb.setText(question.getAnswers().get(i - 1));
             checkBoxes.add(cb);
         }
 
@@ -105,7 +108,11 @@ public class InGameMultiQuestion extends AppCompatActivity {
         int i = 0;
         for (CheckBox cb : checkBoxes) {
             if (cb.isChecked()) {
-                setResult(Activity.RESULT_OK, new Intent().putExtra("choice", i));
+                Intent result = new Intent();
+                result.putExtra(EXTRA_CHOICE, i);
+                result.putExtra(EXTRA_NEXT_QUESTION, question.getNextQuestion().get(i).intValue());
+                setResult(Activity.RESULT_OK, result);
+
                 finish();
                 break;
             }
@@ -116,7 +123,10 @@ public class InGameMultiQuestion extends AppCompatActivity {
      * Sends user back to main menu when quit button is clicked
      */
     public void onClickQuit(View v){
-        setResult(Activity.RESULT_OK, new Intent().putExtra("choice", -1));
+        Intent result = new Intent();
+        result.putExtra(EXTRA_CHOICE, -1);
+        result.putExtra(EXTRA_NEXT_QUESTION, -1);
+        setResult(Activity.RESULT_OK, result);
         finish();
     }
 }

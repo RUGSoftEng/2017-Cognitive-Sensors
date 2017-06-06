@@ -23,7 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.teamwan.wander.db.DBHelper;
@@ -43,16 +43,13 @@ import static java.lang.Math.abs;
 public class NumberGame extends AppCompatActivity {
 
     private TextView numberDisplay;
-    private Random rn;
+    private static Random rn = new Random(System.currentTimeMillis());
     private long startTime;
     private long gameLength;
     private final int unClickableNum = 3;
     private int currentNum;
-    private int questionID = 0;
-    private ArrayList< Integer > questionIntervals;
-    private ArrayList< Integer > questionSet;
+    private List<Question> questionList;
 
-    private int questionNumber;
     private int successCounter = 0;
     private int failCounter = 0;
     private int totalCounter = 0;
@@ -64,9 +61,14 @@ public class NumberGame extends AppCompatActivity {
     private GameSession gs;
     public static final String AttemptDBUpload = "com.teamwan.wander.android.action.broadcast";
 
+    // The ID of the question that was last asked
+    private int lastQuestionId;
+
+    private int nextQuestionAt;
+
     private final Handler handle = new Handler();
 
-    public enum GameState {
+    private enum GameState {
         SUCCESS, NEUTRAL
     }
 
@@ -119,23 +121,11 @@ public class NumberGame extends AppCompatActivity {
 //        failCounter = 0;
 //        totalCounter = 0;
 
-        questionSet = new ArrayList<>();
-        questionIntervals = new ArrayList<>();
+        nextQuestionAt = 10 + rn.nextInt(3);
 
-        ArrayList<Question> questionList = (new DBHelper(this).getQuestions());
-        int intervalCounter = 1;
-        for(Question q : questionList)
-        {
-            if(q.getQuestionType().equals("MC"))
-                questionSet.add(0);
-            else
-                questionSet.add(1);
-            questionIntervals.add(10 * intervalCounter);
-            ++intervalCounter;
-        }
+        questionList = new DBHelper(this).getQuestions();
 
         numberDisplay = (TextView) findViewById(R.id.numberDisplay);
-        rn = new Random(System.nanoTime());
         genNewNumber();
     }
 
@@ -155,10 +145,9 @@ public class NumberGame extends AppCompatActivity {
     }
 
     /**
-     * This is the method for an incorrect action from the user
-     * clicking a number.  It changes the colour of the background
-     * and increases the failCounter as well as setting the text
-     * to an empty string until a new number can be generated.
+     * This is the method for an incorrect action from the user clicking a number. It increases the
+     * failCounter as well as setting the text to an empty string until a new number can be
+     * generated.
      *
      * If the game length is expired at this point the game ends.
      */
@@ -211,42 +200,50 @@ public class NumberGame extends AppCompatActivity {
             lastCorrect=false;
         }
 
-        if(questionID < questionIntervals.size() && (successCounter + failCounter + (rn.nextInt() % 3)) >= questionIntervals.get(questionID)){
-            questionNumber = 0;
-            callNextQuestion();
-            ++questionID;
-        }
-        else
+        if (successCounter + failCounter >= nextQuestionAt) {
+            nextQuestionAt += 10 + rn.nextInt(3);
+            callNextQuestion(0);
+        } else
             genNewNumber();
     }
 
-    private void callNextQuestion(){
-        if(questionNumber < questionSet.size()) {
-            if (questionSet.get(questionNumber).equals(1)) {
-                Intent intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
-                intent.putExtra("questionID", questionNumber);
-                startActivityForResult(intent, 1);
-            } else {
-                Intent intent = new Intent(getApplicationContext(), InGameMultiQuestion.class);
-                intent.putExtra("questionID", questionNumber);
-                startActivityForResult(intent, 0);
-            }
-            ++questionNumber;
+    private final static int REQUEST_CODE_MC = 0;
+    private final static int REQUEST_CODE_SLIDER = 1;
+
+    /**
+     * Show the next question.
+     * @param questionID - The questionID to show
+     */
+    private void callNextQuestion(int questionID){
+        Log.d(this.getClass().getSimpleName(), "Showing question with ID " + questionID);
+        lastQuestionId = questionID;
+        if (questionList.get(questionID).getQuestionType().equals("MC")) {
+            Intent intent = new Intent(getApplicationContext(), InGameMultiQuestion.class);
+            intent.putExtra(InGameMultiQuestion.EXTRA_QUESTION_ID, questionID);
+            startActivityForResult(intent, REQUEST_CODE_MC);
+        } else {
+            Intent intent = new Intent(getApplicationContext(), InGameSliderQuestion.class);
+            intent.putExtra(InGameSliderQuestion.EXTRA_QUESTION_ID, questionID);
+            startActivityForResult(intent, REQUEST_CODE_SLIDER);
         }
-        else
-            genNewNumber();
     }
 
     /**
-     * This method takes action when an activity that is initated by this activity
+     * This method takes action when an activity that is initiated by this activity
      * has completed.  In this case it simply generates a new number to continue the game.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK)
-            saveLastNumberData(data.getIntExtra("choice", -1), questionID);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
-            saveLastNumberData(data.getIntExtra("choice", -1), questionID);
-        callNextQuestion();
+        int nextQuestion = -1;
+        if (requestCode == REQUEST_CODE_SLIDER && resultCode == Activity.RESULT_OK) {
+            saveLastNumberData(data.getIntExtra(InGameSliderQuestion.EXTRA_CHOICE, -1), lastQuestionId);
+            nextQuestion = data.getIntExtra(InGameSliderQuestion.EXTRA_NEXT_QUESTION, -1);
+        } else if (requestCode == REQUEST_CODE_MC && resultCode == Activity.RESULT_OK) {
+            saveLastNumberData(data.getIntExtra(InGameMultiQuestion.EXTRA_CHOICE, -1), lastQuestionId);
+            nextQuestion = data.getIntExtra(InGameMultiQuestion.EXTRA_NEXT_QUESTION, -1);
+        }
+
+        if (nextQuestion != -1)
+            callNextQuestion(nextQuestion);
     }
 
     /**
@@ -284,7 +281,6 @@ public class NumberGame extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
 
         handle.removeCallbacksAndMessages(null);
@@ -292,7 +288,6 @@ public class NumberGame extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
 
         final long delay = (getResources().getInteger(R.integer.number_display)) * 1000;
