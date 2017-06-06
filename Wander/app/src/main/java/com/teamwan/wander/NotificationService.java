@@ -15,22 +15,22 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 
-public class MyNewIntentService extends IntentService {
+public class NotificationService extends IntentService {
     private static final int NOTIFICATION_ID = 3;
 
-    public MyNewIntentService() {
-        super("MyNewIntentService");
+    public NotificationService() {
+        super("NotificationService");
     }
 
-    @Override
-     /**
+    /**
      * Creates a notification which can launch the main menu activity upon click
-      * */
+     */
+    @Override
     protected void onHandleIntent(Intent intent) {
         Notification.Builder builder = new Notification.Builder(this);
 
-        builder.setContentTitle("Remember:");
-        builder.setContentText("Its time to Wander!");
+        builder.setContentTitle(getResources().getString(R.string.notification_title));
+        builder.setContentText(getResources().getString(R.string.notification_body));
         builder.setSmallIcon(R.drawable.ic_launcher);
 
         builder.setPriority(Notification.PRIORITY_HIGH);

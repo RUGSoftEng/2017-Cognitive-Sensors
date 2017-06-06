@@ -33,7 +33,7 @@
             android:exported="false" />
 
         <service
-            android:name=".MyNewIntentService"
+            android:name=".NotificationService"
             android:exported="false" />
 
         <activity
@@ -42,12 +42,13 @@
             android:label="@string/title_activity_options"
             android:theme="@style/FullscreenTheme" />
 
-        <receiver android:name=".db.ConnectivityReceiver">
+        <service android:name=".db.UploadService"
+                 android:exported="true"
+                 android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.teamwan.wander.android.action.broadcast" />
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
             </intent-filter>
-        </receiver>
+        </service>
 
         <activity
             android:name=".Feedback"

@@ -21,7 +21,7 @@ public class MyReceiver extends BroadcastReceiver {
      * This class receives broadcasted intents in order to start the app
      */
     public void onReceive(Context context, Intent intent) {
-        Intent intent1 = new Intent(context, MyNewIntentService.class);
+        Intent intent1 = new Intent(context, NotificationService.class);
         context.startService(intent1);
     }
 }

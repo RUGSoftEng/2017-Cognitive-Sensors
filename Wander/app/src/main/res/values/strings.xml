@@ -71,6 +71,9 @@
     <string name="title_activity_feedback">Feedback</string>
     <string name="YourFeedback">Your Feedback</string>
 
+    <string name="notification_title">Remember: </string>
+    <string name="notification_body">It\'s time to wander!</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="AverageResponseTime">Average Response Time:</string>

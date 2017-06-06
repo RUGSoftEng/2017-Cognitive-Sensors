@@ -12,6 +12,7 @@ package com.teamwan.wander;
 
 
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -26,12 +27,21 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.Task;
 import com.teamwan.wander.db.DBDownload;
 import com.teamwan.wander.db.DBpars;
+import com.teamwan.wander.db.UploadService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static com.google.android.gms.gcm.Task.NETWORK_STATE_CONNECTED;
 
 public class MainMenu extends AppCompatActivity {
 
