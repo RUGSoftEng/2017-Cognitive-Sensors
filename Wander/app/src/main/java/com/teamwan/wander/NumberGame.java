@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import com.teamwan.wander.db.DBHelper;
@@ -43,7 +44,7 @@ import static java.lang.Math.abs;
 public class NumberGame extends AppCompatActivity {
 
     private TextView numberDisplay;
-    private static Random rn = new Random(System.currentTimeMillis());
+    private static final Random rn = new Random(System.currentTimeMillis());
     private long startTime;
     private long gameLength;
     private final int unClickableNum = 3;
@@ -55,11 +56,9 @@ public class NumberGame extends AppCompatActivity {
     private int totalCounter = 0;
     private long timeLastClicked = 0;
     private long timeNumberDisplayed;
-    private RelativeLayout rl;
     private GameState gameState;
     private boolean lastCorrect;
     private GameSession gs;
-    public static final String AttemptDBUpload = "com.teamwan.wander.android.action.broadcast";
 
     // The ID of the question that was last asked
     private int lastQuestionId;
@@ -108,18 +107,11 @@ public class NumberGame extends AppCompatActivity {
      * NOTE: Question Types can only be "MC" and anything else with the current iteration
      * TODO:: represent question types as values not strings
      */
-    protected void runGame(){
-        rl = (RelativeLayout)findViewById(R.id.gameUI);
-//        questionID = 0;
+    private void runGame(){
         gameLength = (getResources().getInteger(R.integer.game_length)) * 1000;
 
         startTime = System.currentTimeMillis();
         timeNumberDisplayed = System.currentTimeMillis();
-        //timeLastClicked = System.currentTimeMillis(); //???? What, game is only initialized, no click has even happened yet
-
-//        successCounter = 0;
-//        failCounter = 0;
-//        totalCounter = 0;
 
         nextQuestionAt = 10 + rn.nextInt(3);
 
@@ -252,7 +244,7 @@ public class NumberGame extends AppCompatActivity {
      * that the new number is different from the previous one for simple
      * preference purposes.  The gameState is reverted to NEUTRAL.
      */
-    public void genNewNumber(){
+    private void genNewNumber(){
 
         totalCounter++;
         if(gs!= null && timeLastClicked > 0) {
@@ -264,7 +256,7 @@ public class NumberGame extends AppCompatActivity {
             currentNum = abs(rn.nextInt() % 10);
         }
 
-        numberDisplay.setText(Integer.toString(currentNum));
+        numberDisplay.setText(String.format(Locale.getDefault(), "%d", currentNum));
         numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         gameState = GameState.NEUTRAL;
         timeNumberDisplayed = System.currentTimeMillis();
@@ -342,13 +334,13 @@ public class NumberGame extends AppCompatActivity {
     /**
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
-    public void saveGameSession(){
+    private void saveGameSession(){
         gs.setPercentage( 100 * (float)successCounter / (float)(totalCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }
 
-    public void openFeedback() {
+    private void openFeedback() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if(sharedPref.getBoolean("Consent?", false)) {
             Intent intent = new Intent(NumberGame.this, Feedback.class);

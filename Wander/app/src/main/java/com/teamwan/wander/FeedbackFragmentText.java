@@ -24,8 +24,7 @@ public class FeedbackFragmentText extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.feedback_text, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.feedback_text, container, false);
     }
 
     /**
@@ -57,14 +56,14 @@ public class FeedbackFragmentText extends Fragment {
     /**
      * Sets all typefaces to Futura.
      */
-    public void setTypefaces() {
+    private void setTypefaces() {
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
         avg.setTypeface(tf);
         avgVal.setTypeface(tf);
         perc.setTypeface(tf);
         percVal.setTypeface(tf);
-        next.setTypeface(tf);;
+        next.setTypeface(tf);
     }
 
     /**

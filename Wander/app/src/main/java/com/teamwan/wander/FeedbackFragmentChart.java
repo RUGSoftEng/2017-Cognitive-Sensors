@@ -1,25 +1,19 @@
 package com.teamwan.wander;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 
@@ -41,8 +35,7 @@ public class FeedbackFragmentChart extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feedback_chart, container, false);
-        return view;
+        return inflater.inflate(R.layout.feedback_chart, container, false);
     }
 
     /**
@@ -61,10 +54,10 @@ public class FeedbackFragmentChart extends Fragment {
     /**
      * Sets all typefaces to Futura.
      */
-    public void setTypefaces() {
+    private void setTypefaces() {
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
-        next.setTypeface(tf);;
+        next.setTypeface(tf);
     }
 
     public void setVals(String s, ChartData c, int n, boolean line){

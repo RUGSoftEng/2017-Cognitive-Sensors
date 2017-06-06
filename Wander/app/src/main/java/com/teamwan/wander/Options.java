@@ -80,11 +80,6 @@ public class Options extends AppCompatActivity {
         }
     };
 
-    /**
-     * Holds all text views to allow for more efficient typeface setting.
-     */
-    private ArrayList<TextView> text;
-
     @Override
     /**
      * When the activity is created the layout is setup,
@@ -160,7 +155,10 @@ public class Options extends AppCompatActivity {
      *  Sets custom typefaces for all text.
      */
     private void setTypefaces() {
-        text = new ArrayList<>();
+        /*
+      Holds all text views to allow for more efficient typeface setting.
+     */
+        ArrayList<TextView> text = new ArrayList<>();
         text.add((TextView) findViewById(R.id.OptionsTitle));
         text.add((TextView) findViewById(R.id.NotifFreqHead));
         text.add((TextView) findViewById(R.id.Never));

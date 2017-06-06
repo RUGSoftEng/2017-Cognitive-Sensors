@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/quit"
+        android:contentDescription="@string/content_description_quit"
         android:id="@+id/quitFromSlider"
         android:clickable="false"
         android:onClick="onClickQuit"
@@ -34,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/wandertitle"
+            android:contentDescription="@string/content_description_title"
             android:id="@+id/TitleSlider" />
 
         <TextView

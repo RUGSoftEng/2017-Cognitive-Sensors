@@ -31,7 +31,7 @@ public class DebugActivity extends AppCompatActivity {
         sendNotification();
     }
 
-    public void sendNotification(){
+    private void sendNotification(){
         Intent alarmIntent = new Intent(this, MyReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
