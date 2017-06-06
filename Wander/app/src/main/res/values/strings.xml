@@ -5,17 +5,13 @@
         digit as soon as it appears, but to withhold your response when the digit is the number 3. We
         know that people daydream. Every now and then, you will be asked about your thoughts just prior
         to the prompt. Please respond to those as accurately as possible.</string>
-    <string name="DigitsTitle">Digits</string>
     <string name="ICATitle">Informed Consent Agreement</string>
     <string name="ICABody">I hereby consent to be a participant in the research performed by Dr. Marieke van Vugt. I have agreed to take part in the study entitled "thoughts in daily life" and I understand that my participation is entirely voluntary. I understand that my responses will be kept strictly confidential and anonymous. I have the option to withdraw from this study at any time, without penalty, and I also have the right to request that my responses not be used. The goal of this study is to better understand how cognitive function changes in the course of daily life.
         \n\nParticipation in this study will help us to bridge between laboratory studies of cognitive function and cognition during daily life. I shall be asked to make judgments about numbers and other stimuli, and answer questions about my thoughts during the task. Each of the games will last a few minutes, and I will be asked to participate in these games daily for a period of a few weeks.
         \n\nMy responses will be treated confidentially and my anonymity will be ensured. Hence, my responses cannot be identifiable and linked back to me as an individual. </string>
     <string name="ICAAccept">Accept</string>
-    <string name="ICAQuit">Quit</string>
 
     <string name="title_activity_options">OptionsActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="OptionsTitle">OPTIONS</string>
     <string name="OptionNotification">Notification Frequency</string>
     <string name="OptionsNever">Never</string>
@@ -41,30 +37,6 @@
         to us, you are contributing to real research into how the human mind works.</string>
     <string name="InfoClose">CLOSE</string>
 
-    <string-array name="Questions">
-        <item>What were you just thinking about?</item>
-        <item>How difficult was it to disengage from the thought?</item>
-        <item> What was the valence of your recent thought?</item>
-    </string-array>
-
-    <string-array name="Q1Answers">
-        <item>I was completely focused on the task.</item>
-        <item>I was evaluating aspects of the task. (For example my performance or how long it is taking)</item>
-        <item>I was thinking about personal matters.</item>
-        <item>I was distracted by my environment. (For example sound, temperature, my physical state)</item>
-        <item>I was daydreaming / I was thinking of task-unrelated matters.</item>
-        <item>I was not paying attention, but neither was I thinking about anything specifically.</item>
-    </string-array>
-
-    <string-array name="Q2Answers">
-        <item>Very difficult</item>
-        <item>Difficult</item>
-        <item>Neither difficult nor easy</item>
-        <item>Easy</item>
-        <item>Very easy</item>
-    </string-array>
-
-    <string name="title_activity_info">InfoActivity</string>
     <string name="SAVE">SAVE</string>
     <string name="SAVED">SAVED</string>
 
@@ -72,11 +44,17 @@
     <string name="YourFeedback">Your Feedback</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="AverageResponseTime">Average Response Time:</string>
     <string name="ThisSession">This Session:</string>
-    <string name="NoIncorrectTaps">No. Incorrect Taps</string>
     <string name="CorrectTapPercentage">Correct Tap Percentage</string>
 
+    <!-- Content descriptions -->
+    <string name="content_description_quit">Quit</string>
+    <string name="content_description_title">Wander: A cognitive sensing app</string>
+    <string name="content_description_game_title_1">Digits</string>
+    <string name="content_description_start">Start</string>
+    <string name="content_description_options">Options</string>
+    <string name="content_description_info">Info</string>
+    <string name="content_description_credit">Credit</string>
 
 </resources>

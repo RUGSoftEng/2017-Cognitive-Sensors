@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String MCQA_COLUMN_ANSWER = "Answer";
 
 
-    private Context context;
+    private final Context context;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -131,7 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Inserts the questions into the local database.
      * @param questions - An ArrayList with the questions to add
      */
-    public void insertQuestions(ArrayList<Question> questions){
+    private void insertQuestions(ArrayList<Question> questions){
         SQLiteDatabase db = this.getWritableDatabase();
         Gson gson = new Gson();
 
@@ -156,9 +155,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Empties the questions table and inserts the questions into the local database.
-     * @param questions
      */
-    public void overwriteQuestions(ArrayList<Question> questions){
+    void overwriteQuestions(ArrayList<Question> questions){
         SQLiteDatabase db = this.getWritableDatabase();
         //Drop and recreate to reset possible auto-increments
         db.execSQL("DROP TABLE IF EXISTS " + Q_TABLE_NAME);
@@ -169,7 +167,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Returns all questions from the database, including their multiple choice options if applicable.
-     * @return
      */
     public ArrayList<Question> getQuestions(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -206,10 +203,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Adds the passed @param gs to the GameSessions table in the local database.
-     * @param gs
-     * @return
      */
-    public int insertGameSession(GameSession gs) {
+    int insertGameSession(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GS_COLUMN_TIME, gs.getTime());
@@ -225,10 +220,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Adds the numberGuesses from the passed GameSessiosn @param gs to the numberGuesses table in the local database.
-     * @param gs
-     * @return
      */
-    public boolean insertNumberGuesses(GameSession gs) {
+    void insertNumberGuesses(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(NumberGuess ng : gs.getNumberGuesses()){
             ContentValues contentValues = new ContentValues();
@@ -241,15 +234,12 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insert(NG_TABLE_NAME, null, contentValues);
         }
         db.close();
-        return true;
     }
 
     /**
      * Adds the question answers from the passed GameSessiosn @param gs to the questionAnswers table in the local database.
-     * @param gs
-     * @return
      */
-    public boolean insertQuestionAnswer(GameSession gs) {
+    void insertQuestionAnswer(GameSession gs) {
         SQLiteDatabase db = this.getWritableDatabase();
         for(QuestionAnswer qa : gs.getQuestionAnswers()){
             ContentValues contentValues = new ContentValues();
@@ -260,13 +250,10 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insert(QA_TABLE_NAME, null, contentValues);
         }
         db.close();
-        return true;
     }
 
     /**
      * Returns an ArrayList<GameSession> which contains all gameSessions after a certain timestamp.
-     * @param lastTime
-     * @return
      */
     public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
 
@@ -320,16 +307,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Fetches an uploadObject which contains all gameSessions after the passed @param lastTime from the local database. The playerID is passed on as well, so that the uploadObject contains every field needed to send to the server.
-     * @param lastTime
-     * @return
      */
-    public UploadObject getUploadObjectAfter(Long lastTime){
+    UploadObject getUploadObjectAfter(Long lastTime){
         ArrayList<GameSession> gameSessions = getGameSessionsAfter(lastTime);
         if(gameSessions.size() == 0) {
             return null;
         } else {
-            UploadObject uploadObject = new UploadObject(GameSession.getUniqueID(context).hashCode(), gameSessions);
-            return uploadObject;
+            return new UploadObject(GameSession.getUniqueID(context).hashCode(), gameSessions);
         }
     }
 }

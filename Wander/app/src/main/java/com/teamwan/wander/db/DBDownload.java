@@ -27,9 +27,9 @@ import java.util.ArrayList;
 
 public class DBDownload extends AsyncTask<DBpars, Void, String> {
 
-    BufferedReader in = null;
+    private BufferedReader in = null;
 
-    Context context;
+    private Context context;
 
     protected void onPreExecute(){}
 

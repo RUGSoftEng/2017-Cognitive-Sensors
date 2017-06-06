@@ -15,15 +15,15 @@ import static java.lang.StrictMath.max;
  * Class that processes data from the database, ready to be inserted into a graph.
  */
 
-public class GraphData {
-    private ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
-    private ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
+class GraphData {
+    private final ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
+    private final ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
     private ArrayList<GameSession> gameSessions = new ArrayList<>();
 
-    private ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
-    private ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
-    private ArrayList<Float> onTaskResponses = new ArrayList<>();
-    private ArrayList<Float> offTaskResponses = new ArrayList<>();
+    private final ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
+    private final ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
+    private final ArrayList<Float> onTaskResponses = new ArrayList<>();
+    private final ArrayList<Float> offTaskResponses = new ArrayList<>();
 
     private int totalSessions;
 

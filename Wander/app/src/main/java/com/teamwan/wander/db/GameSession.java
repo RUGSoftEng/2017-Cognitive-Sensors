@@ -3,7 +3,6 @@ package com.teamwan.wander.db;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.teamwan.wander.NumberGame;
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.NumberGuess;
 import com.teamwan.wander.db.QuestionAnswer;
@@ -111,8 +110,6 @@ public class GameSession{
 
     /**
      * getUniqueID creates an universally unique identifier (UUID), which is used for representing the playerID
-     * @param context
-     * @return
      */
     public synchronized static String getUniqueID(Context context) {
         if (uniqueID == null) {
@@ -136,7 +133,6 @@ public class GameSession{
 
     /**
      * Saves this gameSession into the local database, during which the local gameSessionID is generated, which is used when saving the data in the other tables.
-     * @param context
      */
     public void save(Context context){
         DBHelper dbHelper = new DBHelper(context);

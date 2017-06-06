@@ -58,7 +58,7 @@ public class InGameSliderQuestion extends AppCompatActivity {
     /**
      * Sets a custom font for text fields.
      */
-    public void initialiseTypefaces() {
+    private void initialiseTypefaces() {
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FuturaLT.ttf");
 

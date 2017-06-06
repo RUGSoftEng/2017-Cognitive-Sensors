@@ -55,7 +55,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
     /**
      * Sets a custom font for text fields.
      */
-    public void initialiseTypefaces() {
+    private void initialiseTypefaces() {
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FuturaLT.ttf");
 
@@ -73,7 +73,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
      * Adds all checkboxes to array and sets the answer texts
      * The checkboxes are populated with questions and answers from the database.
      */
-    public void populateCheckBoxes() {
+    private void populateCheckBoxes() {
 
         checkBoxes = new ArrayList<>();
         int numberOfQuestions = question.getAnswers().size();
