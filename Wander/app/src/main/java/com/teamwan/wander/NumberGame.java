@@ -54,10 +54,13 @@ public class NumberGame extends AppCompatActivity {
     private int successCounter = 0;
     private int failCounter = 0;
     private int totalCounter = 0;
+    private int idleCount = -1;
     private long timeLastClicked = 0;
+    private long idleCheck = 0;
     private long timeNumberDisplayed;
     private GameState gameState;
     private boolean lastCorrect;
+    private boolean saveGame = true;
     private GameSession gs;
 
     // The ID of the question that was last asked
@@ -93,10 +96,10 @@ public class NumberGame extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
-        saveGameSession();
+        if (saveGame) { saveGameSession(); }
         long time = System.currentTimeMillis();
         while ((System.currentTimeMillis()-time)<1000*2) { }
-        openFeedback();
+        if (saveGame) { openFeedback(); }
         super.onDestroy();
     }
 
@@ -240,11 +243,20 @@ public class NumberGame extends AppCompatActivity {
 
     /**
      * This method generates a new random number between 0 and 9.
-     * It also sets the background back to its standard colour and ensures
-     * that the new number is different from the previous one for simple
-     * preference purposes.  The gameState is reverted to NEUTRAL.
+     * It also ensures that the new number is different from the
+     * previous one for simple preference purposes.  The gameState
+     * is reverted to NEUTRAL. Checks for 10 consecutive numbers
+     * without user input, if this happens, the game is closed.
      */
     private void genNewNumber(){
+
+        if (timeLastClicked==idleCheck) {
+            idleCount++;
+            if (idleCount==10) { saveGame=false; finish(); }
+        } else {
+            idleCheck = timeLastClicked;
+            idleCount = 0;
+        }
 
         totalCounter++;
         if(gs!= null && timeLastClicked > 0) {
