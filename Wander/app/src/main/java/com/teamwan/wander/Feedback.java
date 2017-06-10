@@ -39,6 +39,8 @@ public class Feedback extends AppCompatActivity {
     private FeedbackFragmentChart page4;
     private FeedbackFragmentChart page5;
 
+    private Typeface futura;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,10 +130,10 @@ public class Feedback extends AppCompatActivity {
        ArrayList<TextView> text = new ArrayList<>();
        text.add((TextView) findViewById(R.id.FeedbackTitle));
 
-       Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+       futura = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
 
        for (TextView v : text) {
-           v.setTypeface(tf);
+           v.setTypeface(futura);
        }
    }
 
@@ -145,10 +147,14 @@ public class Feedback extends AppCompatActivity {
         ArrayList<String> labels = new ArrayList<>();
         for (int i=0; i<data.size(); i++) {
             entries.add(new Entry(data.get(i), i));
-            labels.add(Integer.toString(i));
+            labels.add(Integer.toString(i+1));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(Color.RED);
+        dataSet.setLineWidth(6);
+        dataSet.setCircleColor(Color.RED);
+        dataSet.setCircleRadius(20);
+        dataSet.setValueTypeface(futura);
         dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         return new LineData(labels, dataSet);
     }
