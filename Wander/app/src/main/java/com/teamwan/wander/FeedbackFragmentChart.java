@@ -1,16 +1,20 @@
 package com.teamwan.wander;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.LineData;
@@ -22,12 +26,15 @@ public class FeedbackFragmentChart extends Fragment {
     private TextView title, next;
     private LineChart lineChart;
     private BarChart barChart;
+    private FrameLayout lineLayout;
+    private FrameLayout barLayout;
     private boolean chartTypeLine;
     private String titleString;
     private ChartData chartData;
     private LinearLayout layout;
     private int nextChart;
     private ArrayList<String> lineLabels;
+    private Typeface futura;
 
     /**
      * Sets the view for the fragment when created. Taken from Google/Android documentation
@@ -48,6 +55,8 @@ public class FeedbackFragmentChart extends Fragment {
         barChart = (BarChart) view.findViewById(R.id.FragBarChart);
         lineChart = (LineChart) view.findViewById(R.id.FragLineChart);
         layout = (LinearLayout) view.findViewById(R.id.ChartLayout);
+        lineLayout = (FrameLayout) view.findViewById(R.id.LineLayout);
+        barLayout = (FrameLayout) view.findViewById(R.id.BarLayout);
         initialiseFragment();
     }
 
@@ -55,9 +64,9 @@ public class FeedbackFragmentChart extends Fragment {
      * Sets all typefaces to Futura.
      */
     private void setTypefaces() {
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/FuturaLT.ttf");
-        title.setTypeface(tf);
-        next.setTypeface(tf);
+        futura = Typeface.createFromAsset(getActivity().getAssets(),"fonts/FuturaLT.ttf");
+        title.setTypeface(futura);
+        next.setTypeface(futura);
     }
 
     public void setVals(String s, ChartData c, int n, boolean line){
@@ -73,15 +82,28 @@ public class FeedbackFragmentChart extends Fragment {
             title.setTextSize(26);
         }
         if (chartTypeLine) {
-            layout.removeView(barChart);
-        }else{
-            layout.removeView(lineChart);
-        }
-        if (chartTypeLine) {
-            lineChart.setData((LineData) chartData);
+            layout.removeView(barLayout);
+            chartData.setValueTextSize(12);
+            lineChart.setData((LineData)chartData);
+            XAxis axisX = lineChart.getXAxis();
+            YAxis axisY = lineChart.getAxisRight();
+            axisX.setDrawAxisLine(false);
+            axisX.setDrawGridLines(false);
+            axisX.setTypeface(futura);
+            axisX.setYOffset(10);
+            axisY.setDrawLabels(false);
+            axisY.setXOffset(-20);
+            axisY.setDrawAxisLine(false);
+            axisY = lineChart.getAxisLeft();
+            axisY.setAxisLineColor(Color.TRANSPARENT);
+            axisY.setTypeface(futura);
+            axisY.setDrawAxisLine(false);
+            axisY.setXOffset(20);
+            lineChart.setTouchEnabled(false);
             lineChart.invalidate();
             lineChart.setDescriptionTextSize(0);
         } else {
+            layout.removeView(lineLayout);
             barChart.setData((BarData) chartData);
             barChart.invalidate();
             lineChart.setDescriptionTextSize(0);

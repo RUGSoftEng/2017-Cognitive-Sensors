@@ -17,31 +17,45 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="36sp" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/FragLineChart"
+    <FrameLayout
+        android:id="@+id/LineLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="10dp"
-        android:visibility="visible" />
+        android:layout_height="280dp">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/FragLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="10dp"
+            android:visibility="visible" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/BarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/FragBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="10dp" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/FragChartNext"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="15dp"
+        android:layout_weight="1"
         android:text="Complete 5 more games to unlock next performance chart."
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
         android:visibility="visible" />
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/FragBarChart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="10dp" />
 
 </LinearLayout>

@@ -42,8 +42,10 @@ public class FeedbackFragmentText extends Fragment {
     }
 
     private void initialiseFragment(){
-        percVal.setText(accuracy + "%");
-        avgVal.setText(Double.toString(response) + "s");
+        String resp = Double.toString(response).substring(0,6);
+        String acc = Double.toString(accuracy).substring(0,5);
+        percVal.setText(acc + "%");
+        avgVal.setText(resp + "s");
         if (nextChart<1) {
             next.setText("Next performance chart unlocked!  >");
             next.setTextColor(getResources().getColor(R.color.positiveResult));
