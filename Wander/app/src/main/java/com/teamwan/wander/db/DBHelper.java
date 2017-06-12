@@ -207,6 +207,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (res.moveToNext());
         }
         res.close();
+        db.close();
         return questions;
     }
 
@@ -265,7 +266,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * Returns an ArrayList<GameSession> which contains all gameSessions after a certain timestamp.
      */
     public ArrayList<GameSession> getGameSessionsAfter(Long lastTime){
-
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res = db.rawQuery("select * from "+ GS_TABLE_NAME +" where " + GS_COLUMN_TIME +" > " + lastTime + "", null);
