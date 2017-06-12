@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.GameSession;
+import com.teamwan.wander.db.Question;
 import com.teamwan.wander.db.QuestionAnswer;
 
 import static java.lang.StrictMath.max;
@@ -15,10 +16,11 @@ import static java.lang.StrictMath.max;
  * Class that processes data from the database, ready to be inserted into a graph.
  */
 
-class GraphData {
+public class GraphData {
     private final ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
     private final ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
     private ArrayList<GameSession> gameSessions = new ArrayList<>();
+    private ArrayList<Question> questions = new ArrayList<>();
 
     private final ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
     private final ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
@@ -31,6 +33,7 @@ class GraphData {
         DBHelper db = new DBHelper(c);
 
         gameSessions = db.getGameSessionsAfter((long)0);
+        questions = db.getQuestions();
         for(GameSession g : gameSessions) {
             this.taskCorrectnessAllSessions.add(g.getPercentage());
             this.averageResponseAllSessions.add(((float) g.getAvg())/1000);
@@ -98,9 +101,9 @@ class GraphData {
             int onTaskCorrect = 0;
             int offTaskCorrect = 0;
             for(QuestionAnswer qa : g.getQuestionAnswers()) {
-                if (qa.getQuestionId() == 0) {
+                if (questions.get(qa.getQuestionId()).isDefinesOnOffTask()) { //The answer to the question defines on/off task
                     while (onTask + offTask < g.getNumberGuesses().size() && g.getNumberGuesses().get(i).getResponseTime() < qa.getTime()) {
-                        if (qa.getAnswer() < 2) {
+                        if (questions.get(qa.getQuestionId()).getOnTask().get(qa.getAnswer())) {
                             //on task
                             onTask++;
                             onTaskTime += g.getNumberGuesses().get(i).getResponseTime();
