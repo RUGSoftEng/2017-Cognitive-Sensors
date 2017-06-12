@@ -89,6 +89,9 @@ public class NumberGame extends AppCompatActivity {
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        saveGame = sharedPref.getBoolean("Consent?", false);
+
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
         startTime = System.currentTimeMillis();
         runGame();
@@ -98,7 +101,8 @@ public class NumberGame extends AppCompatActivity {
     protected void onDestroy(){
         if (saveGame) { saveGameSession(); }
         long time = System.currentTimeMillis();
-        while ((System.currentTimeMillis()-time)<1000*2) { }
+        while ((System.currentTimeMillis()-time)<1500) { }
+
         if (saveGame) { openFeedback(); }
         super.onDestroy();
     }
@@ -345,7 +349,7 @@ public class NumberGame extends AppCompatActivity {
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     private void saveGameSession(){
-        gs.setPercentage( 100 * (float)successCounter / (float)(totalCounter));
+        gs.setPercentage((float)totalCounter == 0 ? 0 : 100 * (float)successCounter / (float)(totalCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }

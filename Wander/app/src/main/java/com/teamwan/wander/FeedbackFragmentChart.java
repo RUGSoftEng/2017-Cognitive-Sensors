@@ -78,9 +78,7 @@ public class FeedbackFragmentChart extends Fragment {
 
     private void initialiseFragment(){
         title.setText(titleString);
-        if (titleString.length()>20) {
-            title.setTextSize(26);
-        }
+
         if (chartTypeLine) {
             layout.removeView(barLayout);
             chartData.setValueTextSize(12);
@@ -105,11 +103,13 @@ public class FeedbackFragmentChart extends Fragment {
         } else {
             layout.removeView(lineLayout);
             barChart.setData((BarData) chartData);
+            barChart.setDescriptionTextSize(0);
+            barChart.setTouchEnabled(false);
             barChart.invalidate();
-            lineChart.setDescriptionTextSize(0);
+
         }
         if (nextChart < 1) {
-            next.setText("Next performance chart unlocked!  >");
+            next.setText("Swipe left for next performance chart!");
             next.setTextColor(getResources().getColor(R.color.positiveResult));
         } else {
             next.setText("Complete " + nextChart + " more games to unlock the next performance chart.");

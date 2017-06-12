@@ -105,6 +105,15 @@ public class MainMenu extends AppCompatActivity {
     }
 
     /**
+     * This methods opens the questions activity.
+     */
+    public void onClickQuestions(View v){
+        Intent intent = new Intent(MainMenu.this, Questions.class);
+        MainMenu.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
+
+    /**
      * Toggles info overlay.
      */
     public void onClickInfo(View v){

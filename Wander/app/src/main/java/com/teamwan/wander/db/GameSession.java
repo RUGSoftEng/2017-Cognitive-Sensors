@@ -94,7 +94,7 @@ public class GameSession{
                 counter++;
             }
         }
-        average/= counter;
+        average= counter == 0 ? 0 : average / counter;
 
         return average;
     }
