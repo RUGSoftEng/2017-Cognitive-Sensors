@@ -43,7 +43,7 @@ public class FeedbackFragmentText extends Fragment {
         initialiseFragment();
     }
 
-    private void initialiseFragment()
+    private void initialiseFragment(){
         String resp = Double.toString(response);
         resp = resp.substring(0, min(resp.length(), 6));
         String acc = Double.toString(accuracy);
