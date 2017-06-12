@@ -198,40 +198,29 @@ public class Feedback extends AppCompatActivity {
         return data.getLatestNAverageResponses(6);
     }
 
-    private float fetchBarDataTime(int task){
-        ArrayList<Float> values;
+    /**
+     * Calculates the average of a List with float values.
+     * @param values - A List containing float values
+     * @return The average of all the elements in the list
+     */
+    private float fetchBarDataAverage(List<Float> values) {
         float avg = 0;
-        if (task==0){
-            values = data.getOnTaskCorrectnesses();
-            for (float v: values) {
-                avg += v;
-            }
-            return avg/values.size();
-        } else {
-            values = data.getOffTaskCorrectnesses();
-            for (float v: values) {
-                avg += v;
-            }
-            return avg/values.size();
+        for (float v: values) {
+            avg += v;
         }
+        return avg/values.size();
+    }
+
+    private float fetchBarDataTime(int task){
+        if (task==0)
+            return fetchBarDataAverage(data.getOnTaskCorrectnesses());
+        return fetchBarDataAverage(data.getOffTaskCorrectnesses());
     }
 
     private float fetchBarDataAcc(int task){
-        ArrayList<Float> values;
-        float avg = 0;
-        if (task==0){
-            values = data.getOnTaskResponses();
-            for (float v: values) {
-                avg += v;
-            }
-            return avg/values.size();
-        } else {
-            values = data.getOffTaskResponses();
-            for (float v: values) {
-                avg += v;
-            }
-            return avg/values.size();
-        }
+        if (task==0)
+            return fetchBarDataAverage(data.getOnTaskResponses());
+        return fetchBarDataAverage(data.getOffTaskResponses());
     }
 
     public void onClickQuit(View v){
