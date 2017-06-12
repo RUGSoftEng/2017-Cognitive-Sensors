@@ -1,0 +1,489 @@
+[33mcommit 20aabc7e74859d92dd25bfef3d395edb6872d11d[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Tue May 9 23:44:28 2017 +0200
+
+    Added Activity and Layout for post-game feedback screen. Created Fragment and corresponding Layout to represent a single pane of the different feedback forms.
+
+[33mcommit 34260bf294fdb6afb586c9830fa3e4f13f963335[m
+Merge: 2e40c31 0de574a
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu May 4 16:40:59 2017 +0200
+
+    Merge pull request #44 from RUGSoftEng/feature-lint
+    
+    Fix lint warnings
+
+[33mcommit 0de574a58c5510270879076788e9b16f512aae63[m
+Author: Thomas <denhollander.thomas@gmail.com>
+Date:   Tue May 2 21:13:33 2017 +0200
+
+    Fix lint warnings
+
+[33mcommit 2e40c31c67e36c0f43792b995b78f691bc0de917[m
+Merge: 1bd1613 67c671a
+Author: jeajones <joe-dash-jones@hotmail.com>
+Date:   Tue May 2 00:07:43 2017 +0200
+
+    Merge pull request #41 from RUGSoftEng/feature-ReadMe
+    
+    I've Added an In Depth Guide for the ReadMe App
+
+[33mcommit 1bd16135c04ae25e1d87b4d2708bcb83c93002c4[m
+Merge: f9f6884 c4b421b
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Sun Apr 30 10:43:06 2017 +0200
+
+    Merge pull request #39 from RUGSoftEng/feature-readme_server
+    
+    Add an explanation to set up a server
+
+[33mcommit f9f68848a540ca0aab964379d5045ad9cce41c7c[m
+Merge: 9b965a8 ca8c4bc
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Sun Apr 30 10:42:13 2017 +0200
+
+    Merge pull request #38 from RUGSoftEng/master
+    
+    Merge master to development
+
+[33mcommit 67c671ad140678b7b1fa89f42de8a27e48776b7e[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Sun Apr 30 09:01:25 2017 +0200
+
+    I've Added an In Depth Guide for the ReadMe App
+
+[33mcommit c4b421b7f3c3ba0c1f705db96b9744527bbb8cf7[m
+Author: Thomas den Hollander <ThomasdenH@users.noreply.github.com>
+Date:   Wed Apr 26 16:30:53 2017 +0200
+
+    Add an explanation to set up a server
+
+[33mcommit ca8c4bcb3d3c3fea12ae1b2d4e16ae8d0116945c[m
+Merge: 333bfa6 9b965a8
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Thu Apr 13 23:25:12 2017 +0200
+
+    Merge pull request #34 from RUGSoftEng/development
+    
+    Final Merge for SE1
+
+[33mcommit 9b965a8dedd704ff2d79ddcc5c6a5c0f46a6c131[m
+Merge: 434f6c3 635ae2b
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Apr 13 23:17:55 2017 +0200
+
+    Merge pull request #33 from RUGSoftEng/codeCleanup
+    
+    Deleted Weird Files and Added New .apk
+
+[33mcommit 635ae2b29eb8471a513197fe04a96a8de1237cbb[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Apr 13 23:13:11 2017 +0200
+
+    Deleted Weird Files and Added New .apk
+
+[33mcommit 434f6c38d445ea5eeb77ee9831e35bb197e76958[m
+Merge: 1eb8b97 15a5b9f
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Thu Apr 13 22:57:48 2017 +0200
+
+    Merge pull request #32 from RUGSoftEng/feature-app
+    
+    Feature app
+
+[33mcommit 15a5b9f02bc40fe938e5584a4be48324d2c32df7[m
+Merge: 2eeda3a d103915
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Apr 13 22:41:33 2017 +0200
+
+    Merge pull request #31 from RUGSoftEng/connectionAndStorage
+    
+    Connection and storage
+
+[33mcommit d1039151e32a11a2353357e425a1464ab185ff02[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Apr 13 22:37:30 2017 +0200
+
+    Removed unnecessary comments, toasts, added JavaDOC comments, fixed Log tags
+
+[33mcommit 30c4080f03471188f1b2c405d436b20222f13afe[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Apr 13 22:00:52 2017 +0200
+
+    Started on DBDownload function to download questions, but needs to be parsed. Question answers now have a unique combination of GameSessionID and QuestionID.
+
+[33mcommit 1eb8b97ff5c352c8861951d2662ebdb886696ae8[m
+Merge: 4eabd5f 9ed91dc
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Thu Apr 13 10:59:19 2017 +0200
+
+    Merge pull request #29 from RUGSoftEng/feature-server-fixes
+    
+    Feature server fixes
+
+[33mcommit 3c060f6c3eead7c83814263846e6cff07e311d79[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Wed Apr 12 22:40:05 2017 +0200
+
+    Removed unnecessary unique primary key contraints, questionAnswers are now saved and send to server
+
+[33mcommit 6f39e20e6c520c3a087340cdbe6f38af334580bc[m
+Merge: 0abf382 2eeda3a
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Wed Apr 12 20:59:31 2017 +0200
+
+    Merge pull request #28 from RUGSoftEng/feature-app
+    
+    Feature app
+
+[33mcommit 0abf382e04466c17ad52207d836000338bc2b496[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Wed Apr 12 20:51:33 2017 +0200
+
+    Refactoring, added comments, added MCQuestionAnswer class and table
+
+[33mcommit 2eeda3af49d7636df0b5962734ff195a29555fb9[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Wed Apr 12 19:48:18 2017 +0200
+
+    Updated Handler and Question sets
+    
+    -Questions now display in sets
+    -Handler now pauses when new activity for questions starts and restarts
+    onResume
+
+[33mcommit c8c761a45288d18207bb7c433b4b99ecc736e3e3[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Wed Apr 12 17:46:23 2017 +0200
+
+    Finalised MultiQuestion Class
+
+[33mcommit f070d668972e9e4be003d6f36a7e4613df66a235[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Tue Apr 11 20:54:11 2017 +0200
+
+    Made Notification Options Work
+
+[33mcommit 033781ef7d2471dc641b596f03d689ac3158d198[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Tue Apr 11 14:56:23 2017 +0200
+
+    Added one comment. (missed before last push)
+
+[33mcommit 286c2bf8438947b7c8220895600873a46eb7810f[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Tue Apr 11 14:54:28 2017 +0200
+
+    Some refactoring in options activity. Added save button and method for storing notification preference.
+
+[33mcommit 6b620f8607cbe9f0c9e64853fb65c174652ead94[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Mon Apr 10 19:46:21 2017 +0200
+
+    Many Code Fixes
+    
+    Added a lot of comments and changed lots to JAVA docs style commenting .
+    Cut a good chunk of unnecessary code and made some things cleaner.  Work
+    from this for future work.
+
+[33mcommit 457472003c3ea91afe90b2822c8d4d8883349b62[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Fri Apr 7 17:29:33 2017 +0200
+
+    Refactored overlay manipulation methods. Added Menu Layout Components class to store overlay view objects.
+
+[33mcommit 25820fa002013900c83cd6289e43d95f72e87d52[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Thu Apr 6 21:18:46 2017 +0200
+
+    Some refactoring. Finalised info menu. Updated strings to strings provided by customer.
+
+[33mcommit 5b69f82a543e79431c68ca821383a41338943c4c[m
+Merge: 0eda57b 333bfa6
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Wed Apr 5 19:57:23 2017 +0200
+
+    Merge pull request #27 from RUGSoftEng/master
+    
+    Latest App Version
+
+[33mcommit 493452982565027b4658658fb7436cdaa559b789[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Mon Apr 3 17:22:40 2017 +0200
+
+    PlayerID is generated, but to create an int from the we use the hashcode.
+
+[33mcommit 0eda57b75d05f6b6124ce7d9c9f00b4a42c5eea1[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Mon Apr 3 16:49:59 2017 +0200
+
+    Fixed some Stuff for display version and generated new .apk
+
+[33mcommit 459d5a43d675c6cf794bdfa6a3372d8a5c96904a[m
+Merge: 2c05dcd 4934529
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Mon Apr 3 17:25:22 2017 +0200
+
+    Merge pull request #26 from RUGSoftEng/connectionAndStorage
+    
+    Connection and storage
+
+[33mcommit 9ed91dcadd4f85f862919f699d0910d8e2e60e1a[m
+Author: Thomas den Hollander <ThomasdenH@users.noreply.github.com>
+Date:   Thu Mar 30 12:18:45 2017 +0200
+
+    Store UTC millisecond time
+    
+    Also store the UTC milliseconds time in the GameSessions sheet.
+
+[33mcommit 7fd9498cae76fdd6f97f438df71382cef348e8e7[m
+Author: Thomas den Hollander <ThomasdenH@users.noreply.github.com>
+Date:   Thu Mar 30 12:16:11 2017 +0200
+
+    Make test function; Fixes
+    
+    This commit adds a test function for the post request. It also fixes some minor bugs. It changes all keys to lowerCamelCase.
+
+[33mcommit dc155ecd6bc0dbb73153c2b3f3e199859d02cca2[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Mar 30 00:07:25 2017 +0200
+
+    Numberguesses now have the proper gameSessionID stored; Attempts to upload right after completing a gameSession, but this doesn't use the intent yet, so it breaks the lastUploadTime, and thus skips data.
+
+[33mcommit 86dcbebf6077654ff39bc40fda9f59f581b57fa7[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Wed Mar 29 20:09:56 2017 +0200
+
+    Data upload to Google Sheets working, still selects every numberGuess from local database, because they have an unset gameSession ID (id is always 0)
+
+[33mcommit 3c51777249e2bd3734251fc3b13bec50340befb8[m
+Merge: a10303b 2c05dcd
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Wed Mar 29 15:02:21 2017 +0200
+
+    Merge pull request #25 from RUGSoftEng/feature-app
+    
+    Feature app
+
+[33mcommit 2c05dcd2fdd9e2995149ca3c83eee74e8e2775cd[m
+Merge: 41a8c0e a10303b
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Wed Mar 29 15:02:10 2017 +0200
+
+    Merge branch 'feature-local-database' into feature-app
+
+[33mcommit 333bfa6e5bf406675bcd9407c1213491d407fa68[m
+Merge: 38bccf5 4eabd5f
+Author: Peter Ullrich <PJUllrich@users.noreply.github.com>
+Date:   Tue Mar 28 19:31:17 2017 +0200
+
+    Merge pull request #23 from RUGSoftEng/development
+    
+    Merge development to master
+
+[33mcommit 4eabd5fbe2e71a2f1c2c7530f56ee8e314893c7f[m
+Merge: 9b5b9a6 eda8b0f
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Mar 23 19:46:22 2017 +0100
+
+    Merge pull request #20 from RUGSoftEng/feature-server-script
+    
+    Add Google Web App script files
+
+[33mcommit eda8b0f8fc92b03216adefa7202e0d1349ffdec0[m
+Author: Thomas <denhollander.thomas@gmail.com>
+Date:   Thu Mar 23 19:43:37 2017 +0100
+
+    Add Google Web App script files
+
+[33mcommit 9b5b9a6f8244b9055b1a2fc1912ad2cdafa171d1[m
+Merge: cc6d573 41a8c0e
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 19:34:13 2017 +0100
+
+    Merge pull request #19 from RUGSoftEng/app
+    
+    This is all the changes on the app
+
+[33mcommit cc6d573ba10fc765870ef6b52139f8a32581c30f[m
+Merge: abdd65d 0fa2019
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Mar 23 19:18:23 2017 +0100
+
+    Merge pull request #18 from RUGSoftEng/feature-readme
+    
+    Create readme
+
+[33mcommit abdd65d19e5a236c94c88f5de3fbb80e438b9df5[m
+Merge: a2ca8d9 49d5efd
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Thu Mar 23 19:17:54 2017 +0100
+
+    Merge pull request #16 from RUGSoftEng/server
+    
+    Update server ORM model
+
+[33mcommit 0fa2019fffa81d3362ad1f3c8746a9f2c1230949[m
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 19:15:29 2017 +0100
+
+    Added JSON structure image
+
+[33mcommit 1e174b7476d6be6b0611a2db15b5f454a66e8ae8[m
+Author: Auke Roorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 19:11:15 2017 +0100
+
+    Added JSON structure image
+    
+    Used in readme
+
+[33mcommit 579448e0b5e452052671f47ea95e617cf4a9b471[m
+Author: Thomas den Hollander <ThomasdenH@users.noreply.github.com>
+Date:   Thu Mar 23 18:48:24 2017 +0100
+
+    Create readme
+    
+    Create a readme that includes some basic information about the project
+
+[33mcommit 49d5efde09c8b0aec7a93b3553f4c22f33267491[m
+Author: Thomas den Hollander <denhollander.thomas@gmail.com>
+Date:   Thu Mar 23 17:14:13 2017 +0100
+
+    Remove PHP script
+
+[33mcommit 7506ed2b6f661624b688f17661d65beb3846b85c[m
+Merge: 18fd82f bd68b07
+Author: Thomas den Hollander <denhollander.thomas@gmail.com>
+Date:   Thu Mar 23 17:13:09 2017 +0100
+
+    Merge branch 'server' of https://github.com/RUGSoftEng/2017-Cognitive-Sensors into server
+
+[33mcommit 18fd82fac69368f84e24655b1982cae03b2cca7c[m
+Author: Thomas den Hollander <denhollander.thomas@gmail.com>
+Date:   Thu Mar 23 17:12:49 2017 +0100
+
+    Updated ORM model
+
+[33mcommit a10303b3159534d6927dbf3f37d271569fb08616[m
+Author: LorenaArquero <larquv00@estudiantes.unileon.es>
+Date:   Thu Mar 23 16:21:43 2017 +0100
+
+    Connection working, JSON still bugged, every numberguess has gamesessionID 0
+
+[33mcommit 85ead66433a68e66f5f97fc9d9c63ecf098ddc91[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 12:32:42 2017 +0100
+
+    Improved GameSession class to resemble database format, debugging NumberGuesses missing from query, moved JSON string creation to DBUpload.java
+
+[33mcommit f85f3b07b6238ce031e3ca73db06aecbc1171b06[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 00:33:51 2017 +0100
+
+    Small bug fix on local db
+
+[33mcommit ce18b44a27dbf1aaed748f0f161f2b5b44c1fdf2[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Thu Mar 23 00:32:39 2017 +0100
+
+    Updated the SQLite database, added Gson dependency (2.8.0) for Json encoding, added toast notifications to show succesful save to database.
+
+[33mcommit 41a8c0edabaf984d5aa7734dba746b3dad02ef11[m
+Merge: b1ff9af d6cb197
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Wed Mar 22 23:28:26 2017 +0100
+
+    Merge pull request #15 from RUGSoftEng/design
+    
+    Design
+
+[33mcommit d6cb1974feef3638e03cd8c0b4e2240bbc586759[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Wed Mar 22 23:26:13 2017 +0100
+
+    Some small refactoring. Info overlay implemented.
+
+[33mcommit 13dbbda916731c2a8cf339c0bceb163fe67d0bfe[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Wed Mar 22 21:31:25 2017 +0100
+
+    Fixed logic for consent agreement
+
+[33mcommit b43eb761a343f39103b4d997eef130678d793317[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Wed Mar 22 21:11:01 2017 +0100
+
+    Improved formatting of question activity layouts. Improved formatting of ICA and functionality of consent pref. Added ability to revoke consent to options.
+
+[33mcommit 983d157f544674132ee6e1e5f7590acfe814c1c4[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Wed Mar 22 10:48:07 2017 +0100
+
+    Actually added the right files now.
+
+[33mcommit 36b4c87e59109e3256c009caa7109dcdeb9939ae[m
+Author: aukeroorda <aukeroorda@gmail.com>
+Date:   Wed Mar 22 10:43:04 2017 +0100
+
+    Updated DBHelper, added possibility to locally save; saving has yet to be implemented
+
+[33mcommit aba2dc893123e761a6f75004d5a0cbf04d6351c7[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Tue Mar 21 21:51:33 2017 +0100
+
+    Questions now populate and return answers to game to be saved
+    
+    Needs significantly more testing, only first implementation.  Weird
+    delay after leaving a question activity where background colour resets
+    but number is briefly unchanged.  Test.
+
+[33mcommit 5f58e4635ab48ff90148be33ac9406cc3d30a2a9[m
+Merge: 4552544 24503b2
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Tue Mar 21 21:04:43 2017 +0100
+
+    Merge pull request #14 from RUGSoftEng/menus
+    
+    Menus
+
+[33mcommit 24503b2b5da275edb55ca331ffee84cc57022a9c[m
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Tue Mar 21 18:24:01 2017 +0100
+
+    Completed both question type layouts and functionality
+
+[33mcommit fc0f9da89642eabe27cf623433248998bf7c63bc[m
+Merge: 56b9001 4552544
+Author: JakeDavison <jake.andrew.davison@gmail.com>
+Date:   Tue Mar 21 15:36:01 2017 +0100
+
+    Merge pull request #13 from RUGSoftEng/design
+    
+    Design
+
+[33mcommit 455254481bfbb3fa9b3768855df51b318b3b4182[m
+Merge: 0e843a4 0a1da2b
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Tue Mar 21 15:03:22 2017 +0100
+
+    Merge pull request #12 from RUGSoftEng/game
+    
+    Game
+
+[33mcommit 0a1da2b8de9d4024acb12460f933ddf53fd50268[m
+Author: A D Spina <a.d.spina@student.rug.nl>
+Date:   Tue Mar 21 15:02:17 2017 +0100
+
+    TextView for question population, return answers from activities.
+    
+    Questions and Answers are now string arrays.  Questions matching the ID
+    of the question to be asked are put in the TextView of the question
+    activity.  Waiting on layouts.
+
+[33mcommit cbdce346f7c058e471122b2d70129f69efc62811[m
+Author: LorenaArquero <larquv00@estudiantes.unileon.es>
+Date:   Tue Mar 21 14:40:43 2017 +0100
+
+    Add files via upload
+    
+    Added database class and getting the data to store in the db from the main game

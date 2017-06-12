@@ -56,5 +56,14 @@
     <string name="content_description_options">Options</string>
     <string name="content_description_info">Info</string>
     <string name="content_description_credit">Credit</string>
+    <string name="Questionnaire">QUESTIONNAIRE</string>
+    <string name="title_activity_questions">Questions</string>
+    <string name="Questions">QUESTIONS</string>
+    <string name="QuestionsText">In addition to playing the digits game, you can also complete a questionnaire regarding your mood. This can help give researchers an insight into how your mood can affect performance in the task. Tap below to copy your User ID and click through to the questionnaire where you can paste your ID and submit your answers.</string>
+    <string name="CopyUserID">Tap here to copy your User ID.</string>
+    <string name="TapForQuestionnaire" >Tap here to go to the questionnaire.</string>
+    <string name="TapToCopy">Tap to copy your User ID.</string>
+    <string name="CopyFirst">Copy your ID to go to questionnaire.</string>
+    <string name="Back">BACK</string>
 
 </resources>
