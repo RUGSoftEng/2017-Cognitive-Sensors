@@ -89,6 +89,9 @@ public class NumberGame extends AppCompatActivity {
         Typeface tf=Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
         numberDisplay.setTypeface(tf);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        saveGame = sharedPref.getBoolean("Consent?", false);
+
         gs = new GameSession(System.currentTimeMillis(),"numberGame");
         startTime = System.currentTimeMillis();
         runGame();
