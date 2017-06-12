@@ -224,13 +224,18 @@ public class Options extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 0);
 
-        Intent intent = new Intent();
+        Intent intent = new Intent(this.getApplicationContext(), MyReceiver.class);
+        System.out.println("Found pending intent already scheduled? :  " + checkIfPendingIntentIsRegistered(intent));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         pendingIntent.cancel();
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
+        try {
+            alarmManager.cancel(pendingIntent);
+            System.out.println("Successfully cancelled alarm for" + pendingIntent.toString());
+        } catch (Exception e) {
+            System.out.println("AlarmManager update was not canceled. " + e.toString());
+        }
 
-        intent = new Intent(this, MyReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -255,5 +260,10 @@ public class Options extends AppCompatActivity {
                 save.setTextColor(ContextCompat.getColor(Options.this, R.color.colorPrimaryDark));
             }
         }, 1500);
+    }
+    private boolean checkIfPendingIntentIsRegistered(Intent toTest) {
+        // Build the exact same pending intent you want to check.
+        // Everything has to match except extras.
+        return (PendingIntent.getBroadcast(this.getApplicationContext(), 0, toTest, PendingIntent.FLAG_NO_CREATE) != null);
     }
 }

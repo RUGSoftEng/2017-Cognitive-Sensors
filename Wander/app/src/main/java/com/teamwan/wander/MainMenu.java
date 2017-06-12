@@ -123,7 +123,7 @@ public class MainMenu extends AppCompatActivity {
             calendar.set(Calendar.MINUTE, 30);
             calendar.set(Calendar.SECOND, 0);
 
-            Intent alarmIntent = new Intent(this, MyReceiver.class);
+            Intent alarmIntent = new Intent(this.getApplicationContext(), MyReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);

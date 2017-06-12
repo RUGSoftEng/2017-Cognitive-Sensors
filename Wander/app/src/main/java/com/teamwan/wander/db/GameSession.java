@@ -89,12 +89,10 @@ public class GameSession{
         int counter = 0;
 
         for(NumberGuess n: numberGuesses){
-
             if(n.getResponseTime() != 0) {
                 average += n.getResponseTime();
                 counter++;
             }
-
         }
         average/= counter;
 
@@ -128,9 +126,6 @@ public class GameSession{
         return uniqueID;
     }
 
-
-    // Method to insert all the data into the local database.
-
     /**
      * Saves this gameSession into the local database, during which the local gameSessionID is generated, which is used when saving the data in the other tables.
      */
@@ -140,7 +135,6 @@ public class GameSession{
         this.setGameSessionId(gameSessionID);
         dbHelper.insertNumberGuesses(this);
         dbHelper.insertQuestionAnswer(this);
-
     }
 
 }
