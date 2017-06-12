@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static java.lang.Math.min;
+
 
 /**
  * Fragment class to hold feedback screen to allow user to swipe through.
@@ -42,8 +44,10 @@ public class FeedbackFragmentText extends Fragment {
     }
 
     private void initialiseFragment(){
-        String resp = Double.toString(response).substring(0,6);
-        String acc = Double.toString(accuracy).substring(0,5);
+        String resp = Double.toString(response);
+        resp = resp.substring(0, min(resp.length(), 6));
+        String acc = Double.toString(accuracy);
+        acc = acc.substring(0, min(acc.length(), 5));
         percVal.setText(acc + "%");
         avgVal.setText(resp + "s");
         if (nextChart<1) {

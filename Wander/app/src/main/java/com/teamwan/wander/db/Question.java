@@ -12,16 +12,19 @@ public class Question {
 
     private final int questionId;
     private final boolean start;
+    private final boolean definesOnOffTask;
     private final String questionType;
     private final String question;
     private final ArrayList<Integer> nextQuestion;
-    // The answers only apply to a multiple-choice question
+    // The answers and onTask indicators only apply to a multiple-choice question
     private ArrayList<String> answers;
+    private ArrayList<Boolean> onTask;
 
-    Question(int questionId, boolean start, String type, String question,
-                    ArrayList<Integer> nextQuestion) {
+    Question(int questionId, boolean start, boolean definesOnOffTask, String type, String question,
+             ArrayList<Integer> nextQuestion) {
         this.questionId = questionId;
         this.start = start;
+        this.definesOnOffTask = definesOnOffTask;
         this.questionType = type;
         this.question = question;
         this.nextQuestion = nextQuestion;
@@ -53,5 +56,17 @@ public class Question {
 
     public ArrayList<Integer> getNextQuestion() {
         return nextQuestion;
+    }
+
+    public boolean isDefinesOnOffTask() {
+        return definesOnOffTask;
+    }
+
+    public ArrayList<Boolean> getOnTask() {
+        return onTask;
+    }
+
+    public void setOnTask(ArrayList<Boolean> onTask) {
+        this.onTask = onTask;
     }
 }
