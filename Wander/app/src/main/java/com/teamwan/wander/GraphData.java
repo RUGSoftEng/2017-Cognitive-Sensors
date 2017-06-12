@@ -102,7 +102,7 @@ public class GraphData {
             int offTaskCorrect = 0;
             for(QuestionAnswer qa : g.getQuestionAnswers()) {
                 if (questions.get(qa.getQuestionId()).isDefinesOnTask()) { //The answer to the question defines on/off task
-                    while (onTask + offTask < g.getNumberGuesses().size() && g.getNumberGuesses().get(ngIndex).getResponseTime() < qa.getTime()) {
+                    while (onTask + offTask < g.getNumberGuesses().size() && g.getNumberGuesses().get(ngIndex).getTime() < qa.getTime()) {
                         if (questions.get(qa.getQuestionId()).getOnOffTask().get(qa.getAnswer()) == 1) {
                             //on task
                             onTask++;
