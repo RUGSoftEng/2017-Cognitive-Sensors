@@ -103,9 +103,10 @@ public class FeedbackFragmentChart extends Fragment {
         } else {
             layout.removeView(lineLayout);
             barChart.setData((BarData) chartData);
-            barChart.invalidate();
             barChart.setDescriptionTextSize(0);
             barChart.setTouchEnabled(false);
+            barChart.invalidate();
+
         }
         if (nextChart < 1) {
             next.setText("Swipe left for next performance chart!");
