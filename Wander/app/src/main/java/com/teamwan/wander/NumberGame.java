@@ -346,7 +346,7 @@ public class NumberGame extends AppCompatActivity {
      * Saves the gameSession to the local database and attempts to upload it, which depends on being connected to WIFI.
      */
     private void saveGameSession(){
-        gs.setPercentage( 100 * (float)successCounter / (float)(totalCounter));
+        gs.setPercentage((float)totalCounter == 0 ? 0 : 100 * (float)successCounter / (float)(totalCounter));
         gs.save(this);
         new DBUpload().execute(new DBpars(this));
     }

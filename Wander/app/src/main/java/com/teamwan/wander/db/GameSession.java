@@ -96,7 +96,7 @@ public class GameSession{
             }
 
         }
-        average/= counter;
+        average= counter == 0 ? 0 : average / counter;
 
         return average;
     }
