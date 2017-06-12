@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.teamwan.wander.db.DBHelper;
 import com.teamwan.wander.db.GameSession;
+import com.teamwan.wander.db.Question;
 import com.teamwan.wander.db.QuestionAnswer;
 
 import static java.lang.StrictMath.max;
@@ -15,10 +16,11 @@ import static java.lang.StrictMath.max;
  * Class that processes data from the database, ready to be inserted into a graph.
  */
 
-class GraphData {
+public class GraphData {
     private final ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
     private final ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
     private ArrayList<GameSession> gameSessions = new ArrayList<>();
+    private ArrayList<Question> questions = new ArrayList<>();
 
     private final ArrayList<Float> onTaskCorrectnesses = new ArrayList<>();
     private final ArrayList<Float> offTaskCorrectnesses = new ArrayList<>();
@@ -31,6 +33,7 @@ class GraphData {
         DBHelper db = new DBHelper(c);
 
         gameSessions = db.getGameSessionsAfter((long)0);
+        questions = db.getQuestions();
         for(GameSession g : gameSessions) {
             this.taskCorrectnessAllSessions.add(g.getPercentage());
             this.averageResponseAllSessions.add(((float) g.getAvg())/1000);
@@ -85,12 +88,12 @@ class GraphData {
 
 
 /**
- * Method seperates data into on task and off-task. A numberguess is considered on task if it precedes an answer to question with
- * questionID == 0 and the answer < 2 and the numberguess is considered off task if the answer > 1.
+ * Method seperates data into on task and off-task. A numberguess is considered on task if it precedes the answer given to
+ * a question has the onTask value of 1. An onTask value of -1 mean the answer is offtask, and a null value is not defining whether the person was on or offtask.
  */
     public void calculateGraphData(int n){
         for(GameSession g : getLastNGameSessions(n)){
-            int i = 0;
+            int ngIndex = 0;
             int onTask = 0;
             int offTask = 0;
             int onTaskTime = 0;
@@ -98,24 +101,24 @@ class GraphData {
             int onTaskCorrect = 0;
             int offTaskCorrect = 0;
             for(QuestionAnswer qa : g.getQuestionAnswers()) {
-                if (qa.getQuestionId() == 0) {
-                    while (onTask + offTask < g.getNumberGuesses().size() && g.getNumberGuesses().get(i).getResponseTime() < qa.getTime()) {
-                        if (qa.getAnswer() < 2) {
+                if (questions.get(qa.getQuestionId()).isDefinesOnTask()) { //The answer to the question defines on/off task
+                    while (onTask + offTask < g.getNumberGuesses().size() && g.getNumberGuesses().get(ngIndex).getResponseTime() < qa.getTime()) {
+                        if (questions.get(qa.getQuestionId()).getOnOffTask().get(qa.getAnswer()) == 1) {
                             //on task
                             onTask++;
-                            onTaskTime += g.getNumberGuesses().get(i).getResponseTime();
-                            if (g.getNumberGuesses().get(i).isCorrect()) {
+                            onTaskTime += g.getNumberGuesses().get(ngIndex).getResponseTime();
+                            if (g.getNumberGuesses().get(ngIndex).isCorrect()) {
                                 onTaskCorrect++;
                             }
-                        } else {
+                        } else if(questions.get(qa.getQuestionId()).getOnOffTask().get(qa.getAnswer()) == -1) {
                             //off task
                             offTask++;
-                            offTaskTime += g.getNumberGuesses().get(i).getResponseTime();
-                            if (g.getNumberGuesses().get(i).isCorrect()) {
+                            offTaskTime += g.getNumberGuesses().get(ngIndex).getResponseTime();
+                            if (g.getNumberGuesses().get(ngIndex).isCorrect()) {
                                 offTaskCorrect++;
                             }
                         }
-                        i++;
+                        ngIndex++;
                     }
                 }
             }

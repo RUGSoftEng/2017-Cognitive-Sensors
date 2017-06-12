@@ -46,6 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String Q_COLUMN_QID = "QuestionId";
     private static final String Q_COLUMN_QUESTION = "Question";
     private static final String Q_COLUMN_START = "Start";
+    private static final String Q_COLUMN_ONTASK = "OnTask";
     private static final String Q_COLUMN_TYPE = "QuestionType";
     private static final String Q_COLUMN_MCOPTIONS = "MCOptions";
     private static final String Q_COLUMN_NEXT_QUESTION = "NextQuestion";
@@ -89,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Q_COLUMN_QID + " INTEGER," +
             Q_COLUMN_QUESTION + " TEXT," +
             Q_COLUMN_START + " BOOLEAN," +
+            Q_COLUMN_ONTASK + " TEXT," +
             Q_COLUMN_TYPE + " TEXT," +
             Q_COLUMN_MCOPTIONS + " TEXT," +
             Q_COLUMN_NEXT_QUESTION + " TEXT" + ")";
@@ -144,10 +146,14 @@ public class DBHelper extends SQLiteOpenHelper {
             String nextQuestionList = gson.toJson(q.getNextQuestion());
             contentValues.put(Q_COLUMN_NEXT_QUESTION, nextQuestionList);
 
+            String onTask = gson.toJson(q.getOnOffTask());
+            contentValues.put(Q_COLUMN_ONTASK, onTask);
+
             if(Objects.equals("MC", q.getQuestionType())) {
                 String answers = gson.toJson(q.getAnswers());
                 contentValues.put(Q_COLUMN_MCOPTIONS, answers);
             }
+
             db.insert(Q_TABLE_NAME, null, contentValues);
         }
         db.close();
@@ -184,11 +190,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 String nextQuestion = res.getString(res.getColumnIndex(Q_COLUMN_NEXT_QUESTION));
                 ArrayList<Integer> nextQuestionList = gson.fromJson(nextQuestion, intListType);
 
+                String onTaskString = res.getString(res.getColumnIndex(Q_COLUMN_ONTASK));
+                ArrayList<Integer> onTask = gson.fromJson(onTaskString, intListType);
+
                 Question q = new Question(res.getInt(res.getColumnIndex(Q_COLUMN_QID)),
                         (res.getInt(res.getColumnIndex(Q_COLUMN_START)) != 0),
                         res.getString(res.getColumnIndex(Q_COLUMN_TYPE)),
                         res.getString(res.getColumnIndex(Q_COLUMN_QUESTION)),
-                        nextQuestionList);
+                        nextQuestionList, onTask);
                 if (Objects.equals("MC", q.getQuestionType())) {
                     String json = res.getString(res.getColumnIndex(Q_COLUMN_MCOPTIONS));
                     ArrayList<String> answers = gson.fromJson(json, stringListType);

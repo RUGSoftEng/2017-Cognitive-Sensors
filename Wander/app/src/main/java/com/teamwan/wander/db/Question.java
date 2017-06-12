@@ -15,16 +15,22 @@ public class Question {
     private final String questionType;
     private final String question;
     private final ArrayList<Integer> nextQuestion;
+    private final ArrayList<Integer> onOffTask;
     // The answers only apply to a multiple-choice question
     private ArrayList<String> answers;
 
     Question(int questionId, boolean start, String type, String question,
-                    ArrayList<Integer> nextQuestion) {
+             ArrayList<Integer> nextQuestion, ArrayList<Integer> onOffTask) {
         this.questionId = questionId;
         this.start = start;
         this.questionType = type;
         this.question = question;
         this.nextQuestion = nextQuestion;
+        if(onOffTask != null) {
+            this.onOffTask = onOffTask;
+        } else {
+            this.onOffTask = new ArrayList<>();
+        }
     }
 
     int getQuestionId() {
@@ -53,5 +59,18 @@ public class Question {
 
     public ArrayList<Integer> getNextQuestion() {
         return nextQuestion;
+    }
+
+    public ArrayList<Integer> getOnOffTask() {
+        return onOffTask;
+    }
+
+    public boolean isDefinesOnTask() {
+        for(Integer i : onOffTask){
+            if(i!=0){
+                return true;
+            }
+        }
+        return false;
     }
 }
