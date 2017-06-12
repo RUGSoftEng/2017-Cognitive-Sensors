@@ -98,7 +98,8 @@ public class NumberGame extends AppCompatActivity {
     protected void onDestroy(){
         if (saveGame) { saveGameSession(); }
         long time = System.currentTimeMillis();
-        while ((System.currentTimeMillis()-time)<1000*2) { }
+        while ((System.currentTimeMillis()-time)<1500) { }
+
         if (saveGame) { openFeedback(); }
         super.onDestroy();
     }

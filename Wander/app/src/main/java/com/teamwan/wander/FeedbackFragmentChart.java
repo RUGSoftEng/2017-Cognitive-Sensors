@@ -109,7 +109,7 @@ public class FeedbackFragmentChart extends Fragment {
             lineChart.setDescriptionTextSize(0);
         }
         if (nextChart < 1) {
-            next.setText("Next performance chart unlocked!  >");
+            next.setText("Swipe left for next performance chart!");
             next.setTextColor(getResources().getColor(R.color.positiveResult));
         } else {
             next.setText("Complete " + nextChart + " more games to unlock the next performance chart.");

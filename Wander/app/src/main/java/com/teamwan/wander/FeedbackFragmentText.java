@@ -43,7 +43,7 @@ public class FeedbackFragmentText extends Fragment {
 
     private void initialiseFragment(){
         String resp = Double.toString(response).substring(0,6);
-        String acc = Double.toString(accuracy).substring(0,5);
+        String acc = Double.toString(accuracy).substring(0,4);
         percVal.setText(acc + "%");
         avgVal.setText(resp + "s");
         if (nextChart<1) {
