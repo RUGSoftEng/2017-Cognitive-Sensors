@@ -49,7 +49,7 @@ public class Questions extends AppCompatActivity {
     public void onClickUserIDButton(View v) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE);
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("PREF_UNIQUE_ID", Context.MODE_PRIVATE);
-        String id = sharedPrefs.getString("PREF_UNIQUE_ID", null);
+        String id = GameSession.getUniqueID(this).hashCode() + "";
         if (id!=null) {
             ClipData clip = ClipData.newPlainText("ID", id);
             clipboard.setPrimaryClip(clip);
