@@ -78,9 +78,7 @@ public class FeedbackFragmentChart extends Fragment {
 
     private void initialiseFragment(){
         title.setText(titleString);
-        if (titleString.length()>20) {
-            title.setTextSize(26);
-        }
+
         if (chartTypeLine) {
             layout.removeView(barLayout);
             chartData.setValueTextSize(12);
@@ -106,7 +104,7 @@ public class FeedbackFragmentChart extends Fragment {
             layout.removeView(lineLayout);
             barChart.setData((BarData) chartData);
             barChart.invalidate();
-            lineChart.setDescriptionTextSize(0);
+            barChart.setDescriptionTextSize(0);
         }
         if (nextChart < 1) {
             next.setText("Swipe left for next performance chart!");

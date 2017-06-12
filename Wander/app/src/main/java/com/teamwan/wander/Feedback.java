@@ -82,8 +82,8 @@ public class Feedback extends AppCompatActivity {
         page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
         page1.setVals(fetchResponse(), fetchAccuracy(), (6-fetchSessions()));
-        page2.setVals("Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), (12-fetchSessions()), true);
-        page3.setVals("Last 6 Sessions", createLineChart(1, fetchLineDataTime()), (18-fetchSessions()), true);
+        page2.setVals("Tap Accuracy: Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), (12-fetchSessions()), true);
+        page3.setVals("Avg. Response Time: Last 6 Sessions", createLineChart(1, fetchLineDataTime()), (18-fetchSessions()), true);
         page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0, fetchBarDataTime(0),
                 fetchBarDataTime(1)), (24-fetchSessions()), false);
         page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1, fetchBarDataAcc(0),
@@ -151,7 +151,7 @@ public class Feedback extends AppCompatActivity {
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(Color.RED);
-        dataSet.setLineWidth(6);
+        dataSet.setLineWidth(4);
         dataSet.setCircleColor(Color.RED);
         dataSet.setCircleRadius(20);
         dataSet.setValueTypeface(futura);
@@ -171,6 +171,8 @@ public class Feedback extends AppCompatActivity {
         labels.add("Off Task");
         labels.add("On Task");
         BarDataSet dataSet = new BarDataSet(entries, "");
+        dataSet.setValueTextSize(36);
+        dataSet.setValueTypeface(futura);
         dataSet.setColor(Color.RED);
         return new BarData(labels, dataSet);
     }
