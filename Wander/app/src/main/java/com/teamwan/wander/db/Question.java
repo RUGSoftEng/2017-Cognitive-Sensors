@@ -12,22 +12,25 @@ public class Question {
 
     private final int questionId;
     private final boolean start;
-    private final boolean definesOnOffTask;
     private final String questionType;
     private final String question;
     private final ArrayList<Integer> nextQuestion;
-    // The answers and onTask indicators only apply to a multiple-choice question
+    private final ArrayList<Integer> onOffTask;
+    // The answers only apply to a multiple-choice question
     private ArrayList<String> answers;
-    private ArrayList<Boolean> onTask;
 
-    Question(int questionId, boolean start, boolean definesOnOffTask, String type, String question,
-             ArrayList<Integer> nextQuestion) {
+    Question(int questionId, boolean start, String type, String question,
+             ArrayList<Integer> nextQuestion, ArrayList<Integer> onOffTask) {
         this.questionId = questionId;
         this.start = start;
-        this.definesOnOffTask = definesOnOffTask;
         this.questionType = type;
         this.question = question;
         this.nextQuestion = nextQuestion;
+        if(onOffTask != null) {
+            this.onOffTask = onOffTask;
+        } else {
+            this.onOffTask = new ArrayList<>();
+        }
     }
 
     int getQuestionId() {
@@ -58,15 +61,16 @@ public class Question {
         return nextQuestion;
     }
 
-    public boolean isDefinesOnOffTask() {
-        return definesOnOffTask;
+    public ArrayList<Integer> getOnOffTask() {
+        return onOffTask;
     }
 
-    public ArrayList<Boolean> getOnTask() {
-        return onTask;
-    }
-
-    public void setOnTask(ArrayList<Boolean> onTask) {
-        this.onTask = onTask;
+    public boolean isDefinesOnTask() {
+        for(Integer i : onOffTask){
+            if(i!=0){
+                return true;
+            }
+        }
+        return false;
     }
 }

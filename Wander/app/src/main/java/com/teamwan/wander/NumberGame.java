@@ -320,11 +320,9 @@ public class NumberGame extends AppCompatActivity {
         if (sharedPref.getBoolean("Consent?", false)) {
             boolean goodNum = (currentNum != unClickableNum);
             NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
-//            if(timeLastClicked<timeNumberDisplayed) {
-//                ng.setResponseTime(0);
-//            } else {
+            if(timeLastClicked>timeNumberDisplayed) {
                 ng.setResponseTime(timeLastClicked - timeNumberDisplayed);
-//            }
+            }
 
             ng.setCorrect(lastCorrect);
             gs.addNumberGuess(ng);
