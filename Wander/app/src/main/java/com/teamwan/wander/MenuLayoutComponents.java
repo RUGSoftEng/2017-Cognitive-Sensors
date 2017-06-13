@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * the layout, so no methods are used in this class.)
  */
 
-public class MenuLayoutComponents {
+class MenuLayoutComponents {
 
     private MainMenu menu;
     private Context context;

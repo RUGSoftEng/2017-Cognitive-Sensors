@@ -105,6 +105,15 @@ public class MainMenu extends AppCompatActivity {
     }
 
     /**
+     * This methods opens the questions activity.
+     */
+    public void onClickQuestions(View v){
+        Intent intent = new Intent(MainMenu.this, Questions.class);
+        MainMenu.this.startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
+
+    /**
      * Toggles info overlay.
      */
     public void onClickInfo(View v){
@@ -115,7 +124,7 @@ public class MainMenu extends AppCompatActivity {
      * This method sets a daily alarm for a certain time
      * //TODO:: right now we use a default, we might wanna change this if we ever give optional times
      */
-    public void setUpNotifications(int currentSetting) {
+    private void setUpNotifications(int currentSetting) {
         if(currentSetting == -1){
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
@@ -123,7 +132,7 @@ public class MainMenu extends AppCompatActivity {
             calendar.set(Calendar.MINUTE, 30);
             calendar.set(Calendar.SECOND, 0);
 
-            Intent alarmIntent = new Intent(this, MyReceiver.class);
+            Intent alarmIntent = new Intent(this.getApplicationContext(), MyReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -148,7 +157,7 @@ public class MainMenu extends AppCompatActivity {
     /**
      *  Method for passing view objects for overlay from layout to menu layout components object.
      */
-    public void initialiseMLC() {
+    private void initialiseMLC() {
         mlc.overlay = (LinearLayout) findViewById(R.id.Overlay);
         mlc.contentBox = (LinearLayout) findViewById(R.id.ContentBox);
         mlc.title = (TextView) findViewById(R.id.OverlayTitle);
@@ -188,7 +197,7 @@ public class MainMenu extends AppCompatActivity {
     /**
      * Toggles the info overlay visble or invisible.
      */
-    public void toggleInfo() {
+    private void toggleInfo() {
         toggleOverlay();
         mlc.infoVis = (mlc.infoVis==View.VISIBLE) ? (View.INVISIBLE) : (View.VISIBLE);
         mlc.title.setVisibility(mlc.infoVis);
@@ -213,7 +222,7 @@ public class MainMenu extends AppCompatActivity {
     /**
      * Toggles Informed Consent Agreement visible or invisible.
      */
-    public void toggleICA() {
+    private void toggleICA() {
         int vis = (mlc.overlay.getVisibility()==View.VISIBLE) ? (View.INVISIBLE) : (View.VISIBLE);
         mlc.overlay.setVisibility(vis);
         mlc.contentBox.setVisibility(vis);

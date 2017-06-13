@@ -31,24 +31,23 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
 
     private static final String API_PARAM = "data";
     private static final String LAST_UPLOAD = "last upload";
-    Context context;
 
     protected void onPreExecute(){}
 
     @Override
     protected Void doInBackground(DBpars... params) {
 
-        this.context = params[0].getContext();
+        Context context = params[0].getContext();
         Log.i("DBUPLOAD", "DBUpload.doInBackground() executing");
 
         //Timestamp of last time data was uploaded
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Long lastTime=prefs.getLong(LAST_UPLOAD,0);
 
         //Measure this before data upload, so data generated during the uploading isn't skipped.
         Long newTime = System.currentTimeMillis();
 
-        DBHelper dbHelper= new DBHelper(this.context);
+        DBHelper dbHelper= new DBHelper(context);
         UploadObject uploadObject = dbHelper.getUploadObjectAfter(lastTime);
         if(uploadObject == null) {
             return null;

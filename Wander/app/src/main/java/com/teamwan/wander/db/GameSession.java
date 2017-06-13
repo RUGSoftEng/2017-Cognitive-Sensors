@@ -22,6 +22,9 @@ public class GameSession{
 
     private Long time;
     private String gameType;
+
+
+    private float percentage;
     private ArrayList<NumberGuess> numberGuesses = new ArrayList<>();
     private ArrayList<QuestionAnswer> questionAnswers = new ArrayList<>();
     private int gameSessionId;
@@ -57,6 +60,10 @@ public class GameSession{
         this.gameType = gameType;
     }
 
+    public void setPercentage(float percentage) {
+        this.percentage = percentage;
+    }
+
     public ArrayList<NumberGuess> getNumberGuesses() {
         return numberGuesses;
     }
@@ -77,14 +84,30 @@ public class GameSession{
         this.questionAnswers = questionAnswers;
     }
 
+    public int getAvg(){
+        int average = 0;
+        int counter = 0;
+
+        for(NumberGuess n: numberGuesses){
+            if(n.getResponseTime() != 0) {
+                average += n.getResponseTime();
+                counter++;
+            }
+        }
+        average= counter == 0 ? 0 : average / counter;
+
+        return average;
+    }
+
+    public float getPercentage(){
+        return percentage;
+    }
     public void addQuestionAnswer(QuestionAnswer qa){
         this.questionAnswers.add(qa);
     }
 
     /**
      * getUniqueID creates an universally unique identifier (UUID), which is used for representing the playerID
-     * @param context
-     * @return
      */
     public synchronized static String getUniqueID(Context context) {
         if (uniqueID == null) {
@@ -103,12 +126,8 @@ public class GameSession{
         return uniqueID;
     }
 
-
-    // Method to insert all the data into the local database.
-
     /**
      * Saves this gameSession into the local database, during which the local gameSessionID is generated, which is used when saving the data in the other tables.
-     * @param context
      */
     public void save(Context context){
         DBHelper dbHelper = new DBHelper(context);
@@ -116,7 +135,6 @@ public class GameSession{
         this.setGameSessionId(gameSessionID);
         dbHelper.insertNumberGuesses(this);
         dbHelper.insertQuestionAnswer(this);
-
     }
 
 }

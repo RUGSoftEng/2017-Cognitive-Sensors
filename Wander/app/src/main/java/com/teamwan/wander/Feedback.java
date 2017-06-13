@@ -1,6 +1,5 @@
 package com.teamwan.wander;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
@@ -10,10 +9,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -30,40 +29,39 @@ import java.util.List;
  */
 public class Feedback extends AppCompatActivity {
 
-    private ArrayList<TextView> text;
-    int chartsUnlocked = 5;
+    private int chartsUnlocked = 5;
 
     private GraphData data;
 
-    FeedbackFragmentText page1;
-    FeedbackFragmentChart page2;
-    FeedbackFragmentChart page3;
-    FeedbackFragmentChart page4;
-    FeedbackFragmentChart page5;
+    private FeedbackFragmentText page1;
+    private FeedbackFragmentChart page2;
+    private FeedbackFragmentChart page3;
+    private FeedbackFragmentChart page4;
+    private FeedbackFragmentChart page5;
 
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
+    private Typeface futura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_feedback);
-        //TODO:: make the graph data not crash
-        //data = new GraphData();
 
+        data = new GraphData(this, 4);
+        data.calculateGraphData(4);
+        data.getLastNGameSessions(4);
+        data.getLatestNAverageResponses(4);
         setTypefaces();
-        chartsUnlocked = Math.min(1 + fetchSessions() / 6, 5);
-        mPager = (ViewPager) findViewById(R.id.FeedbackContent);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        chartsUnlocked = Math.min(1 + data.getNumberOfSessions() / 6, 5);
+        /*
+      The pager widget, which handles animation and allows swiping horizontally to access previous
+      and next wizard steps.
+     */
+        ViewPager mPager = (ViewPager) findViewById(R.id.FeedbackContent);
+        /*
+      The pager adapter, which provides the pages to the view pager widget.
+     */
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
         initialiseFragments();
@@ -81,13 +79,15 @@ public class Feedback extends AppCompatActivity {
         page1 = new FeedbackFragmentText();
         page2 = new FeedbackFragmentChart();
         page3 = new FeedbackFragmentChart();
-        page4 = new FeedbackFragmentChart();//TODO:: make page 4 not crash
+        page4 = new FeedbackFragmentChart();
         page5 = new FeedbackFragmentChart();
-        page1.setVals(fetchResponse(), fetchAccuracy(), 6-fetchSessions());
-        page2.setVals("Last 6 Sessions", createLineChart(0), 12-fetchSessions());
-        page3.setVals("Last 12 Sessions", createLineChart(1), 18-fetchSessions());
-        page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0), 24-fetchSessions());
-        page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1), Integer.MAX_VALUE);
+        page1.setVals(fetchResponse(), fetchAccuracy(), (6-fetchSessions()));
+        page2.setVals("Tap Accuracy: Last 6 Sessions", createLineChart(0, fetchLineDataAcc()), (12-fetchSessions()), true);
+        page3.setVals("Avg. Response Time: Last 6 Sessions", createLineChart(1, fetchLineDataTime()), (18-fetchSessions()), true);
+        page4.setVals("Tap Accuracy When \"On Task\" and \"Off Task\":", createBarChart(0, fetchBarDataTime(0),
+                fetchBarDataTime(1)), (24-fetchSessions()), false);
+        page5.setVals("Avg. Response Time When \"On Task\" and \"Off Task\":", createBarChart(1, fetchBarDataAcc(0),
+                fetchBarDataAcc(1)), Integer.MAX_VALUE, false);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Feedback extends AppCompatActivity {
      * sequence. Created from Google documentation example code.
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -127,61 +127,105 @@ public class Feedback extends AppCompatActivity {
      * Sets typefaces to Futura.
      */
    private void setTypefaces() {
-       text = new ArrayList<>();
+       ArrayList<TextView> text = new ArrayList<>();
        text.add((TextView) findViewById(R.id.FeedbackTitle));
 
-       Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
+       futura = Typeface.createFromAsset(getAssets(),"fonts/FuturaLT.ttf");
 
        for (TextView v : text) {
-           v.setTypeface(tf);
+           v.setTypeface(futura);
        }
    }
 
     /**
-     * todo: Creates line chart from data and returns bitmap.
+     * Creates line chart from data and returns LineData object.
      * @param type 0 if accuracy plot, 1 if response time plot
      */
-    public LineData createLineChart(int type){
-        List<Entry> entries = new ArrayList<Entry>();
+    private LineData createLineChart(int type, List<Float> data){
 
-        // turn data into Entry objects
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+        List<Entry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        for (int i=0; i<data.size(); i++) {
+            entries.add(new Entry(data.get(i), i));
+            labels.add(Integer.toString(i+1));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setColor(Color.RED);
-        LineData lineData = new LineData();
-        lineData.addDataSet(dataSet);
-        return lineData;
+        dataSet.setLineWidth(4);
+        dataSet.setCircleColor(Color.RED);
+        dataSet.setCircleRadius(20);
+        dataSet.setValueTypeface(futura);
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        return new LineData(labels, dataSet);
     }
 
     /**
-     * todo: Creates bar chart from data and returns bitmap.
+     * Creates bar chart from data and returns BarData object.
      * @param type 1 if accuracy plot, 0 if response time plot
      */
-    public BarData createBarChart(int type){
-        return new BarData();
+    private BarData createBarChart(int type, float dataOn, float dataOff){
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(dataOff, 0));
+        entries.add(new BarEntry(dataOn, 1));
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("Off Task");
+        labels.add("On Task");
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        dataSet.setValueTextSize(36);
+        dataSet.setValueTypeface(futura);
+        dataSet.setColor(Color.RED);
+        return new BarData(labels, dataSet);
     }
 
     /**
-     * todo: Fetches number of sessions that the player has completed
+     * Fetches number of sessions that the player has completed
      */
-    public int fetchSessions(){
-        //int sessions = data.getTotalGames();
-        int sessions = 24;
-        //get total number of sessions here
-        return sessions;
+    private int fetchSessions(){
+       return data.getNumberOfSessions();
     }
 
-    public double fetchResponse(){
-        //double response = data.getLatestART();
-        double response = 1.25;
-        //get avg. response time for the session here
-        return response;
+    private float fetchResponse(){
+        return data.getLatestNAverageResponses(1).get(0);
     }
 
-    public int fetchAccuracy(){
-        //int accuracy = (int)data.getLatestCTP();
-        int accuracy = 95;
-        //get tap accuracy here
-        return accuracy;
+    private float fetchAccuracy(){
+        return data.getLastNGameSessions(1).get(0).getPercentage();
+    }
+
+    private List<Float> fetchLineDataAcc(){
+        return data.getLatestNTaskCorrectness(6);
+    }
+
+    private List<Float> fetchLineDataTime(){
+        return data.getLatestNAverageResponses(6);
+    }
+
+    /**
+     * Calculates the average of a List with float values.
+     * @param values - A List containing float values
+     * @return The average of all the elements in the list
+     */
+    private float fetchBarDataAverage(List<Float> values) {
+        float avg = 0;
+        for (float v: values) {
+            avg += v;
+        }
+        return avg/values.size();
+    }
+
+    private float fetchBarDataTime(int task){
+        if (task==0)
+            return fetchBarDataAverage(data.getOnTaskCorrectnesses());
+        return fetchBarDataAverage(data.getOffTaskCorrectnesses());
+    }
+
+    private float fetchBarDataAcc(int task){
+        if (task==0)
+            return fetchBarDataAverage(data.getOnTaskResponses());
+        return fetchBarDataAverage(data.getOffTaskResponses());
+    }
+
+    public void onClickQuit(View v){
+        finish();
     }
 }

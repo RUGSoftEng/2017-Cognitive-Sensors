@@ -23,9 +23,8 @@
             android:id="@+id/FeedbackTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginTop="20dp"
-            android:inputType="textPersonName"
             android:text="@string/YourFeedback"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
@@ -44,6 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="onClickQuit"
+            android:contentDescription="@string/content_description_quit"
             app:srcCompat="@drawable/quit" />
 
     </LinearLayout>

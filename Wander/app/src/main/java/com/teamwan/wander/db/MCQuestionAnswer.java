@@ -7,7 +7,7 @@ package com.teamwan.wander.db;
  * the user can choose between.
  */
 
-public class MCQuestionAnswer {
+class MCQuestionAnswer {
 
     private int questionI;
     private int answerNumber;
@@ -19,7 +19,6 @@ public class MCQuestionAnswer {
         this.answerNumber = answerNumber;
         this.answer = answer;
     }
-
 
     public int getQuestionI() {
         return questionI;

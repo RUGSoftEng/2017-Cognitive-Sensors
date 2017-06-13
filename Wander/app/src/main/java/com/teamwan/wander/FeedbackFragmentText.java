@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static java.lang.Math.min;
+
 
 /**
  * Fragment class to hold feedback screen to allow user to swipe through.
@@ -15,8 +17,8 @@ import android.widget.TextView;
 public class FeedbackFragmentText extends Fragment {
 
     private TextView title, avg, avgVal, perc, percVal, next;
-    private int nextChart, accuracy;
-    private double response;
+    private int nextChart;
+    private float accuracy, response;
 
     /**
      * Sets the view for the fragment when created. Taken from Google/Android documentation
@@ -24,8 +26,7 @@ public class FeedbackFragmentText extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.feedback_text, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.feedback_text, container, false);
     }
 
     /**
@@ -43,10 +44,14 @@ public class FeedbackFragmentText extends Fragment {
     }
 
     private void initialiseFragment(){
-        percVal.setText(accuracy + "%");
-        avgVal.setText(Double.toString(response) + "s");
+        String resp = Double.toString(response);
+        resp = resp.substring(0, min(resp.length(), 6));
+        String acc = Double.toString(accuracy);
+        acc = acc.substring(0, min(acc.length(), 5));
+        percVal.setText(acc + "%");
+        avgVal.setText(resp + "s");
         if (nextChart<1) {
-            next.setText("Next performance chart unlocked!  >");
+            next.setText("Swipe left for next performance chart!");
             next.setTextColor(getResources().getColor(R.color.positiveResult));
         } else {
             next.setText("Complete " + nextChart + " more games to unlock the next performance chart.");
@@ -57,14 +62,14 @@ public class FeedbackFragmentText extends Fragment {
     /**
      * Sets all typefaces to Futura.
      */
-    public void setTypefaces() {
+    private void setTypefaces() {
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/FuturaLT.ttf");
         title.setTypeface(tf);
         avg.setTypeface(tf);
         avgVal.setTypeface(tf);
         perc.setTypeface(tf);
         percVal.setTypeface(tf);
-        next.setTypeface(tf);;
+        next.setTypeface(tf);
     }
 
     /**
@@ -73,7 +78,7 @@ public class FeedbackFragmentText extends Fragment {
      * @param perc An int representing correct tap percentage.
      * @param n An int representing the number of games required to unlock the next chart.
      */
-    public void setVals(double avg, int perc, int n){
+    public void setVals(float avg, float perc, int n){
         response = avg;
         accuracy = perc;
         nextChart = n;

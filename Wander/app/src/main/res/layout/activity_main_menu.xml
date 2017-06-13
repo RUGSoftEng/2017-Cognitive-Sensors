@@ -117,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/wandertitle"
+            android:contentDescription="@string/content_description_title"
             android:id="@+id/Title" />
 
         <LinearLayout
@@ -133,33 +134,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/gametitle1"
+                android:contentDescription="@string/content_description_game_title_1"
                 android:id="@+id/GameTitle1" />
 
             <TextView
-                android:text="@string/DigitsDescription"
-                android:layout_height="wrap_content"
                 android:id="@+id/DescriptionBox1"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAlignment="center"
                 android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:text="@string/DigitsDescription"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
 
             <ImageView
                 android:onClick="onClickStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/start"
+                android:contentDescription="@string/content_description_start"
                 android:id="@+id/Start" />
+
+            <ImageView
+                android:id="@+id/Questions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_options"
+                android:onClick="onClickQuestions"
+                app:srcCompat="@drawable/questions" />
 
             <ImageView
                 android:onClick="onClickOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/options"
+                android:contentDescription="@string/content_description_options"
                 android:id="@+id/Options" />
 
             <ImageView
@@ -167,6 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/info"
+                android:contentDescription="@string/content_description_info"
                 android:id="@+id/Info" />
 
             <Space
@@ -178,6 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/credit"
+                android:contentDescription="@string/content_description_credit"
                 android:id="@+id/Credit" />
         </LinearLayout>
 
