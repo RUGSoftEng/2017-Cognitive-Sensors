@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import com.teamwan.wander.db.DBHelper;
@@ -55,7 +56,7 @@ public class NumberGame extends AppCompatActivity {
     private int failCounter = 0;
     private int totalCounter = 0;
     private int idleCount = -1;
-    private long timeLastClicked = 0;
+    private long timeLastNumberClicked = 0;
     private long idleCheck = 0;
     private long timeNumberDisplayed;
     private GameState gameState;
@@ -71,7 +72,7 @@ public class NumberGame extends AppCompatActivity {
     private final Handler handle = new Handler();
 
     private enum GameState {
-        SUCCESS, NEUTRAL
+        CLICKED, NOT_CLICKED_YET
     }
 
     /**
@@ -133,14 +134,16 @@ public class NumberGame extends AppCompatActivity {
      * and takes actions based on whether this was the expected action
      * of the player.
      */
-    public void onClickNumber(View v){
-        if(gameState.equals(GameState.NEUTRAL)) {
-            if (currentNum == unClickableNum)
-                failOnNum();
-            else
+    public void onClick(View v){
+        if(gameState.equals(GameState.NOT_CLICKED_YET)) {
+            timeLastNumberClicked = System.currentTimeMillis();
+            if (currentNum != unClickableNum){
                 successOnNum();
-            timeLastClicked = System.currentTimeMillis();
+            }else{
+                failOnNum();
+            }
         }
+        return;
     }
 
     /**
@@ -151,7 +154,7 @@ public class NumberGame extends AppCompatActivity {
      * If the game length is expired at this point the game ends.
      */
     private void failOnNum(){
-        gameState = GameState.SUCCESS;
+        gameState = GameState.CLICKED;
         ++failCounter;
         numberDisplay.setText("");
 
@@ -170,7 +173,7 @@ public class NumberGame extends AppCompatActivity {
      * If the game length is expired at this point the game ends.
      */
     private void successOnNum(){
-        gameState = GameState.SUCCESS;
+        gameState = GameState.CLICKED;
         ++successCounter;
         numberDisplay.setText("");
 
@@ -189,15 +192,31 @@ public class NumberGame extends AppCompatActivity {
      * If it is not time for a new question it simply generates a new random digit for the game
      */
     private void checkSuccess(){
-
-        if(currentNum == unClickableNum && gameState.equals(GameState.NEUTRAL)){
-            ++successCounter;
-            lastCorrect=true;
+        if(Objects.equals(gameState, GameState.CLICKED)){
+            if(currentNum != unClickableNum){
+                successCounter++;
+                lastCorrect = true;
+            } else {
+                failCounter++;
+                lastCorrect = false;
+            }
+        } else {
+            if(currentNum != unClickableNum){
+                failCounter++;
+                lastCorrect = false;
+            } else {
+                successCounter++;
+                lastCorrect = true;
+            }
         }
-        else if(currentNum == unClickableNum && gameState.equals(GameState.SUCCESS)){
-            ++failCounter;
-            lastCorrect=false;
-        }
+//        if(currentNum != unClickableNum && gameState.equals(GameState.CLICKED)){
+//            ++successCounter;
+//            lastCorrect=true;
+//        }
+//        else if(currentNum == unClickableNum && gameState.equals(GameState.NOT_CLICKED_YET)){
+//            ++failCounter;
+//            lastCorrect=false;
+//        }
 
         if (successCounter + failCounter >= nextQuestionAt) {
             nextQuestionAt += 10 + rn.nextInt(3);
@@ -249,21 +268,21 @@ public class NumberGame extends AppCompatActivity {
      * This method generates a new random number between 0 and 9.
      * It also ensures that the new number is different from the
      * previous one for simple preference purposes.  The gameState
-     * is reverted to NEUTRAL. Checks for 10 consecutive numbers
+     * is reverted to NOT_CLICKED_YET. Checks for 10 consecutive numbers
      * without user input, if this happens, the game is closed.
      */
     private void genNewNumber(){
 
-        if (timeLastClicked==idleCheck) {
+        if (timeLastNumberClicked ==idleCheck) {
             idleCount++;
             if (idleCount==10) { saveGame=false; finish(); }
         } else {
-            idleCheck = timeLastClicked;
+            idleCheck = timeLastNumberClicked;
             idleCount = 0;
         }
 
         totalCounter++;
-        if(gs!= null && timeLastClicked > 0) {
+        if(gs!= null && timeLastNumberClicked > 0) {
 
             saveLastNumberData();
         }
@@ -274,7 +293,7 @@ public class NumberGame extends AppCompatActivity {
 
         numberDisplay.setText(String.format(Locale.getDefault(), "%d", currentNum));
         numberDisplay.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-        gameState = GameState.NEUTRAL;
+        gameState = GameState.NOT_CLICKED_YET;
         timeNumberDisplayed = System.currentTimeMillis();
     }
 
@@ -313,7 +332,7 @@ public class NumberGame extends AppCompatActivity {
      * This method saves all the data that is requested in the database.
      * It only does this if the "consent?" value in the preferences is true.
      * These values are available and need to be stored for the session for each number clicked:
-     *  -timeLastClicked == system time at last number click
+     *  -timeLastNumberClicked == system time at last number click
      *  -timeNumberDisplayed == last time a number was displayed
      *  -successCounter == successful clicks
      *  -failCounter == unsuccessful clicks
@@ -322,12 +341,13 @@ public class NumberGame extends AppCompatActivity {
     private void saveLastNumberData() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.getBoolean("Consent?", false)) {
-            boolean goodNum = (currentNum != unClickableNum);
-            NumberGuess ng = new NumberGuess(currentNum, goodNum, timeNumberDisplayed);
-            if(timeLastClicked>timeNumberDisplayed) {
-                ng.setResponseTime(timeLastClicked - timeNumberDisplayed);
+            boolean isGo = (currentNum != unClickableNum);
+            NumberGuess ng = new NumberGuess(currentNum, isGo, timeNumberDisplayed);
+            if(timeLastNumberClicked >timeNumberDisplayed) {
+                ng.setResponseTime(timeLastNumberClicked - timeNumberDisplayed);
+            } else {
+                ng.setResponseTime(-1);
             }
-
             ng.setCorrect(lastCorrect);
             gs.addNumberGuess(ng);
          }
