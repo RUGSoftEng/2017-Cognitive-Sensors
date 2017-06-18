@@ -308,9 +308,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         res.close();
         db.close();
-        if(gameSessions.size() == 0){
-            return null;
-        }
         return gameSessions;
     }
 
