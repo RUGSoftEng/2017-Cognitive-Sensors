@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wander</string>
-    <string name="API_URL">https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec</string>
+    <string name="API_URL" translatable="false">https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec</string>
     <string name="DigitsDescription">You will see digits on the screen, and your task is to click each
         digit as soon as it appears, but to withhold your response when the digit is the number 3. We
         know that people daydream. Every now and then, you will be asked about your thoughts just prior
