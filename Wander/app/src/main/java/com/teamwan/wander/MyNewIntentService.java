@@ -24,6 +24,7 @@ public class MyNewIntentService extends IntentService {
 
     /**
      * Creates a notification which can launch the main menu activity upon click
+     feature-full-refactor
      * */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -31,7 +32,7 @@ public class MyNewIntentService extends IntentService {
 
         builder.setContentTitle("Remember:");
         builder.setContentText("Its time to Wander!");
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.icon_status_bar);
 
         builder.setPriority(Notification.PRIORITY_HIGH);
         Intent notifyIntent = new Intent(this, MainMenu.class);
