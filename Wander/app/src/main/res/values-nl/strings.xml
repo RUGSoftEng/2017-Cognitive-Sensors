@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Wander</string>
+    <string name="DigitsDescription">Er verschijnen cijfers op het scherm, en jouw doel is om op ieder cijfer te tikken,
+        behalve als het een 3 is. Nu en dan wordt er gevraagd waar je aan dacht. Probeer deze vragen
+        zo goed mogelijk te beantwoorden.</string>
+    <string name="title_activity_options">OptiesActivity</string>
+    <string name="OptionsTitle">OPTIES</string>
+    <string name="OptionNotification">Notificatiefrequentie</string>
+    <string name="OptionsNever">Nooit</string>
+    <string name="OptionsDaily">Dagelijks</string>
+    <string name="OptionsWeekly">Wekelijks</string>
+    <string name="Confirm">BEVESTIG</string>
+    <string name="Positive">Positief</string>
+    <string name="Negative">Negatief</string>
+    <string name="Reject">Afwijzen</string>
+    <string name="InfoTitle">INFO</string>
+    <string name="InfoClose">SLUITEN</string>
+
+    <string name="SAVE">OPSLAAN</string>
+    <string name="SAVED">OPGESLAGEN</string>
+
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="YourFeedback">Jouw Feedback</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="AverageResponseTime">Gemiddelde Reactietijd:</string>
+    <string name="ThisSession">Deze Sessie:</string>
+    <string name="CorrectTapPercentage">Percentage Correct</string>
+
+    <!-- Content descriptions -->
+    <string name="content_description_quit">Stoppen</string>
+    <string name="content_description_start">Start</string>
+    <string name="content_description_options">Opties</string>
+    <string name="content_description_info">Info</string>
+    <string name="content_description_credit">Credit</string>
+    <string name="Questionnaire">ENQUÊTE</string>
+    <string name="title_activity_questions">Vragen</string>
+    <string name="Questions">VRAGEN</string>
+    <string name="QuestionsText">Naast het spelen van het spel kun je ook een vragenlijst beantwoorden over je toestand.
+    Die kan onderzoekers helpen inzicht te krijgen op de invloed van jouw toestand op je prestatie
+    bij het uitvoeren van de taak. Tik hieronder om je Gebuikers-ID te kopiëren en klik vervolgens
+    door naar de enquête waar je hem kunt plakken. Hier kun je ook de vragen beantwoorden.</string>
+    <string name="CopyUserID">Tik hier om je Gebruikers-ID te kopiëren.</string>
+    <string name="TapForQuestionnaire" >Tik hier om naar de enquête te gaan.</string>
+    <string name="TapToCopy">Tik om je Gebruikers-ID te kopiëren.</string>
+    <string name="CopyFirst">Kopieer eerst je ID.</string>
+    <string name="Back">TERUG</string>
+</resources>
