@@ -1,4 +1,4 @@
-/**
+/*
  *  This handles creating a new notification that is scheduled
  *  for a certain time.
  *
@@ -24,7 +24,8 @@ public class MyNewIntentService extends IntentService {
 
     /**
      * Creates a notification which can launch the main menu activity upon click
-     */
+     feature-full-refactor
+     * */
     @Override
     protected void onHandleIntent(Intent intent) {
         Notification.Builder builder = new Notification.Builder(this);

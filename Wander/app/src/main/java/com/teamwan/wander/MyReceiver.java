@@ -1,4 +1,4 @@
-/**
+/*
  *  This class receives an intent from a broadcast and
  *  starts the mainActivity if a notification is clicked.
  *
@@ -16,10 +16,10 @@ import android.content.Intent;
 public class MyReceiver extends BroadcastReceiver {
     public MyReceiver() {}
 
-    @Override
     /**
      * This class receives broadcasted intents in order to start the app
      */
+    @Override
     public void onReceive(Context context, Intent intent) {
         Intent intent1 = new Intent(context, MyNewIntentService.class);
         context.startService(intent1);

@@ -30,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:text="0.00s"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp" />
@@ -50,7 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="0%"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp" />
@@ -61,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="15dp"
-        android:text="Complete 5 more games to unlock next performance chart."
+        android:text="@string/complete_for_chart_5"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp" />

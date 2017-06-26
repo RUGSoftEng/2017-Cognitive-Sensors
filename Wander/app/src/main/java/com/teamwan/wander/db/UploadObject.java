@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * It is composed by the player id and by the corresponding game sessions, game types, the numberGuesses and the corresponding question's answers.
  */
 
-public class UploadObject {
+class UploadObject {
 
     private Integer playerId;
     private ArrayList<GameSession> gameSessions;

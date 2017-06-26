@@ -1,4 +1,4 @@
-/**
+/*
  *  Tapping the copyright button in the main menu
  *  3 times opens this menu to handle debugging.
  *
