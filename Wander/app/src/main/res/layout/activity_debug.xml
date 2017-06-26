@@ -11,7 +11,7 @@
     tools:context="com.teamwan.wander.DebugActivity">
 
     <Button
-        android:text="Test Notifications"
+        android:text="@string/test_notifications"
         android:onClick = "onClickNotify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:id="@+id/button" />
 
     <Button
-        android:text="Test Slider"
+        android:text="@string/test_slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button3"
@@ -35,7 +35,7 @@
         android:onClick="onClickSlider" />
 
     <Button
-        android:text="Test Data send"
+        android:text="@string/test_data_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="37dp"
@@ -53,10 +53,10 @@
         android:layout_below="@+id/button2"
         android:layout_marginTop="52dp"
         android:onClick="onClickFeedback"
-        android:text="Test Feedback" />
+        android:text="@string/test_feedback" />
 
     <Button
-        android:text="Back"
+        android:text="@string/Back"
         android:onClick = "onClickDebugBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

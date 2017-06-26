@@ -1,4 +1,4 @@
-/**
+/*
  *  This class is the main activity for the application.
  *  It handles the main menu and starts other activities
  *  to actually play the game.
@@ -43,7 +43,7 @@ public class Options extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
+    private final View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -51,7 +51,7 @@ public class Options extends AppCompatActivity {
             // Delayed removal of status and navigation bar
         }
     };
-    private View mControlsView;
+    private final View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -80,12 +80,12 @@ public class Options extends AppCompatActivity {
         }
     };
 
-    @Override
     /**
      * When the activity is created the layout is setup,
      * the buttons and typefaces are initialised,
      * and the seekbar is set to show progress == to its current setting
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -99,11 +99,11 @@ public class Options extends AppCompatActivity {
         ((SeekBar)findViewById(R.id.NotifSlider)).setProgress(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("noteSetting", 1));
     }
 
-    @Override
     /**
-    * Trigger the initial hide() shortly after the activity has been
-    * created, to briefly hint to the user that UI controls are available.
-    */
+     * Trigger the initial hide() shortly after the activity has been
+     * created, to briefly hint to the user that UI controls are available.
+     */
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         delayedHide(100);
@@ -128,11 +128,11 @@ public class Options extends AppCompatActivity {
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    @SuppressLint("InlinedApi")
     /**
      * This first shows the system bar then
      * Schedules a runnable to display UI elements after a delay
      */
+    @SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

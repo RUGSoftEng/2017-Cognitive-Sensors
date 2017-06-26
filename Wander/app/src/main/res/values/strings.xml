@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wander</string>
-    <string name="API_URL">https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec</string>
+    <string name="API_URL" translatable="false">https://script.google.com/macros/s/AKfycbxvbf-dg4ZYc-vFpCCygBgsPpcHl7G31kMmouhhbA6pO-2luQk/exec</string>
     <string name="DigitsDescription">You will see digits on the screen, and your task is to click each
         digit as soon as it appears, but to withhold your response when the digit is the number 3. We
         know that people daydream. Every now and then, you will be asked about your thoughts just prior
@@ -56,14 +56,31 @@
     <string name="content_description_options">Options</string>
     <string name="content_description_info">Info</string>
     <string name="content_description_credit">Credit</string>
-    <string name="Questionnaire">QUESTIONNAIRE</string>
     <string name="title_activity_questions">Questions</string>
     <string name="Questions">QUESTIONS</string>
     <string name="QuestionsText">In addition to playing the digits game, you can also complete a questionnaire regarding your mood. This can help give researchers an insight into how your mood can affect performance in the task. Tap below to copy your User ID and click through to the questionnaire where you can paste your ID and submit your answers.</string>
-    <string name="CopyUserID">Tap here to copy your User ID.</string>
-    <string name="TapForQuestionnaire" >Tap here to go to the questionnaire.</string>
     <string name="TapToCopy">Tap to copy your User ID.</string>
     <string name="CopyFirst">Copy your ID to go to questionnaire.</string>
+    <string name="userid_copied">UserID copied to clipboard!</string>
+    <string name="no_userid_found">No user ID found, complete a game session to recieve an ID.</string>
     <string name="Back">BACK</string>
 
+    <string name="test_notifications">Test Notifications</string>
+    <string name="test_slider">Test Slider</string>
+    <string name="test_data_send">Test Data Send</string>
+    <string name="test_feedback">Test Feedback</string>
+
+    <string name="revoke_button">RevokeButton</string>
+
+    <string name="complete_for_chart_5">Complete 5 more games to unlock next performance chart.</string>
+    <plurals name="complete_more_games">
+        <item quantity="one">Complete one more game to unlock the next performance chart.</item>
+        <item quantity="other">Complete %d more games to unlock the next performance chart.</item>
+    </plurals>
+    <string name="swipe_left_performance_chart">Swipe left for next performance chart!</string>
+
+    <string name="no_question_error">No Question to Display, please report error.</string>
+    <string name="no_question">No Question to Display.</string>
+
+    <string name="no_access_informed_consent">Please give informed consent to gain access.</string>
 </resources>

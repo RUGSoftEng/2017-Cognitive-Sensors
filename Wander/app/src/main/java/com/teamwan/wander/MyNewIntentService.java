@@ -1,4 +1,4 @@
-/**
+/*
  *  This handles creating a new notification that is scheduled
  *  for a certain time.
  *
@@ -22,16 +22,17 @@ public class MyNewIntentService extends IntentService {
         super("MyNewIntentService");
     }
 
-    @Override
-     /**
+    /**
      * Creates a notification which can launch the main menu activity upon click
-      * */
+     feature-full-refactor
+     * */
+    @Override
     protected void onHandleIntent(Intent intent) {
         Notification.Builder builder = new Notification.Builder(this);
 
         builder.setContentTitle("Remember:");
         builder.setContentText("Its time to Wander!");
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.icon_status_bar);
 
         builder.setPriority(Notification.PRIORITY_HIGH);
         Intent notifyIntent = new Intent(this, MainMenu.class);

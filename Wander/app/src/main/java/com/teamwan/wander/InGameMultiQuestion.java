@@ -1,4 +1,4 @@
-/**
+/*
  *  This class is a class for questions to be asked and
  *  will be popped up to ask questions
  *
@@ -46,7 +46,7 @@ public class InGameMultiQuestion extends AppCompatActivity {
             questionDisplay.setText(question.getQuestion());
         }
         else{
-            questionDisplay.setText("No Question to Display, please report error");
+            questionDisplay.setText(R.string.no_question_error);
         }
         populateCheckBoxes();
         initialiseTypefaces();

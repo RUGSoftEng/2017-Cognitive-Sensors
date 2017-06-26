@@ -117,7 +117,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:onClick="onClickRevoke"
-            android:text="RevokeButton"
+            android:text="@string/revoke_button"
             android:clickable="true" />
 
     </LinearLayout>

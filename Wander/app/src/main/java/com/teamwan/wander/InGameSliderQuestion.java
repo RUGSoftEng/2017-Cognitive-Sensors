@@ -1,4 +1,4 @@
-/**
+/*
  *  This class is a class for questions to be asked and
  *  will be popped up to ask questions
  *
@@ -49,7 +49,7 @@ public class InGameSliderQuestion extends AppCompatActivity {
             questionDisplay.setText(question.getQuestion());
         }
         else{
-            questionDisplay.setText("No Question to Display");
+            questionDisplay.setText(R.string.no_question);
         }
         initialiseTypefaces();
     }

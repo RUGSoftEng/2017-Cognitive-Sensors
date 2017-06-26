@@ -82,7 +82,4 @@ public class DBUpload extends AsyncTask<DBpars, Void, Void> {
         editor.apply();
         return null;
     }
-
-    protected void onPostExecute(String result) {
-    }
 }

@@ -67,11 +67,6 @@ public class Feedback extends AppCompatActivity {
         initialiseFragments();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
     /**
      * Initialises feedback data for the 5 fragments in the view pager.
      */

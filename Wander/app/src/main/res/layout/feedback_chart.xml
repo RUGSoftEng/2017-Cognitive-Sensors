@@ -52,7 +52,7 @@
         android:layout_margin="5dp"
         android:layout_marginBottom="15dp"
         android:layout_weight="1"
-        android:text="Complete 5 more games to unlock next performance chart."
+        android:text="@string/complete_for_chart_5"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
