@@ -51,10 +51,10 @@ public class FeedbackFragmentText extends Fragment {
         percVal.setText(acc + "%");
         avgVal.setText(resp + "s");
         if (nextChart<1) {
-            next.setText("Swipe left for next performance chart!");
+            next.setText(R.string.swipe_left_performance_chart);
             next.setTextColor(getResources().getColor(R.color.positiveResult));
         } else {
-            next.setText("Complete " + nextChart + " more games to unlock the next performance chart.");
+            next.setText(getResources().getQuantityText(R.plurals.complete_more_games, nextChart));
         }
         setTypefaces();
     }

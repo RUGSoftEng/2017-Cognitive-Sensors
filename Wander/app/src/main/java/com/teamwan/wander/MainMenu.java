@@ -1,4 +1,4 @@
-/**
+/*
  *  This class is the main activity for the application.
  *  It handles the main menu and starts other activities
  *  to actually play the game.

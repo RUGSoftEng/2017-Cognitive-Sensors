@@ -16,7 +16,7 @@ import static java.lang.StrictMath.max;
  * Class that processes data from the database, ready to be inserted into a graph.
  */
 
-public class GraphData {
+class GraphData {
     private final ArrayList<Float> taskCorrectnessAllSessions = new ArrayList<>();
     private final ArrayList<Float> averageResponseAllSessions = new ArrayList<>();
     private ArrayList<GameSession> gameSessions = new ArrayList<>();

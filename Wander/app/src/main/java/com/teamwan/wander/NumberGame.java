@@ -1,4 +1,4 @@
-/**
+/*
  *  This Class contains the the game which presents
  *  random digits to a user and has them click all but one
  *  digit.  The user is also asked questions
@@ -21,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
